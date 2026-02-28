@@ -3,12 +3,13 @@ NAME = cub3d
 CC = cc
 
 # Add -Wall -Wextra -Werror when we have something functional
-CFLAGS = -g -I ./get_next_line -I ./MLX42/include/MLX42 -I ./libft
+CFLAGS = -g -I ./includes -I ./get_next_line -I ./MLX42/include/MLX42 -I ./libft
 
 # Linking flags
 LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lft #-lglfw goes with mlx42
 
-SRCS =	main.c
+SRCS =	main.c \
+		parsing.c
 
 # Libs to be used
 LIBFT_LIB = ./libft/libft.a
@@ -50,7 +51,7 @@ $(MLX42_LIB): ./MLX42
 # CMakeLists.txt gets automatically created when MLX42 is cloned
 ./MLX42/CMakeLists.txt: ./MLX42
 
-$(NAME): $(OBJS) $(MLX42_LIB) $(LIBFT_LIB) $(GNL_LIB)
+$(NAME): $(MLX42_LIB) $(LIBFT_LIB) $(GNL_LIB) $(OBJS)
 	$(CC) $(OBJS) $(LFLAGS) -o $(NAME)
 
 %.o: %.c

@@ -14,6 +14,7 @@
 # define CUB3D_H
 
 # include "libft.h"
+# include "get_next_line.h"
 # include <fcntl.h>		// open
 # include <limits.h>	// INT_MAX
 # include <stdbool.h>
@@ -48,7 +49,16 @@ typedef	struct	s_input
 }	t_input;
 
 // main.c
+int	main(int ac, char **av);
 
-// split by file
+// parsing.c
+int		parsing(char *path_to_map, t_input *map_data);
+bool	is_filename_correct(char *path_to_map);
+int		fill_up_struct(char *path_to_map, t_input *map_data);
+int		paths_to_textures(char **file_content, t_input *map_data);
+char	*clean_path(char *full_line);
+int		floor_and_ceiling_colors(char **file_content, t_input *map_data);
+char	**get_rgb_array(char *full_line);
+int		create_map(char **file_content, t_input *map_data);
 
 #endif
