@@ -6,7 +6,7 @@
 /*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/02/26 17:55:10 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/02 13:54:09 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "cub3d.h"
@@ -17,6 +17,9 @@ void	draw_cone(t_cube * game, char **minimap)
 
 	i = 30.0f;
 	while (i > -30.0f)
+	{
+		i -= 60.f / 360;
+	}
 }
 void	draw_miniap(t_cube *game, char **minimap)
 {
