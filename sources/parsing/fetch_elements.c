@@ -1,93 +1,55 @@
 #include "cub3d.h"
 
-// returns 0 in case of error
-int		parsing(char *path_to_map, t_input *map_data)
+int		check_and_add_texture_path(char *line, t_input *map_data)
 {
-	return ((is_filename_correct(path_to_map) == false)
-		|| (fill_up_struct(path_to_map, map_data) == 0));
-}
-
-bool	is_filename_correct(char *path_to_map)
-{
-	size_t	file_length;
-	char	*tmp;
-
-	file_length = ft_strlen(path_to_map);
-	if (!(tmp = ft_strrchr(path_to_map, '.')))
+	if (ft_strncmp(line, "NO ", 3) == 0)
 	{
-		return(false);
-	}
-	if ((ft_strcmp(tmp, ".cub")))
-	{
-		return(false);
-	}
-	return(true);
-}
-
-// return 0 if error
-int		fill_up_struct(char *path_to_map, t_input *map_data)
-{
-	int		fd;
-	char	**file_content;
-	int		i = 0;
-
-	fd = open(path_to_map, O_RDONLY);
-
-	file_content[i] = get_next_line(fd);		// Malloc done here for each line
-	while (file_content[i])
-	{
-		i++;
-		file_content[i] = get_next_line(fd);
-	}
-
-	return((paths_to_textures(file_content, map_data) == 0)
-		|| (floor_and_ceiling_colors(file_content, map_data) == 0)
-		|| (create_map(file_content, map_data) == 0));
-}
-
-// return 0 if error
-int		paths_to_textures(char **file_content, t_input *map_data)
-{
-	if ((ft_strncmp(file_content[0], "NO ", 3) != 0)
-		|| (ft_strncmp(file_content[1], "SO ", 3) != 0)
-		|| (ft_strncmp(file_content[2], "WE ", 3) != 0)
-		|| (ft_strncmp(file_content[3], "EA ", 3) != 0))
+		map_data->NO = clean_path(line);		// Malloc done for every line
+		if (!map_data->NO)
 			return (0);
-
-	map_data->NO = clean_path(file_content[0]);		// Malloc done for every line
-	if (!map_data->NO)
-		return (0);
-	map_data->SO = clean_path(file_content[1]);
-	if (!map_data->SO)
-	{
-		free(map_data->NO);
-		return (0);
 	}
-	map_data->WE = clean_path(file_content[2]);
-	if (!map_data->WE)
+	else if (ft_strncmp(line, "SO ", 3) == 0)
 	{
-		free(map_data->NO);
-		free(map_data->SO);
-		return (0);
+		map_data->SO = clean_path(line);
+		if (!map_data->SO)
+		{
+			free(map_data->NO);
+			return (0);
+		}
 	}
-	map_data->EA = clean_path(file_content[3]);
-	if (!map_data->NO)
+	else if (ft_strncmp(line, "WE ", 3) == 0)
 	{
-		free(map_data->NO);
-		free(map_data->SO);
-		free(map_data->WE);
-		return (0);
+		map_data->WE = clean_path(line);
+		if (!map_data->WE)
+		{
+			free(map_data->NO);
+			free(map_data->SO);
+			return (0);
+		}
 	}
+	else if (ft_strncmp(line, "EA ", 3) == 0)
+	{
+		map_data->EA = clean_path(line);
+		if (!map_data->NO)
+		{
+			free(map_data->NO);
+			free(map_data->SO);
+			free(map_data->WE);
+			return (0);
+		}
+	}
+	else
+		return (0);
 	return (1);
 }
 
 char	*clean_path(char *full_line)
 {
-	char	*path;	// removes unnecessary chars at beginning & end
+	char	*path;	// removes unnecessary chars/spaces before & after path
 	char	*tmp;
 	size_t	path_length;
 
-	tmp = ft_strchr(full_line, '.');				// Removes the first chars
+	tmp = ft_strchr(full_line, '.');				// Removes the first chars/spaces
 	if (!tmp)
 		return (NULL);
 	path_length = ft_strlen(tmp);
@@ -99,18 +61,26 @@ char	*clean_path(char *full_line)
 }
 
 // return 0 if error
-int		floor_and_ceiling_colors(char **file_content, t_input *map_data)
+int		check_and_add_colors(char *line, t_input *map_data)
 {
-	if ((ft_strncmp(file_content[5], "F ", 2) != 0)
-		|| (ft_strncmp(file_content[6], "C ", 2) != 0))
-			return (0);
-
 	int		i = 0;
 	char	**rgb_array;
 	int		number_to_check;
 
+	if (ft_strncmp(line, "F ", 2) == 0)
+	{
+
+	}
+	else if (ft_strncmp(line, "C ", 2) != 0)
+	{
+
+	}
+	else
+			return (0);
+
+	// below a revoir
 	// twice the same action => put that in a function that takes an int* and returns 0 or 1
-	rgb_array = get_rgb_array(file_content[5]);
+	rgb_array = get_rgb_array(line);
 	if (!rgb_array)
 		return (0);
 	while (i < 3)
@@ -126,7 +96,7 @@ int		floor_and_ceiling_colors(char **file_content, t_input *map_data)
 		free(rgb_array[i]);
 		i++;
 	}
-	rgb_array = get_rgb_array(file_content[6]);
+	rgb_array = get_rgb_array(line);
 	if (!rgb_array)
 		return (0);
 	i = 0;
@@ -154,7 +124,7 @@ char	**get_rgb_array(char *full_line)
 	if (!tmp)
 		return (NULL);
 	tmp++;										// Maybe not necessary ?
-	RGB_split = ft_split(tmp, ',');				// Malloc done here
+	RGB_split = ft_split(tmp, ',');				// Ⓜ️
 	if (!RGB_split)
 		return (NULL);
 	return (RGB_split);

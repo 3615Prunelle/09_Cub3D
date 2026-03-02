@@ -8,8 +8,10 @@ CFLAGS = -g -I ./includes -I ./get_next_line -I ./MLX42/include/MLX42 -I ./libft
 # Linking flags
 LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lft #-lglfw goes with mlx42
 
-SRCS =	main.c \
-		parsing.c
+SRCS =	sources/main.c \
+		sources/parsing/check_and_read.c \
+		sources/parsing/fetch_elements.c \
+		sources/parsing/free_functions.c
 
 # Libs to be used
 LIBFT_LIB = ./libft/libft.a
