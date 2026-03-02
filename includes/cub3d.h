@@ -50,7 +50,7 @@ typedef struct s_cube
 {
 	t_input			*input;
 	t_player_data	*player;
-}
+} t_cube;
 
 // main.c
 
