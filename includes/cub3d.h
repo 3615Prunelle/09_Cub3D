@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/02 23:27:34 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/03 17:32:25 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
 # define ERR_MSG_02	"Invalid filename - We only accept .cub format\n"
-# define ERR_MSG_03	"Invalid line(s) in scene description\n"
-# define ERR_MSG_04	"Missing element(s) or invalid line\n"
+# define ERR_MSG_03	"Invalid line in scene description (path)\n"
+# define ERR_MSG_04	"Missing element(s) or invalid line (map)\n"
 # define ERR_MSG_05	"Empty .cub file\n"
-# define ERR_MSG_06	""
-# define ERR_MSG_07	""
+# define ERR_MSG_06	"Invalid line in scene description (color)\n"
+# define ERR_MSG_07	"Invalid map\n"
 # define ERR_MSG_08	""
 
 // Structs
@@ -75,14 +75,15 @@ void	parsing(char *path_to_map, t_input *map_data);
 bool	is_filename_correct(char *path_to_map);
 void	read_scene_description(t_input *map_data);
 int		count_lines(t_input *map_data);
-int		is_line_from_map(char *line);
+bool	is_line_from_map(char *line);
+bool	is_map_valid(t_input *map_data);
 
 // fetch_elements.c
-int		check_and_add_texture_path(char **file_content, t_input *map_data);
+int		check_and_add_texture_path(char *line, t_input *map_data);
 char	*clean_path(char *full_line);
 int		check_and_add_colors(char *line, t_input *map_data);
 char	**get_rgb_array(char *full_line);
-int		create_map(char **file_content, t_input *map_data);
+int		add_line_in_map_struct(char *line, t_input *map_data);
 
 // free_functions.c
 void	print_error_free_exit(t_input *map_data, char *error_message, bool free_array, char **array);

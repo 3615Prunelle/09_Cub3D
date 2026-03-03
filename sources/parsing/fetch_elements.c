@@ -67,52 +67,32 @@ int		check_and_add_colors(char *line, t_input *map_data)
 	char	**rgb_array;
 	int		number_to_check;
 
-	if (ft_strncmp(line, "F ", 2) == 0)
+	if ((ft_strncmp(line, "F ", 2) == 0) || (ft_strncmp(line, "C ", 2) == 0))
 	{
-
-	}
-	else if (ft_strncmp(line, "C ", 2) != 0)
-	{
-
+		rgb_array = get_rgb_array(line);								// Ⓜ️
+		if (!rgb_array)
+			return (0);
+		while (i < 3)
+		{
+			number_to_check = atoi(rgb_array[i]);
+			if (number_to_check >= 0 && number_to_check <= 255)
+			{
+				if (line[0] == 'F')
+					map_data->floor[i] = number_to_check;
+				if (line[0] == 'C')
+					map_data->ceiling[i] = number_to_check;
+			}
+			else
+			{
+				free_strings_array(rgb_array);
+				return (0);
+			}
+			i++;
+		}
+		free_strings_array(rgb_array);
 	}
 	else
 			return (0);
-
-	// below a revoir
-	// twice the same action => put that in a function that takes an int* and returns 0 or 1
-	rgb_array = get_rgb_array(line);
-	if (!rgb_array)
-		return (0);
-	while (i < 3)
-	{
-		number_to_check = atoi(rgb_array[i]);
-		if (number_to_check >= 0 && number_to_check <= 255)
-			map_data->floor[i] = atoi(rgb_array[i]);
-		else
-		{
-			free(rgb_array[i]);
-			return (0);
-		}
-		free(rgb_array[i]);
-		i++;
-	}
-	rgb_array = get_rgb_array(line);
-	if (!rgb_array)
-		return (0);
-	i = 0;
-	while (i < 3)
-	{
-		number_to_check = atoi(rgb_array[i]);
-		if (number_to_check >= 0 && number_to_check <= 255)
-			map_data->ceiling[i] = number_to_check;
-		else
-		{
-			free(rgb_array[i]);
-			return (0);
-		}
-		free(rgb_array[i]);
-		i++;
-	}
 	return (1);
 }
 
@@ -120,10 +100,9 @@ char	**get_rgb_array(char *full_line)
 {
 	char	*tmp;
 	char	**RGB_split;
-	tmp = ft_strchr(full_line, ' ');
+	tmp = ft_strrchr(full_line, ' ');			// Jumps to the last space
 	if (!tmp)
 		return (NULL);
-	tmp++;										// Maybe not necessary ?
 	RGB_split = ft_split(tmp, ',');				// Ⓜ️
 	if (!RGB_split)
 		return (NULL);
@@ -131,20 +110,10 @@ char	**get_rgb_array(char *full_line)
 }
 
 // return 0 if error
-int		create_map(char **file_content, t_input *map_data)
+int		add_line_in_map_struct(char *line, t_input *map_data)
 {
-	/*
-	- The map must be composed of only 6 possible characters: 0 for an empty space,
-		1 for a wall, and N,S,E or W for the player’s start position and spawning orientation.
-	- The map must be closed/surrounded by walls, if not the program must return an error.
-	- Except for the map content, each type of element can be separated by one or more empty lines.
-‼️	- Except for the map content which always has to be the last, each type of
-		element can be set in any order in the file.
-	- Except for the map, each type of information from an element can be separated by one or more spaces.
-	- The map must be parsed as it looks in the file. Spaces are a valid part of the
-		map and are up to you to handle. You must be able to parse any kind of map,
-		as long as it respects the rules of the map.
-	- Except for the map, each element must begin with its type identifier (composed by one or two
-		characters), followed by its specific information in a strict order : identifier - path/rgb
-	*/
+	static int	i;
+
+	map_data->map_info.map[i] = ft_strdup(line);					// Ⓜ️
+	i++;
 }

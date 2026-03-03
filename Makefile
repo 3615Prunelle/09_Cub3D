@@ -56,9 +56,6 @@ $(MLX42_LIB): ./MLX42
 $(NAME): $(MLX42_LIB) $(LIBFT_LIB) $(GNL_LIB) $(OBJS)
 	$(CC) $(OBJS) $(LFLAGS) -o $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
 clean:
 	rm -f $(OBJS)
 
