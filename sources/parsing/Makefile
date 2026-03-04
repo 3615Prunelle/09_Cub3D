@@ -12,7 +12,8 @@ LFLAGS = -L ../../../99_lib -lgetnextline -lft
 SRCS =	../main.c \
 		./check_and_read.c \
 		./fetch_elements.c \
-		./free_functions.c
+		./free_functions.c \
+		./map_checks.c
 
 OBJS = $(SRCS:.c=.o)
 

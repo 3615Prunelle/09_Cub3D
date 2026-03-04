@@ -11,7 +11,8 @@ LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -l
 SRCS =	sources/main.c \
 		sources/parsing/check_and_read.c \
 		sources/parsing/fetch_elements.c \
-		sources/parsing/free_functions.c
+		sources/parsing/free_functions.c \
+		sources/parsing/map_checks.c
 
 # Libs to be used
 LIBFT_LIB = ./libft/libft.a

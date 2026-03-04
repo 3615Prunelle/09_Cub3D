@@ -2,13 +2,14 @@
 
 void	print_error_free_exit(t_input *map_data, char *error_message, bool free_array, char **array)
 {
-	perror("Error\n");
-	perror(error_message);
+	printf("Error\n");
+	printf("%s", error_message);
+
 	if (free_array)
 		free_strings_array(array);
 	if (map_data)
-		free(map_data);
-	exit;
+		free_map_data_struct(map_data);
+	exit (1);
 }
 
 void	free_strings_array(char **array)
@@ -21,7 +22,26 @@ void	free_strings_array(char **array)
 	while (array[i])
 	{
 		free(array[i]);
+		array[i] = NULL;
 		i++;
 	}
-	free(array);		// check if it was allocated. if not, don't free
+	free(array);
+	array = NULL;
+	get_next_line(-1);		// avoids memleaks from buffer if exit before reaching EOF
+}
+
+void	free_map_data_struct(t_input *map_data)
+{
+	if (map_data->NO)
+		free(map_data->NO);
+	if (map_data->SO)
+		free(map_data->SO);
+	if (map_data->WE)
+		free(map_data->WE);
+	if (map_data->EA)
+		free(map_data->EA);
+	if (map_data->map_info.map)
+		free_strings_array(map_data->map_info.map);
+	if (map_data)
+		free(map_data);
 }

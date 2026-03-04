@@ -30,5 +30,6 @@ int	main(int ac, char **av)
 	// rendering in minimap
 	// set up textures
 	// render final map & movements in loop
+	free_map_data_struct(map_data);
 	return(0);
 }

@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/03 17:32:25 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/05 00:01:18 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_player_data
 typedef struct s_map_info
 {
 	char	**map;
-	int		total_columns;
+	// int		total_columns;		// To remove TBC (Doesn't make much sense, given that every line can have a different length)
 	int		total_lines;
 }	t_map_info;
 
@@ -76,17 +76,21 @@ bool	is_filename_correct(char *path_to_map);
 void	read_scene_description(t_input *map_data);
 int		count_lines(t_input *map_data);
 bool	is_line_from_map(char *line);
-bool	is_map_valid(t_input *map_data);
 
 // fetch_elements.c
 int		check_and_add_texture_path(char *line, t_input *map_data);
 char	*clean_path(char *full_line);
 int		check_and_add_colors(char *line, t_input *map_data);
 char	**get_rgb_array(char *full_line);
-int		add_line_in_map_struct(char *line, t_input *map_data);
+void	add_line_in_map_struct(char *line, t_input *map_data);
 
 // free_functions.c
 void	print_error_free_exit(t_input *map_data, char *error_message, bool free_array, char **array);
 void	free_strings_array(char **array);
+void	free_map_data_struct(t_input *map_data);
+
+// map_checks.c
+bool	is_map_valid(t_input *map_data);
+bool	is_full_wall(char *line, int *idx_backup);
 
 #endif

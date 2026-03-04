@@ -13,7 +13,7 @@ int		check_and_add_texture_path(char *line, t_input *map_data)
 		map_data->SO = clean_path(line);
 		if (!map_data->SO)
 		{
-			free(map_data->NO);
+			free(map_data->SO);
 			return (0);
 		}
 	}
@@ -30,7 +30,7 @@ int		check_and_add_texture_path(char *line, t_input *map_data)
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 	{
 		map_data->EA = clean_path(line);
-		if (!map_data->NO)
+		if (!map_data->EA)
 		{
 			free(map_data->NO);
 			free(map_data->SO);
@@ -109,8 +109,7 @@ char	**get_rgb_array(char *full_line)
 	return (RGB_split);
 }
 
-// return 0 if error
-int		add_line_in_map_struct(char *line, t_input *map_data)
+void	add_line_in_map_struct(char *line, t_input *map_data)
 {
 	static int	i;
 

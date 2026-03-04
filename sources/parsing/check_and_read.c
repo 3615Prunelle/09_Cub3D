@@ -5,14 +5,14 @@ void		parsing(char *path, t_input *map_data)
 	map_data->path_to_map = path;
 	if (!is_filename_correct(path))
 	{
-		perror(ERR_MSG_02);
+		printf("%s", ERR_MSG_02);
 		free(map_data);
-		exit(1);
+		exit (1);
 	}
 	read_scene_description(map_data);
 	if(!is_map_valid(map_data))
 	{
-		// free all the other stuff that has been allocated in read_scene_description function
+		free_map_data_struct(map_data);
 		print_error_free_exit(map_data, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
 	}
 }
@@ -85,9 +85,7 @@ void	read_scene_description(t_input *map_data)
 		i++;
 		file_content[i] = get_next_line(fd);
 	}
-	// when out of this loop, we're reaching the map part.
-	// free file_content
-	// go to build_map function
+	// when out of this loop, we're reaching the map part
 	map_data->map_info.map = ft_calloc(sizeof(char *), line_counter);
 	while (file_content[i])
 	{
@@ -142,34 +140,4 @@ bool	is_line_from_map(char *line)
 			return (false);
 	}
 	return (true);
-}
-
-/*
-The map must be closed/surrounded by walls, if not the program must return an error.
-*/
-
-bool	is_map_valid(t_input *map_data)
-{
-	// Also fill up struct (amount of lines + colums)
-	int		i;
-	int		j;
-	char	**map;
-
-	i = 0;
-	j = 0;
-	map = map_data->map_info.map;
-
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j] != '\0')
-		{
-			// find a way to calculate the longuest line, to fill the total_columns variable in struct
-			j++;
-		}
-
-		i++;
-	}
-	map_data->map_info.total_lines = i;
-
 }
