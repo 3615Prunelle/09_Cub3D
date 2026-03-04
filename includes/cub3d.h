@@ -50,6 +50,9 @@ typedef struct s_cube
 {
 	t_input			*input;
 	t_player_data	*player;
+	mlx_t			*window;
+	mlx_image_t		*view;
+	mlx_image_t		*minimap;
 } t_cube;
 
 // main.c
