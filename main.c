@@ -29,7 +29,7 @@ char	**mockup_map(int i)
 			return(breakdown(map));
 		while (j < 10)
 		{
-			if (i == 0 || j == 0 || j == 9)
+			if (i == 0 || j == 0 || j == 9 || i = 9)
 				map[i][j] = '1';
 			else
 				map[i][j] = '0';
@@ -38,6 +38,8 @@ char	**mockup_map(int i)
 		j = 0;
 		i++;
 	}
+	map[5][5] = 'S';
+	return map;
 }
 
 int	main(int ac, char **av)
@@ -47,6 +49,9 @@ int	main(int ac, char **av)
 	map = mockup_map(0)//so I dont need any checks
 	// av[1] = a map in format *.cub
 	// 1st function = parsing & checking
+	game.window = mlx_init(320, 320, "see_no_evil", false);
+	game.minimap = mlx_new_image(&game.window, 320, 320);
+	game.view = mlx_new_image(&game.window, 320, 320);
 	// rendering in minimap
 	// set up textures
 	// render final map & movements in loop
