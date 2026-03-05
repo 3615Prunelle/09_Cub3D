@@ -1,40 +1,40 @@
 #include "cub3d.h"
 
-int		check_and_add_texture_path(char *line, t_input *map_data)
+int		check_and_add_texture_path(char *line, t_input *input_info)
 {
 	if (ft_strncmp(line, "NO ", 3) == 0)
 	{
-		map_data->NO = clean_path(line);		// Malloc done for every line
-		if (!map_data->NO)
+		input_info->NO = clean_path(line);		// Malloc done for every line
+		if (!input_info->NO)
 			return (0);
 	}
 	else if (ft_strncmp(line, "SO ", 3) == 0)
 	{
-		map_data->SO = clean_path(line);
-		if (!map_data->SO)
+		input_info->SO = clean_path(line);
+		if (!input_info->SO)
 		{
-			free(map_data->SO);
+			free(input_info->SO);
 			return (0);
 		}
 	}
 	else if (ft_strncmp(line, "WE ", 3) == 0)
 	{
-		map_data->WE = clean_path(line);
-		if (!map_data->WE)
+		input_info->WE = clean_path(line);
+		if (!input_info->WE)
 		{
-			free(map_data->NO);
-			free(map_data->SO);
+			free(input_info->NO);
+			free(input_info->SO);
 			return (0);
 		}
 	}
 	else if (ft_strncmp(line, "EA ", 3) == 0)
 	{
-		map_data->EA = clean_path(line);
-		if (!map_data->EA)
+		input_info->EA = clean_path(line);
+		if (!input_info->EA)
 		{
-			free(map_data->NO);
-			free(map_data->SO);
-			free(map_data->WE);
+			free(input_info->NO);
+			free(input_info->SO);
+			free(input_info->WE);
 			return (0);
 		}
 	}
@@ -61,7 +61,7 @@ char	*clean_path(char *full_line)
 }
 
 // return 0 if error
-int		check_and_add_colors(char *line, t_input *map_data)
+int		check_and_add_colors(char *line, t_input *input_info)
 {
 	int		i = 0;
 	char	**rgb_array;
@@ -78,9 +78,9 @@ int		check_and_add_colors(char *line, t_input *map_data)
 			if (number_to_check >= 0 && number_to_check <= 255)
 			{
 				if (line[0] == 'F')
-					map_data->floor[i] = number_to_check;
+					input_info->floor[i] = number_to_check;
 				if (line[0] == 'C')
-					map_data->ceiling[i] = number_to_check;
+					input_info->ceiling[i] = number_to_check;
 			}
 			else
 			{
@@ -109,10 +109,10 @@ char	**get_rgb_array(char *full_line)
 	return (RGB_split);
 }
 
-void	add_line_in_map_struct(char *line, t_input *map_data)
+void	add_line_in_map_struct(char *line, t_input *input_info)
 {
 	static int	i;
 
-	map_data->map_info.map[i] = ft_strdup(line);					// Ⓜ️
+	input_info->map_info.map[i] = ft_strdup(line);					// Ⓜ️
 	i++;
 }

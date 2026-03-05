@@ -1,19 +1,19 @@
 #include "cub3d.h"
 
-void		parsing(char *path, t_input *map_data)
+void		parsing(char *path, t_input *input_info)
 {
-	map_data->path_to_map = path;
+	input_info->path_to_map = path;
 	if (!is_filename_correct(path))
 	{
 		printf("%s", ERR_MSG_02);
-		free(map_data);
+		free(input_info);
 		exit (1);
 	}
-	read_scene_description(map_data);
-	if(!is_map_valid(map_data))
+	read_scene_description(input_info);
+	if(!is_map_valid(input_info))
 	{
-		free_map_data_struct(map_data);
-		print_error_free_exit(map_data, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
+		free_input_info_struct(input_info);
+		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
 	}
 }
 
@@ -40,7 +40,7 @@ bool	is_filename_correct(char *path_to_map)
 // Except for the map, each type of information from an element can be separated by one or more spaces.
 // Except for the map, each element must begin with its type identifier (composed by one or two characters), followed by its specific information in a strict order:
 
-void	read_scene_description(t_input *map_data)
+void	read_scene_description(t_input *input_info)
 {
 	int		fd;
 	char	**file_content;
@@ -48,67 +48,67 @@ void	read_scene_description(t_input *map_data)
 	int		i = 0;
 	int		elements_counter;
 
-	line_counter = count_lines(map_data);
+	line_counter = count_lines(input_info);
 	elements_counter = 0;
 
-	fd = open(map_data->path_to_map, O_RDONLY);
+	fd = open(input_info->path_to_map, O_RDONLY);
 	file_content = ft_calloc(sizeof(char *), line_counter + 1);
 	if (!file_content)
-		print_error_free_exit(map_data, strerror(errno), false, NULL);
+		print_error_free_exit(input_info, strerror(errno), false, NULL);
 	file_content[i] = get_next_line(fd);				// Ⓜ️ (for each line)
 	// No need to check for error because count_lines function already made sure there's something to read
 	while (file_content[i])
 	{
 		if (file_content[i][0] == 'N' || file_content[i][0] == 'S' || file_content[i][0] == 'W' || file_content[i][0] == 'E')
 		{
-			if (!check_and_add_texture_path(file_content[i], map_data))
-				print_error_free_exit(map_data, ERR_MSG_03, true, file_content);
+			if (!check_and_add_texture_path(file_content[i], input_info))
+				print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
 			elements_counter++;
 		}
 		else if (file_content[i][0] == 'F' || file_content[i][0] == 'C')
 		{
-			if (!check_and_add_colors(file_content[i], map_data))
-				print_error_free_exit(map_data, ERR_MSG_06, true, file_content);
+			if (!check_and_add_colors(file_content[i], input_info))
+				print_error_free_exit(input_info, ERR_MSG_06, true, file_content);
 			elements_counter++;
 		}
-		else if (file_content[i][0] == ' ')		// check tabs also ?
+		else if (file_content[i][0] == ' ')
 		{
 			if((is_line_from_map(file_content[i])) && (elements_counter == 6))
 				break;
 			else
-				print_error_free_exit(map_data, ERR_MSG_04, true, file_content);
+				print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
 		}
 		else if (file_content[i][0] != '\n')
 		{
-			print_error_free_exit(map_data, ERR_MSG_03, true, file_content);
+			print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
 		}
 		i++;
 		file_content[i] = get_next_line(fd);
 	}
 	// when out of this loop, we're reaching the map part
-	map_data->map_info.map = ft_calloc(sizeof(char *), line_counter);
+	input_info->map_info.map = ft_calloc(sizeof(char *), line_counter);
 	while (file_content[i])
 	{
-		add_line_in_map_struct(file_content[i], map_data);				// Ⓜ️
+		add_line_in_map_struct(file_content[i], input_info);				// Ⓜ️
 		i++;
 		file_content[i] = get_next_line(fd);
 		if(file_content[i] && !(is_line_from_map(file_content[i])))
-			print_error_free_exit(map_data, ERR_MSG_04, true, file_content);
+			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
 	}
 	free_strings_array(file_content);
 }
 
-int		count_lines(t_input *map_data)
+int		count_lines(t_input *input_info)
 {
 	int		fd;
 	char	*gnl_return;
 	int		line_counter;
 
-	fd = open(map_data->path_to_map, O_RDONLY);
+	fd = open(input_info->path_to_map, O_RDONLY);
 	line_counter = 0;
 	gnl_return = get_next_line(fd);
 	if(!gnl_return)
-		print_error_free_exit(map_data, ERR_MSG_05, false, NULL);
+		print_error_free_exit(input_info, ERR_MSG_05, false, NULL);
 	while (gnl_return)
 	{
 		line_counter++;
@@ -122,7 +122,7 @@ int		count_lines(t_input *map_data)
 /* The map must be composed of only 6 possible characters:
 0 for an empty space, 1 for a wall,
 and N,S,E or W for the player’s start position and spawning orientation
-Added spaces & tabs
+Added spaces
 */
 bool	is_line_from_map(char *line)
 {
@@ -131,7 +131,7 @@ bool	is_line_from_map(char *line)
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if ((line[i] == ' ') || (line[i] == '0') || (line[i] == '1') || (line[i] == '\n') || (line[i] == '\t')
+		if ((line[i] == ' ') || (line[i] == '0') || (line[i] == '1') || (line[i] == '\n')
 			|| (line[i] == 'N') || (line[i] == 'S') || (line[i] == 'E') || (line[i] == 'W'))
 		{
 			i++;

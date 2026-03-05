@@ -16,13 +16,13 @@
 
 int	main(int ac, char **av)
 {
-	t_input	*map_data;
+	t_input	*input_info;
 	if (ac != 2)
 		print_error_free_exit(NULL, ERR_MSG_01, false, NULL);
-	map_data = ft_calloc(sizeof(t_input), 1);				// Ⓜ️
-	if(!map_data)
+	input_info = ft_calloc(sizeof(t_input), 1);				// Ⓜ️
+	if(!input_info)
 		print_error_free_exit(NULL, strerror(errno), false, NULL);
-	parsing(av[1], map_data);
+	parsing(av[1], input_info);
 
 
 
@@ -30,6 +30,6 @@ int	main(int ac, char **av)
 	// rendering in minimap
 	// set up textures
 	// render final map & movements in loop
-	free_map_data_struct(map_data);
+	free_input_info_struct(input_info);
 	return(0);
 }
