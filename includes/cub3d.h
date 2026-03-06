@@ -6,18 +6,18 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/02/26 18:19:28 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/06 16:45:23 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "libft.h"
+# include "libft/libft.h"
 # include <fcntl.h>		// open
 # include <limits.h>	// INT_MAX
 # include <stdbool.h>
-# include <math.h>	//the scary stuff (tan, cos, sin, atan)
+# include <math.h>	//the scary stuff (tan, cos, sin, atan) but also yummy pie
 # include <stdio.h> //mal lock mal nicht lock
 # include <stdlib.h>	// EXIT_FAILURE, EXIT_SUCCESS
 # include <sys/stat.h>	// open
@@ -56,6 +56,12 @@ typedef struct s_cube
 } t_cube;
 
 // main.c
+
+//minimapper.c
+void	draw_minimap(t_cube *game, char **minimap);
+void	draw_line(t_cube *game, char *line, int position);
+void	draw_cone(t_cube * game, char **minimap);
+void	start_visuals(t_cube *game);
 
 // split by file
 

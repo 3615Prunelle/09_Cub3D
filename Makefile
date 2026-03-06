@@ -9,7 +9,8 @@ CFLAGS = -g -I ./get_next_line -I ./MLX42/include/MLX42 -I ./libft
 LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lft #-lglfw goes with mlx42
 
 SRCS =	main.c \
-	./minimap/minimapper.c
+	./visuals/minimap/minimapper.c \
+	./visuals/visualizer.c
 
 # Libs to be used
 LIBFT_LIB = ./libft/libft.a

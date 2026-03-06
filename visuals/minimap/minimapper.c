@@ -6,10 +6,10 @@
 /*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/02 13:54:09 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/06 16:44:50 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "cub3d.h"
+#include "./../../includes/cub3d.h"
 
 void	draw_cone(t_cube * game, char **minimap)
 {
@@ -21,22 +21,47 @@ void	draw_cone(t_cube * game, char **minimap)
 		i -= 60.f / 360;
 	}
 }
-void	draw_miniap(t_cube *game, char **minimap)
+
+void	draw_line(t_cube *game, char *line, int position)
+{
+	int	i;
+	int	j;
+	int	length;
+
+	i = 0;
+	j = 0;
+	length = ft_strlen(line) * 32;
+	while (j < 33)
+	{
+		while ( i < length)
+		{
+			if (line[i / 32] == '0')
+				mlx_put_pixel(game->minimap, i, position + j, 0x000000);
+			if (line[i / 32] == '1')
+				mlx_put_pixel(game->minimap, i, position + j, 0x0000FF);
+			i++;
+		}
+		i = 0;
+		j++;
+	}
+}
+
+void	draw_minimap(t_cube *game, char **minimap)
 {
 	int	i;
 
-	i = 1
-	while (i < 7)
+	i = 1;
+	while (i < 10)
 	{
-		draw_line(game, minimap[i]);
+		draw_line(game, minimap[i], i * 32);
 		i++;
 	}
 	draw_cone(game, minimap);
-	mlx_put_pixel(game->minmap_image, 35, 35, 0xFF0000);
-	mlx_put_pixel(game->minmap_image, 35, 36, 0xFF0000);
-	mlx_put_pixel(game->minmap_image, 35, 34, 0xFF0000);
-	mlx_put_pixel(game->minmap_image, 36, 35, 0xFF0000);
-	mlx_put_pixel(game->minmap_image, 34, 35, 0xFF0000);
+	mlx_put_pixel(game->minimap, (int)game->player->position[0], (int)game->player->position[1], 0xFF0000);
+	mlx_put_pixel(game->minimap, (int)game->player->position[0], (int)game->player->position[1] - 1, 0xFF0000);
+	mlx_put_pixel(game->minimap, (int)game->player->position[0], (int)game->player->position[1] + 1, 0xFF0000);
+	mlx_put_pixel(game->minimap, (int)game->player->position[0] - 1, (int)game->player->position[1], 0xFF0000);
+	mlx_put_pixel(game->minimap, (int)game->player->position[0] + 1, (int)game->player->position[1], 0xFF0000);
 }
 
 void	transscibe(char **minimap, char **map, int mapsize)
@@ -52,11 +77,11 @@ void	transscibe(char **minimap, char **map, int mapsize)
 	{
 		while (j < ft_strlen(map[i]))
 		{
-			if (map[i][j] = 'P')
+			if (map[i][j] == 'P')
 				break ;
 			j++;
 		}
-		if (map[i][j] = 'P')
+		if (map[i][j] == 'P')
 			break ;
 		j = 0;
 		i++;
