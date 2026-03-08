@@ -112,7 +112,15 @@ char	**get_rgb_array(char *full_line)
 void	add_line_in_map_struct(char *line, t_input *input_info)
 {
 	static int	i;
+	static int	j;
 
-	input_info->map_info.map[i] = ft_strdup(line);					// Ⓜ️
+	if (ft_strlen(line) > j)
+	{
+		j = ft_strlen(line);		// To get the length of the longuest line
+		input_info->map_info->max_columns = j;
+	}
+
+	input_info->map_info->map[i] = ft_strdup(line);					// Ⓜ️
+	input_info->map_info->max_lines = i;
 	i++;
 }

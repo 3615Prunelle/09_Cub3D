@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/05 16:51:41 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/08 22:19:45 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ typedef struct s_player_data
 typedef struct s_map_info
 {
 	char	**map;
-	// int		total_columns;		// To remove TBC (Doesn't make much sense, given that every line can have a different length)
-	int		total_lines;
+	int		max_columns;
+	int		max_lines;
 }	t_map_info;
 
 typedef	struct	s_input
@@ -62,7 +62,7 @@ typedef	struct	s_input
 	char			*EA;
 	int				floor[3];
 	int				ceiling[3];
-	t_map_info		map_info;
+	t_map_info		*map_info;
 	t_player_data	player;
 
 }	t_input;
@@ -74,6 +74,7 @@ int	main(int ac, char **av);
 void	parsing(char *path_to_map, t_input *input_info);
 bool	is_filename_correct(char *path_to_map);
 void	read_scene_description(t_input *input_info);
+void	map_adjustment(t_map_info *map_info);
 int		count_lines(t_input *input_info);
 bool	is_line_from_map(char *line);
 
@@ -92,5 +93,7 @@ void	free_input_info_struct(t_input *input_info);
 // map_checks.c
 bool	is_map_valid(t_input *input_info);
 bool	is_full_wall(char *line, int *idx_backup);
+int		update_player_info(t_input *input_info);
+bool	is_player_position_valid(t_input *input_info);
 
 #endif

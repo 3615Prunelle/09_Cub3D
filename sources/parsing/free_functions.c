@@ -40,8 +40,10 @@ void	free_input_info_struct(t_input *input_info)
 		free(input_info->WE);
 	if (input_info->EA)
 		free(input_info->EA);
-	if (input_info->map_info.map)
-		free_strings_array(input_info->map_info.map);
+	if (input_info->map_info->map)
+		free_strings_array(input_info->map_info->map);
+	if (input_info->map_info)
+		free (input_info->map_info);
 	if (input_info)
 		free(input_info);
 }

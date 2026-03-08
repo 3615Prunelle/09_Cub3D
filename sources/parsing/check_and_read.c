@@ -9,11 +9,47 @@ void		parsing(char *path, t_input *input_info)
 		free(input_info);
 		exit (1);
 	}
+	input_info->map_info = ft_calloc(sizeof(t_map_info), 1);
 	read_scene_description(input_info);
-	if(!is_map_valid(input_info))
+	// map is saved, but needs to be adjusted (spaces to fill blanks)
+	map_adjustment(input_info->map_info);
+	// if(!is_map_valid(input_info))
+	// {
+	// 	free_input_info_struct(input_info);
+	// 	print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
+	// }
+}
+
+void	map_adjustment(t_map_info *map_info)
+{
+	int		i;
+	int		j;
+	char	**map;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	map = map_info->map;
+
+	while (i <= map_info->max_lines)
 	{
-		free_input_info_struct(input_info);
-		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
+		j = map_info->max_columns - 1;									// To jump over the last '\0'
+		if (ft_strlen(map[i]) < map_info->max_columns)
+		{
+			tmp = ft_calloc(sizeof(char), map_info->max_columns + 1);	// +1 for last '\0'
+			ft_memcpy(tmp, map[i], ft_strlen(map[i]));
+			tmp[j] = '\n';
+			j--;
+			while (tmp[j] != '\n')							// start by the end, put spaces till reaching the \n
+			{
+				tmp[j] = ' ';
+				j--;
+			}
+			tmp[j] = ' ';
+			free(map[i]);
+			map[i] = tmp;
+		}
+		i++;
 	}
 }
 
@@ -86,7 +122,7 @@ void	read_scene_description(t_input *input_info)
 		file_content[i] = get_next_line(fd);
 	}
 	// when out of this loop, we're reaching the map part
-	input_info->map_info.map = ft_calloc(sizeof(char *), line_counter);
+	input_info->map_info->map = ft_calloc(sizeof(char *), line_counter);
 	while (file_content[i])
 	{
 		add_line_in_map_struct(file_content[i], input_info);				// Ⓜ️
