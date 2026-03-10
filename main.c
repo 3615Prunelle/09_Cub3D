@@ -36,8 +36,8 @@ char	**mockup_map(int i)
 	map = (char **)malloc(sizeof(char *) * 10);
 	if (!map)
 		return(NULL);
-	map[9] = NULL;
-	while (i < 9)
+	map[10] = NULL;
+	while (i < 10)
 	{
 		map[i] = (char *)malloc(sizeof(char) * 11);
 		if (!map[i])
@@ -61,33 +61,68 @@ char	**mockup_map(int i)
 	return map;
 }
 
-void	disappear(t_cube *game)
+void	disappear(void *param)
 {
-	mlx_delete_image(game->window, game->minimap);
-	mlx_delete_image(game->window, game->view);
-	mlx_terminate(game->window);
-	breakdown(game->input->map);
+	t_cube	*game;
+	game = param;
+	if (game->minimap)
+		mlx_delete_image(game->window, game->minimap);
+	if (game->view)
+		mlx_delete_image(game->window, game->view);
+	if (game->window)
+		mlx_terminate(game->window);
+	if (game->input->map)
+		breakdown(game->input->map);
 	exit(0);
+}
+
+void	set_game(t_cube	*game)
+{
+	mlx_t		*mlx;
+	mlx_image_t	*map;
+	mlx_image_t	*field_of_vision;
+	mlx = mlx_init(320, 320, "see_no_evil", false);
+	map = mlx_new_image(mlx, 320, 320);
+	field_of_vision = mlx_new_image(mlx, 320, 320);
+	game->window = mlx;
+	game->minimap = map;
+	game->view = field_of_vision;
+}
+
+void	set_input(t_input *input, char **map)
+{
+	input->NO = NULL;
+	input->SO = NULL;
+	input->WE = NULL;
+	input->EA = NULL;
+	input->floor[0] = 0;
+	input->floor[1] = 0;
+	input->floor[2] = 0;
+	input->ceiling[0] = 0;
+	input->ceiling[1] = 0;
+	input->ceiling[2] = 0;
+	input->map = map;
 }
 
 int	main(int ac, char **av)
 {
 	t_cube			game;
 	t_player_data	player;
+	t_input			input;
 	char			**map;
 	map = mockup_map(0);//so I dont need any checks
-	game.input->map = map;
+	set_input(&input, map);
+	game.input = &input;
 	player.initial_coordinates[0] = 5;
 	player.initial_coordinates[1] = 5;
 	player.position[0] = 32.0f * 5;
 	player.position[1] = 32.0f * 5;
 	player.direction = 0.0f;
+	player.initial_direction = 'N';
 	game.player = &player;
+	set_game(&game);
 	// av[1] = a map in format *.cub
 	// 1st function = parsing & checking
-	game.window = mlx_init(320, 320, "see_no_evil", false);
-	game.minimap = mlx_new_image(game.window, 320, 320);
-	game.view = mlx_new_image(game.window, 320, 320);
 	// rendering in minimap
 	start_visuals(&game);
 	// set up textures
