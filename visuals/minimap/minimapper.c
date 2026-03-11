@@ -16,7 +16,7 @@ void	draw_ray(t_cube *game, float y, float x, char **minimap)
 	float	i;
 
 	i = 0.f;
-	index = ((player + y) * 320 + x) * BPP;
+	index = ((int)(game->player->position[1] + y) * 320 + (int)(game->player->position[0] + x)) * BPP;
 	while (game->player->position[1] + i > 0 && game->player->position[1] + i < 320)
 	{
 
