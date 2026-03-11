@@ -6,28 +6,47 @@
 /*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/10 15:29:45 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/11 14:53:09 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "./../../includes/cub3d.h"
 
-void	draw_cone(t_cube * game, char **minimap)
+void	draw_ray(t_cube *game, float y, float x, char **minimap)
 {
 	float	i;
 
+	i = 0.f;
+	index = ((player + y) * 320 + x) * BPP;
+	while (game->player->position[1] + i > 0 && game->player->position[1] + i < 320)
+	{
+
+		i += y
+	}
+}
+
+void	draw_cone(t_cube * game, char **minimap)
+{
+	float	i;
+	float	step;
+	float	to_rad;
+
 	i = 30.0f;
+	to_rad = M_PI / 180;
+	step = 60.f / 320;
 	while (i > -30.0f)
 	{
-		i -= 60.f / 360;
+		if (game->player->direction + i > 89 && game->player->direction + i < 91)
+			draw_ray(game, -1, 0, minimap);
+		i -= step;
 	}
 }
 
 void	pixel_to_image(uint8_t *pixel, uint32_t colour)
 {
-	*(pixel++) = (uint8_t)(colour >> 24);
-	*(pixel++) = (uint8_t)(colour >> 16);
-	*(pixel++) = (uint8_t)(colour >> 8);
-	*(pixel++) = (uint8_t)(colour & 0xFF);
+	pixel[0] = (uint8_t)(colour >> 24);
+	pixel[1] = (uint8_t)(colour >> 16);
+	pixel[2] = (uint8_t)(colour >> 8);
+	pixel[3] = (uint8_t)(colour & 0xFF);
 }
 
 void	draw_line(t_cube *game, char *line, int position)
@@ -60,18 +79,16 @@ void	draw_player(t_cube *game, int x, int y)
 {
 	int	index;
 	int	BPP;
+	int BPR;
 
 	BPP = sizeof(int32_t);
+	BPR = BPP * 320;
 	index = (y * 320 + x) * BPP;
 	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
-	index = (y * 320 + x + 1) * BPP;
-	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
-	index = (y * 320 + x - 1) * BPP;
-	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
-	index = ((y + 1)* 320 + x) * BPP;
-	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
-	index = ((y - 1)* 320 + x) * BPP;
-	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
+	pixel_to_image(&game->minimap->pixels[index - BPP], 0xFF0000FF);
+	pixel_to_image(&game->minimap->pixels[index + BPP], 0xFF0000FF);
+	pixel_to_image(&game->minimap->pixels[index - BPR], 0xFF0000FF);
+	pixel_to_image(&game->minimap->pixels[index + BPR], 0xFF0000FF);
 }
 
 void	draw_minimap(t_cube *game, char **minimap)
@@ -89,12 +106,7 @@ void	draw_minimap(t_cube *game, char **minimap)
 	draw_cone(game, minimap);
 	player_x = (int)game->player->position[0];
 	player_y = (int)game->player->position[1];
-//	draw_player(game, player_x, player_y);
-/*	mlx_put_pixel(game->minimap, (int)game->player->position[0], (int)game->player->position[1], 0xFF0000);
-	mlx_put_pixel(game->minimap, (int)game->player->position[0], (int)game->player->position[1] - 1, 0xFF0000);
-	mlx_put_pixel(game->minimap, (int)game->player->position[0], (int)game->player->position[1] + 1, 0xFF0000);
-	mlx_put_pixel(game->minimap, (int)game->player->position[0] - 1, (int)game->player->position[1], 0xFF0000);
-	mlx_put_pixel(game->minimap, (int)game->player->position[0] + 1, (int)game->player->position[1], 0xFF0000);*/
+	draw_player(game, player_x, player_y);
 }
 
 void	transscibe(char **minimap, char **map, int mapsize)
