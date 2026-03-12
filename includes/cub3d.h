@@ -6,15 +6,15 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/12 12:35:32 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:06:37 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "libft.h"			// no need because in Makefile ?
-# include "get_next_line.h"	// no need because in Makefile ?
+# include <libft.h>
+# include <get_next_line.h>
 # include <fcntl.h>			// open
 # include <limits.h>		// INT_MAX
 # include <stdbool.h>
@@ -26,7 +26,6 @@
 # include <sys/time.h>		// time
 # include <sys/types.h>		// opendir
 # include <unistd.h>		// close, pipe, fork, read, write, getcwd, chdir
-// ADD MLX42				// no need because in Makefile ?
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
 # define ERR_MSG_02	"Invalid filename - We only accept .cub format\n"
