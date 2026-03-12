@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/12 12:24:31 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:35:32 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
 # define ERR_MSG_02	"Invalid filename - We only accept .cub format\n"
-# define ERR_MSG_03	"Invalid line in scene description (path)\n"
+# define ERR_MSG_03	"Invalid line in scene description (path to texture)\n"
 # define ERR_MSG_04	"Missing element(s) or invalid line (map)\n"
 # define ERR_MSG_05	"Empty .cub file\n"
 # define ERR_MSG_06	"Invalid line in scene description (color)\n"
