@@ -11,8 +11,6 @@ int	main(int ac, char **av)
 	parsing(av[1], input_info);
 	printf("Parsing & Map creation success\n");
 
-
-	// 1st function = parsing & checking
 	// rendering in minimap
 	// set up textures
 	// render final map & movements in loop

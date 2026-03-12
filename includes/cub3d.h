@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/12 15:06:37 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/12 15:11:05 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 // Structs
 typedef struct s_player_data
 {
-	int		initial_coordinates[2];	// [0] = line	[1] = column
+	int		initial_coordinates[2];	// [0] = X	[1] = Y
 	float	position[2];			// This gets updated as soon as player starts to move
 	char	initial_direction;
 	float	direction;				// Conversion from initial_direction variable : South = 270 / North = 90 / East = 0 / West = 180
@@ -67,7 +67,7 @@ typedef	struct	s_input
 }	t_input;
 
 // main.c
-int	main(int ac, char **av);
+int		main(int ac, char **av);
 
 // input_parsing.c
 void	parsing(char *path_to_map, t_input *input_info);
