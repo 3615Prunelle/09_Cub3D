@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/06 16:45:23 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/12 10:39:11 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@
 # include <sys/types.h>	// opendir
 # include <unistd.h>	// close, pipe, fork, read, write, getcwd, chdir
 # include <MLX42.h> // ADDED MLX42 ;D
+# define DEG_TO_RAD 0.017453293
+
 
 // Structs
 typedef struct s_player_data
 {
-	int		initial_coordinates[2];
+	int		int_cords[2];
 	float	position[2];		// This gets updated as soon as player starts to move
 	char	initial_direction;
 	float	direction;			// Conversion from initial_direction variable : South = 270 / North = 90 / East = 0 / West = 180
@@ -62,6 +64,9 @@ void	draw_minimap(t_cube *game, char **minimap);
 void	draw_line(t_cube *game, char *line, int position);
 void	draw_cone(t_cube * game, char **minimap);
 void	start_visuals(t_cube *game);
+
+//visualiser.c
+void	pixel_to_image(uint8_t *pixel, uint32_t colour);
 
 // split by file
 
