@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/08 22:19:45 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/12 12:24:31 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define ERR_MSG_05	"Empty .cub file\n"
 # define ERR_MSG_06	"Invalid line in scene description (color)\n"
 # define ERR_MSG_07	"Invalid map\n"
-# define ERR_MSG_08	""
+# define ERR_MSG_08	"Something wrong with the player\n"
 
 // Structs
 typedef struct s_player_data
@@ -70,13 +70,13 @@ typedef	struct	s_input
 // main.c
 int	main(int ac, char **av);
 
-// check_and_read.c
+// input_parsing.c
 void	parsing(char *path_to_map, t_input *input_info);
 bool	is_filename_correct(char *path_to_map);
 void	read_scene_description(t_input *input_info);
-void	map_adjustment(t_map_info *map_info);
-int		count_lines(t_input *input_info);
+int		count_lines_from_scene_description(t_input *input_info);
 bool	is_line_from_map(char *line);
+void	spaces_fill_up(t_map_info *map_info);
 
 // fetch_elements.c
 int		check_and_add_texture_path(char *line, t_input *input_info);
@@ -90,10 +90,10 @@ void	print_error_free_exit(t_input *input_info, char *error_message, bool free_a
 void	free_strings_array(char **array);
 void	free_input_info_struct(t_input *input_info);
 
-// map_checks.c
-bool	is_map_valid(t_input *input_info);
-bool	is_full_wall(char *line, int *idx_backup);
+// map_parsing.c
+bool	is_map_valid(t_map_info *map_info);
+bool	is_wall_only(char *line);
+bool	are_surroundings_valid(char **map, int element_line, int element_column);
 int		update_player_info(t_input *input_info);
-bool	is_player_position_valid(t_input *input_info);
 
 #endif

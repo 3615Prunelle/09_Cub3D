@@ -12,45 +12,12 @@ void		parsing(char *path, t_input *input_info)
 	input_info->map_info = ft_calloc(sizeof(t_map_info), 1);
 	read_scene_description(input_info);
 	// map is saved, but needs to be adjusted (spaces to fill blanks)
-	map_adjustment(input_info->map_info);
-	// if(!is_map_valid(input_info))
-	// {
-	// 	free_input_info_struct(input_info);
-	// 	print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
-	// }
-}
+	spaces_fill_up(input_info->map_info);
+	if (update_player_info(input_info) == -1)			// Checks if only one player + surroundings ok + update struct
+		print_error_free_exit(input_info, ERR_MSG_08, false, NULL);
 
-void	map_adjustment(t_map_info *map_info)
-{
-	int		i;
-	int		j;
-	char	**map;
-	char	*tmp;
-
-	i = 0;
-	j = 0;
-	map = map_info->map;
-
-	while (i <= map_info->max_lines)
-	{
-		j = map_info->max_columns - 1;									// To jump over the last '\0'
-		if (ft_strlen(map[i]) < map_info->max_columns)
-		{
-			tmp = ft_calloc(sizeof(char), map_info->max_columns + 1);	// +1 for last '\0'
-			ft_memcpy(tmp, map[i], ft_strlen(map[i]));
-			tmp[j] = '\n';
-			j--;
-			while (tmp[j] != '\n')							// start by the end, put spaces till reaching the \n
-			{
-				tmp[j] = ' ';
-				j--;
-			}
-			tmp[j] = ' ';
-			free(map[i]);
-			map[i] = tmp;
-		}
-		i++;
-	}
+	if(!is_map_valid(input_info->map_info))
+		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
 }
 
 bool	is_filename_correct(char *path_to_map)
@@ -84,7 +51,7 @@ void	read_scene_description(t_input *input_info)
 	int		i = 0;
 	int		elements_counter;
 
-	line_counter = count_lines(input_info);
+	line_counter = count_lines_from_scene_description(input_info);
 	elements_counter = 0;
 
 	fd = open(input_info->path_to_map, O_RDONLY);
@@ -92,7 +59,7 @@ void	read_scene_description(t_input *input_info)
 	if (!file_content)
 		print_error_free_exit(input_info, strerror(errno), false, NULL);
 	file_content[i] = get_next_line(fd);				// Ⓜ️ (for each line)
-	// No need to check for error because count_lines function already made sure there's something to read
+	// No need to check for error because count_lines_from_scene_description function already made sure there's something to read
 	while (file_content[i])
 	{
 		if (file_content[i][0] == 'N' || file_content[i][0] == 'S' || file_content[i][0] == 'W' || file_content[i][0] == 'E')
@@ -107,7 +74,7 @@ void	read_scene_description(t_input *input_info)
 				print_error_free_exit(input_info, ERR_MSG_06, true, file_content);
 			elements_counter++;
 		}
-		else if (file_content[i][0] == ' ')
+		else if ((file_content[i][0] == ' ') || (file_content[i][0] == '1'))
 		{
 			if((is_line_from_map(file_content[i])) && (elements_counter == 6))
 				break;
@@ -134,7 +101,7 @@ void	read_scene_description(t_input *input_info)
 	free_strings_array(file_content);
 }
 
-int		count_lines(t_input *input_info)
+int		count_lines_from_scene_description(t_input *input_info)
 {
 	int		fd;
 	char	*gnl_return;
@@ -158,7 +125,7 @@ int		count_lines(t_input *input_info)
 /* The map must be composed of only 6 possible characters:
 0 for an empty space, 1 for a wall,
 and N,S,E or W for the player’s start position and spawning orientation
-Added spaces
++ spaces
 */
 bool	is_line_from_map(char *line)
 {
@@ -176,4 +143,38 @@ bool	is_line_from_map(char *line)
 			return (false);
 	}
 	return (true);
+}
+
+// Fill empty spaces (at the end each line) with spaces to avoid segfault during parsing
+void	spaces_fill_up(t_map_info *map_info)
+{
+	int		i;
+	int		j;
+	char	**map;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	map = map_info->map;
+
+	while (i <= map_info->max_lines)
+	{
+		j = map_info->max_columns - 1;									// To jump over the last '\0'
+		if (ft_strlen(map[i]) < map_info->max_columns)
+		{
+			tmp = ft_calloc(sizeof(char), map_info->max_columns + 1);	// +1 for last '\0'
+			ft_memcpy(tmp, map[i], ft_strlen(map[i]));
+			tmp[j] = '\n';
+			j--;
+			while (tmp[j] != '\n')							// start by the end, put spaces till reaching the \n
+			{
+				tmp[j] = ' ';
+				j--;
+			}
+			tmp[j] = ' ';
+			free(map[i]);
+			map[i] = tmp;
+		}
+		i++;
+	}
 }

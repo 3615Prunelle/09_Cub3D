@@ -10,10 +10,10 @@ CFLAGS = -g -I ../../../98_include -I ../../includes
 LFLAGS = -L ../../../99_lib -lgetnextline -lft
 
 SRCS =	../main.c \
-		./check_and_read.c \
+		./input_parsing.c \
 		./fetch_elements.c \
 		./free_functions.c \
-		./map_checks.c
+		./map_parsing.c
 
 OBJS = $(SRCS:.c=.o)
 

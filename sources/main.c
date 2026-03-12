@@ -1,17 +1,3 @@
-/* Notes random
-🔴
-🟠
-🟡
-🟢
-🔵
-🟣
-🟤
-⚫
-⚪
-
-⬇️✅‼️⁉️❓❌Ⓜ️🆓
-*/
-
 #include "cub3d.h"
 
 int	main(int ac, char **av)
@@ -23,7 +9,7 @@ int	main(int ac, char **av)
 	if(!input_info)
 		print_error_free_exit(NULL, strerror(errno), false, NULL);
 	parsing(av[1], input_info);
-
+	printf("Parsing & Map creation success\n");
 
 
 	// 1st function = parsing & checking
