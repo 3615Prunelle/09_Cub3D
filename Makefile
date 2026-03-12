@@ -6,7 +6,7 @@ CC = cc
 CFLAGS = -g -I ./get_next_line -I ./MLX42/include/MLX42 -I ./libft
 
 # Linking flags
-LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lft #-lglfw goes with mlx42
+LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lft -lm #-lglfw goes with mlx42 and -lm is needed for math
 
 SRCS =	main.c \
 	./visuals/minimap/minimapper.c \

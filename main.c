@@ -57,6 +57,8 @@ char	**mockup_map(int i)
 		j = 0;
 		i++;
 	}
+	map[5][3] = '1';
+	map[4][7] = '1';
 //	map[5][5] = 'S';
 	return map;
 }
@@ -113,11 +115,11 @@ int	main(int ac, char **av)
 	map = mockup_map(0);//so I dont need any checks
 	set_input(&input, map);
 	game.input = &input;
-	player.initial_coordinates[0] = 5;
-	player.initial_coordinates[1] = 5;
-	player.position[0] = 32.0f * 5;
-	player.position[1] = 32.0f * 5;
-	player.direction = 0.0f;
+	player.int_cords[0] = 5;
+	player.int_cords[1] = 5;
+	player.position[0] = 32.0f * 5 + 16;
+	player.position[1] = 32.0f * 5 + 16;
+	player.direction = 90.0f;
 	player.initial_direction = 'N';
 	game.player = &player;
 	set_game(&game);

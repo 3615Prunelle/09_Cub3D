@@ -6,47 +6,62 @@
 /*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/11 14:53:09 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/12 14:21:18 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "./../../includes/cub3d.h"
 
 void	draw_ray(t_cube *game, float y, float x, char **minimap)
 {
 	float	i;
+	float	j;
+	int		index;
+	int		ray_x;
+	int		ray_y;
 
 	i = 0.f;
-	index = ((int)(game->player->position[1] + y) * 320 + (int)(game->player->position[0] + x)) * BPP;
-	while (game->player->position[1] + i > 0 && game->player->position[1] + i < 320)
+	j = 0.f;
+	while (game->player->position[1] + i > 0 && game->player->position[1] + i < 320
+		&& game->player->position[0] + j > 0 && game->player->position[0] + j < 320)
 	{
-
-		i += y
+		ray_y = (int)i;
+		ray_x = (int)j;
+		if (minimap[(game->player->int_cords[1] + ray_y) / 32][(game->player->int_cords[0] + ray_x) / 32] != '1')
+		{
+			index = ((game->player->int_cords[1] + ray_y) * 320 + game->player->int_cords[0] + ray_x) * sizeof(int32_t);
+			pixel_to_image(&game->minimap->pixels[index], 0xFFFFFFFF);
+		}
+		else
+			break ;
+		j += x;
+		i += y;
 	}
 }
 
 void	draw_cone(t_cube * game, char **minimap)
 {
 	float	i;
-	float	step;
-	float	to_rad;
+	float	fov_step;
+	int		ray_step[2]; //0 for x 1 for y, so the direction is right
 
 	i = 30.0f;
-	to_rad = M_PI / 180;
-	step = 60.f / 320;
+	fov_step = 60.f / 320;
 	while (i > -30.0f)
 	{
-		if (game->player->direction + i > 89 && game->player->direction + i < 91)
-			draw_ray(game, -1, 0, minimap);
-		i -= step;
+		ray_step[0] = 1;
+		ray_step[1] = 1;
+		if (game->player->direction + i > 270 || game->player->direction + i < 90)
+			ray_step[1] = -1;
+		if (game->player->direction + i > 180 || game->player->direction + i < 360)
+			ray_step[0] = -1;
+		if ((game->player->direction + i > 45 && game->player->direction + i < 135) || (game->player->direction + i > 225 || game->player->direction + i < 315))
+			draw_ray(game, 1 / tanf((game->player->direction + i) * DEG_TO_RAD), ray_step[0], minimap);
+		else
+			draw_ray(game, ray_step[1], tanf((game->player->direction + i) * DEG_TO_RAD), minimap);
+//			draw_ray(game, -1, tanf((i) * to_rad), minimap);
+		i -= fov_step;
 	}
-}
-
-void	pixel_to_image(uint8_t *pixel, uint32_t colour)
-{
-	pixel[0] = (uint8_t)(colour >> 24);
-	pixel[1] = (uint8_t)(colour >> 16);
-	pixel[2] = (uint8_t)(colour >> 8);
-	pixel[3] = (uint8_t)(colour & 0xFF);
 }
 
 void	draw_line(t_cube *game, char *line, int position)
@@ -94,8 +109,6 @@ void	draw_player(t_cube *game, int x, int y)
 void	draw_minimap(t_cube *game, char **minimap)
 {
 	int	i;
-	int	player_x;
-	int	player_y;
 
 	i = 0;
 	while (i < 10)
@@ -103,10 +116,10 @@ void	draw_minimap(t_cube *game, char **minimap)
 		draw_line(game, minimap[i], i * 32);
 		i++;
 	}
+	game->player->int_cords[0] = (int)game->player->position[0];
+	game->player->int_cords[1] = (int)game->player->position[1];
 	draw_cone(game, minimap);
-	player_x = (int)game->player->position[0];
-	player_y = (int)game->player->position[1];
-	draw_player(game, player_x, player_y);
+	draw_player(game, game->player->int_cords[0], game->player->int_cords[1]);
 }
 
 void	transscibe(char **minimap, char **map, int mapsize)
