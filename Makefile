@@ -11,6 +11,7 @@ LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -l
 SRCS =	main.c \
 	./visuals/minimap/minimapper.c \
 	./visuals/visualizer.c \
+	./visuals/ft_math.c \
 	./controls/movements.c \
 	./controls/controler.c
 
