@@ -6,13 +6,19 @@ CC = cc
 CFLAGS = -g -I ./includes -I ./get_next_line -I ./MLX42/include/MLX42 -I ./libft
 
 # Linking flags
-LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lft #-lglfw goes with mlx42
+LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lm -lft #-lglfw goes with mlx42 and -lm is needed for math
 
-SRCS =	sources/main.c \
-		sources/parsing/input_parsing.c \
-		sources/parsing/fetch_elements.c \
-		sources/parsing/free_functions.c \
-		sources/parsing/map_parsing.c
+SRCS =	./sources/main.c \
+		./sources/parsing/input_parsing.c \
+		./sources/parsing/fetch_elements.c \
+		./sources/parsing/free_functions.c \
+		./sources/parsing/map_parsing.c \
+		./sources/visuals/minimap/minimapper.c \
+		./sources/visuals/image_handler.c \
+		./sources/visuals/visualizer.c \
+		./sources/visuals/ft_math.c \
+		./sources/controls/movements.c \
+		./sources/controls/controler.c
 
 # Libs to be used
 LIBFT_LIB = ./libft/libft.a

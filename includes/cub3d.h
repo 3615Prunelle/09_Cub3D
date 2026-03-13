@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/12 15:11:05 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/13 13:21:30 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <fcntl.h>			// open
 # include <limits.h>		// INT_MAX
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>		// EXIT_FAILURE, EXIT_SUCCESS
 # include <string.h>
 # include <errno.h>
@@ -26,6 +25,10 @@
 # include <sys/time.h>		// time
 # include <sys/types.h>		// opendir
 # include <unistd.h>		// close, pipe, fork, read, write, getcwd, chdir
+# include <math.h>	//the scary stuff (tan, cos, sin, atan) but also yummy pie
+# include <stdio.h> //mal lock mal nicht lock
+# include <MLX42.h> // ADDED MLX42 ;D
+# define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
 # define ERR_MSG_02	"Invalid filename - We only accept .cub format\n"
@@ -39,7 +42,7 @@
 // Structs
 typedef struct s_player_data
 {
-	int		initial_coordinates[2];	// [0] = X	[1] = Y
+	int		int_cords[2];	// [0] = X	[1] = Y
 	float	position[2];			// This gets updated as soon as player starts to move
 	char	initial_direction;
 	float	direction;				// Conversion from initial_direction variable : South = 270 / North = 90 / East = 0 / West = 180
@@ -65,6 +68,15 @@ typedef	struct	s_input
 	t_player_data	player;
 
 }	t_input;
+
+typedef struct s_cube
+{
+	t_input			*input;
+	t_player_data	*player;
+	mlx_t			*window;
+	mlx_image_t		*view;
+	mlx_image_t		*minimap;
+} t_cube;
 
 // main.c
 int		main(int ac, char **av);
@@ -94,5 +106,24 @@ bool	is_map_valid(t_map_info *map_info);
 bool	is_wall_only(char *line);
 bool	are_surroundings_valid(char **map, int element_line, int element_column);
 int		update_player_info(t_input *input_info);
+
+//minimapper.c
+void	draw_minimap(t_cube *game, char **minimap);
+void	draw_line(t_cube *game, char *line, int position);
+void	draw_cone(t_cube * game, char **minimap);
+void	start_visuals(t_cube *game);
+
+//visualiser.c
+void	pixel_to_image(uint8_t *pixel, uint32_t colour);
+
+//controller.c
+void	actions(mlx_key_data_t key, void *params);
+
+//movements.c
+void	turn_right(t_cube *game);
+void	turn_left(t_cube *game);
+
+//ft_math.c
+float	add_degree(float a, float b);
 
 #endif
