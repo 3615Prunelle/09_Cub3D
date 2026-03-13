@@ -59,6 +59,7 @@ char	**mockup_map(int i)
 	}
 	map[5][3] = '1';
 	map[4][7] = '1';
+	map[7][7] = '1';
 //	map[5][5] = 'S';
 	return map;
 }
@@ -116,10 +117,10 @@ int	main(int ac, char **av)
 	set_input(&input, map);
 	game.input = &input;
 	player.int_cords[0] = 5;
-	player.int_cords[1] = 5;
+	player.int_cords[1] = 3;
 	player.position[0] = 32.0f * 5 + 16;
-	player.position[1] = 32.0f * 5 + 16;
-	player.direction = 90.0f;
+	player.position[1] = 32.0f * 3 + 16;
+	player.direction = 0.0f;
 	player.initial_direction = 'N';
 	game.player = &player;
 	set_game(&game);
@@ -129,6 +130,7 @@ int	main(int ac, char **av)
 	start_visuals(&game);
 	// set up textures
 	// render final map & movements in loop
+	mlx_key_hook(game.window, actions, &game);
 	mlx_close_hook(game.window, disappear, &game);
 	mlx_loop(game.window);
 	disappear(&game);

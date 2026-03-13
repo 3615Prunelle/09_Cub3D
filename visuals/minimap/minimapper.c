@@ -6,7 +6,7 @@
 /*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/12 14:21:18 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/13 11:50:12 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,24 +42,26 @@ void	draw_ray(t_cube *game, float y, float x, char **minimap)
 void	draw_cone(t_cube * game, char **minimap)
 {
 	float	i;
+	float	base;
 	float	fov_step;
 	int		ray_step[2]; //0 for x 1 for y, so the direction is right
 
 	i = 30.0f;
+	base = game->player->direction;
 	fov_step = 60.f / 320;
 	while (i > -30.0f)
 	{
 		ray_step[0] = 1;
 		ray_step[1] = 1;
-		if (game->player->direction + i > 270 || game->player->direction + i < 90)
+		if (add_degree(base, i) > 270 || add_degree(base, i) < 90)
 			ray_step[1] = -1;
-		if (game->player->direction + i > 180 || game->player->direction + i < 360)
+		if (add_degree(base, i) > 180 && add_degree(base, i) < 360)
 			ray_step[0] = -1;
-		if ((game->player->direction + i > 45 && game->player->direction + i < 135) || (game->player->direction + i > 225 || game->player->direction + i < 315))
-			draw_ray(game, 1 / tanf((game->player->direction + i) * DEG_TO_RAD), ray_step[0], minimap);
-		else
-			draw_ray(game, ray_step[1], tanf((game->player->direction + i) * DEG_TO_RAD), minimap);
-//			draw_ray(game, -1, tanf((i) * to_rad), minimap);
+		if ((add_degree(base, i) >= 44 && add_degree(base, i) <= 136) || (add_degree(base, i) >= 224 && add_degree(base, i) <= 316))
+			draw_ray(game, ray_step[1] * fabsf(ray_step[0] / tanf(add_degree(base, i) * DEG_TO_RAD)), ray_step[0], minimap);
+//			draw_ray(game, tanf(add_degree(base, i - 90) * DEG_TO_RAD), ray_step[0], minimap);
+		if ((add_degree(base, i) >= 314 || add_degree(base, i) <= 46) || (add_degree(base, i) >= 134 && add_degree(base, i) <= 226))
+			draw_ray(game, ray_step[1], ray_step[0] * fabsf(tanf(add_degree(base, i) * DEG_TO_RAD)), minimap);
 		i -= fov_step;
 	}
 }
