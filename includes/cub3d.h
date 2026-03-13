@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/12 14:59:24 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/13 09:44:26 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ void	actions(mlx_key_data_t key, void *params);
 //movements.c
 void	turn_right(t_cube *game);
 void	turn_left(t_cube *game);
+
+//ft_math.c
+float	add_degree(float a, float b);
 
 // split by file
 
