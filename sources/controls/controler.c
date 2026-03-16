@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   controler.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/13 11:41:06 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:02:06 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	actions(mlx_key_data_t key, void *params)
 {
@@ -21,5 +21,5 @@ void	actions(mlx_key_data_t key, void *params)
 		turn_right(game);
 	if (key.key == MLX_KEY_LEFT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
 		turn_left(game);
-	draw_minimap(game, game->input->map);
+	draw_minimap(game, game->input->map_info->map);
 }

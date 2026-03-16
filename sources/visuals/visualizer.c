@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   visualizer.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:06:52 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/12 10:36:10 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:00:50 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../includes/cub3d.h"
+#include "cub3d.h"
 
 void	start_visuals(t_cube *game)
 {
-	draw_minimap(game, game->input->map);
+	draw_minimap(game, game->input->map_info->map);
 	mlx_image_to_window(game->window, game->minimap, 0, 0);
 }
 

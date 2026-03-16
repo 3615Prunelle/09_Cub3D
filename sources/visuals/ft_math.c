@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_math.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 09:28:39 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/13 09:36:30 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/16 15:55:48 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 float	add_degree(float a, float b)
 {

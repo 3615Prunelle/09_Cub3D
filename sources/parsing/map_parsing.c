@@ -105,8 +105,8 @@ int		update_player_info(t_input *input_info)
 				if (player_found)
 					return (-1);
 				input_info->player.initial_direction = map[line][column];
-				input_info->player.initial_coordinates[0] = column;			// Switched line & column for Maxi to handle
-				input_info->player.initial_coordinates[1] = line;
+				input_info->player.int_cords[0] = column;			// Switched line & column for Maxi to handle
+				input_info->player.int_cords[1] = line;
 				player_found = true;
 				if (!are_surroundings_valid(map, line, column))
 					return (-1);

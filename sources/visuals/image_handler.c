@@ -1,4 +1,4 @@
-#include "includes/cub3d.h"
+#include "cub3d.h"
 
 void	breakdown(char **map)
 {
@@ -61,8 +61,8 @@ void	disappear(void *param)
 		mlx_delete_image(game->window, game->view);
 	if (game->window)
 		mlx_terminate(game->window);
-	if (game->input->map)
-		breakdown(game->input->map);
+	if (game->input->map_info->map)
+		breakdown(game->input->map_info->map);
 	exit(0);
 }
 
@@ -91,5 +91,5 @@ void	set_input(t_input *input, char **map)
 	input->ceiling[0] = 0;
 	input->ceiling[1] = 0;
 	input->ceiling[2] = 0;
-	input->map = map;
+	input->map_info->map = map;
 }

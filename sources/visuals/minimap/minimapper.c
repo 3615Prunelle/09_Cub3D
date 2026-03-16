@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minimapper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/13 11:50:12 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/16 15:55:22 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../../includes/cub3d.h"
+#include "cub3d.h"
 
 void	draw_ray(t_cube *game, float y, float x, char **minimap)
 {

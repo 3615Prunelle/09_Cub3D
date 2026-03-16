@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/13 13:21:30 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/16 15:51:58 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 # include <sys/time.h>		// time
 # include <sys/types.h>		// opendir
 # include <unistd.h>		// close, pipe, fork, read, write, getcwd, chdir
-# include <math.h>	//the scary stuff (tan, cos, sin, atan) but also yummy pie
-# include <stdio.h> //mal lock mal nicht lock
-# include <MLX42.h> // ADDED MLX42 ;D
+# include <math.h>			//the scary stuff (tan, cos, sin, atan) but also yummy pie
+# include <stdio.h>			//mal lock mal nicht lock
+# include <MLX42.h>
 # define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
@@ -42,10 +42,10 @@
 // Structs
 typedef struct s_player_data
 {
-	int		int_cords[2];	// [0] = X	[1] = Y
-	float	position[2];			// This gets updated as soon as player starts to move
+	int		int_cords[2];		// [0] = X	[1] = Y
+	float	position[2];		// This gets updated as soon as player starts to move
 	char	initial_direction;
-	float	direction;				// Conversion from initial_direction variable : South = 270 / North = 90 / East = 0 / West = 180
+	float	direction;			// Conversion from initial_direction variable : South = 270 / North = 90 / East = 0 / West = 180
 }	t_player_data;
 
 typedef struct s_map_info
@@ -125,5 +125,11 @@ void	turn_left(t_cube *game);
 
 //ft_math.c
 float	add_degree(float a, float b);
+
+void	breakdown(char **map);
+char	**mockup_map(int i);
+void	disappear(void *param);
+void	set_game(t_cube	*game);
+void	set_input(t_input *input, char **map);
 
 #endif

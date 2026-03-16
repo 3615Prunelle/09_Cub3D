@@ -66,6 +66,9 @@ $(NAME): $(MLX42_LIB) $(LIBFT_LIB) $(GNL_LIB) $(OBJS)
 clean:
 	rm -f $(OBJS)
 
+medclean : clean
+	rm -f $(NAME)
+
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C ./libft fclean
@@ -74,6 +77,7 @@ fclean: clean
 	rm -rf ./libft
 	rm -rf ./get_next_line
 
-re: fclean all
+# Medclean to avoid erasing/building libft & gnl every time we do 'make re' (as they're not supposed to change)
+re: medclean all
 
 .PHONY: all clean fclean re
