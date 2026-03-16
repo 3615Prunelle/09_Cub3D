@@ -132,6 +132,9 @@ bool	is_line_from_map(char *line)
 	int	i;
 
 	i = 0;
+	if (line[0] == '\n')
+		return (false);			// Avoids empty new lines in the middle of the map
+
 	while (line[i] != '\0')
 	{
 		if ((line[i] == ' ') || (line[i] == '0') || (line[i] == '1') || (line[i] == '\n')

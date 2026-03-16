@@ -1,2 +1,10 @@
-*.o
+# Executable
 cub3d
+
+# Obj files
+*.o
+
+# Libs
+/home/schappuy/00_Root/09_Cub3D/libft
+/home/schappuy/00_Root/09_Cub3D/get_next_line
+/home/schappuy/00_Root/09_Cub3D/MLX42
