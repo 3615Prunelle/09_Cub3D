@@ -3,10 +3,10 @@ NAME = cub3d
 CC = cc
 
 # Add -Wall -Wextra -Werror when we have something functional
-CFLAGS = -g -I ./includes -I ./get_next_line -I ./MLX42/include/MLX42 -I ./libft
+CFLAGS = -g -I ./includes -I ./MLX42/include/MLX42 -I ./libft
 
 # Linking flags
-LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lgetnextline -lglfw -lm -lft #-lglfw goes with mlx42 and -lm is needed for math
+LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft #-lglfw goes with mlx42 and -lm is needed for math
 
 SRCS =	./sources/main.c \
 		./sources/parsing/input_parsing.c \
@@ -22,7 +22,6 @@ SRCS =	./sources/main.c \
 
 # Libs to be used
 LIBFT_LIB = ./libft/libft.a
-GNL_LIB = ./get_next_line/libgetnextline.a
 MLX42_LIB = ./MLX42/build/libmlx42.a
 
 OBJS = $(SRCS:.c=.o)
@@ -35,13 +34,6 @@ $(LIBFT_LIB):
 	git clone https://github.com/3615Prunelle/01_Libft.git libft
 	@echo "Building Libft ..."
 	@cd ./libft && make
-
-# GNL fetch/build
-$(GNL_LIB):
-	@echo "Cloning Get_Next_Line ..."
-	git clone https://github.com/3615Prunelle/03_Get_Next_Line.git get_next_line
-	@echo "Building Get_Next_Line ..."
-	@cd ./get_next_line && make
 
 # MLX42 fetch/build
 # Dependency of MLX42 to create the .o, otherwise MLX header is not found during compilation
@@ -72,10 +64,8 @@ medclean : clean
 fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C ./libft fclean
-	$(MAKE) -C ./get_next_line fclean
 	rm -rf ./MLX42
 	rm -rf ./libft
-	rm -rf ./get_next_line
 
 # Medclean to avoid erasing/building libft & gnl every time we do 'make re' (as they're not supposed to change)
 re: medclean all

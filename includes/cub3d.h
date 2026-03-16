@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/16 15:51:58 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/16 17:12:14 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define CUB3D_H
 
 # include <libft.h>
-# include <get_next_line.h>
 # include <fcntl.h>			// open
 # include <limits.h>		// INT_MAX
 # include <stdbool.h>
