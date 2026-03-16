@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/16 17:12:14 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/16 18:29:03 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define ERR_MSG_06	"Invalid line in scene description (color)\n"
 # define ERR_MSG_07	"Invalid map\n"
 # define ERR_MSG_08	"Something wrong with the player\n"
+# define ERR_MSG_09	"Thanks for shopping at Cub, tschüssi !\n"
 
 // Structs
 typedef struct s_player_data
@@ -121,6 +122,10 @@ void	actions(mlx_key_data_t key, void *params);
 //movements.c
 void	turn_right(t_cube *game);
 void	turn_left(t_cube *game);
+void	move_forward(t_cube *game);
+void	move_backward(t_cube *game);
+void	move_right(t_cube *game);
+void	move_left(t_cube *game);
 
 //ft_math.c
 float	add_degree(float a, float b);
