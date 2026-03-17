@@ -82,6 +82,8 @@ void	draw_line(t_cube *game, char *line, int position)
 		{
 			index = (j * length + i) * sizeof(int32_t);
 			if (line[i / 32] == '0')
+				pixel_to_image(&game->minimap->pixels[index], 0x110000FF);
+			if (line[i / 32] == ' ')
 				pixel_to_image(&game->minimap->pixels[index], 0x000000FF);
 			if (line[i / 32] == '1')
 				pixel_to_image(&game->minimap->pixels[index], 0x0000FFFF);
@@ -113,7 +115,7 @@ void	draw_minimap(t_cube *game, char **minimap)
 	int	i;
 
 	i = 0;
-	while (i < 10)
+	while (i < game->input->map_info->max_lines)
 	{
 		draw_line(game, minimap[i], i * 32);
 		i++;
