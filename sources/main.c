@@ -15,7 +15,7 @@ int	main(int ac, char **av)
 	// rendering in minimap
 	// set up textures
 	// render final map & movements in loop
-	game.input = &input_info;
+	game.input = input_info;
 	game.player = &input_info->player;
 	set_game(&game);
 	// av[1] = a map in format *.cub

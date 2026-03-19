@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/16 15:55:22 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/19 12:02:35 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,20 @@ void	draw_ray(t_cube *game, float y, float x, char **minimap)
 	float	i;
 	float	j;
 	int		index;
-	int		ray_x;
-	int		ray_y;
+	int		ray[2];
+	int		ppr;
 
 	i = 0.f;
 	j = 0.f;
+	ppr = game->input->map_info->max_columns * 32;
 	while (game->player->position[1] + i > 0 && game->player->position[1] + i < 320
 		&& game->player->position[0] + j > 0 && game->player->position[0] + j < 320)
 	{
-		ray_y = (int)i;
-		ray_x = (int)j;
-		if (minimap[(game->player->int_cords[1] + ray_y) / 32][(game->player->int_cords[0] + ray_x) / 32] != '1')
+		ray[1] = (int)i;
+		ray[0] = (int)j;
+		if (minimap[(game->player->int_cords[1] + ray[1]) / 32][(game->player->int_cords[0] + ray[0]) / 32] != '1')
 		{
-			index = ((game->player->int_cords[1] + ray_y) * 320 + game->player->int_cords[0] + ray_x) * sizeof(int32_t);
+			index = ((game->player->int_cords[1] + ray[1]) * ppr + game->player->int_cords[0] + ray[0]) * sizeof(int32_t);
 			pixel_to_image(&game->minimap->pixels[index], 0xFFFFFFFF);
 		}
 		else
@@ -75,16 +76,16 @@ void	draw_line(t_cube *game, char *line, int position)
 
 	i = 0;
 	j = position;
-	length = ft_strlen(line) * 32;
+	length = (ft_strlen(line) - 1) * 32;
 	while (j < position + 33)
 	{
 		while ( i < length)
 		{
 			index = (j * length + i) * sizeof(int32_t);
-			if (line[i / 32] == '0')
-				pixel_to_image(&game->minimap->pixels[index], 0x110000FF);
 			if (line[i / 32] == ' ')
 				pixel_to_image(&game->minimap->pixels[index], 0x000000FF);
+			else
+				pixel_to_image(&game->minimap->pixels[index], 0x003388FF);
 			if (line[i / 32] == '1')
 				pixel_to_image(&game->minimap->pixels[index], 0x0000FFFF);
 			i++;
@@ -101,8 +102,8 @@ void	draw_player(t_cube *game, int x, int y)
 	int BPR;
 
 	BPP = sizeof(int32_t);
-	BPR = BPP * 320;
-	index = (y * 320 + x) * BPP;
+	BPR = BPP * game->input->map_info->max_columns * 32;
+	index = (y * game->input->map_info->max_columns * 32 + x) * BPP;
 	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
 	pixel_to_image(&game->minimap->pixels[index - BPP], 0xFF0000FF);
 	pixel_to_image(&game->minimap->pixels[index + BPP], 0xFF0000FF);

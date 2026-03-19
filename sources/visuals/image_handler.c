@@ -45,8 +45,8 @@ void	set_game(t_cube	*game)
 		game->player->direction = 90;
 	else if (game->player->initial_direction == 'W')
 		game->player->direction = 270;
-	mlx = mlx_init(320, 320, "see_no_evil", false);
-	map = mlx_new_image(mlx, 320, 320);
+	mlx = mlx_init(game->input->map_info->max_columns * 32, game->input->map_info->max_lines * 32, "see_no_evil", false);
+	map = mlx_new_image(mlx, game->input->map_info->max_columns * 32, game->input->map_info->max_lines * 32);
 	field_of_vision = mlx_new_image(mlx, 320, 320);
 	game->window = mlx;
 	game->minimap = map;
