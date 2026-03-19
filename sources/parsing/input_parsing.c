@@ -182,4 +182,5 @@ void	spaces_fill_up(t_map_info *map_info)
 		}
 		i++;
 	}
+	map_info->max_columns--;		// To exclude the \n at the end once we're done checking
 }
