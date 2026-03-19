@@ -131,9 +131,7 @@ void	move_left(t_cube *game);
 float	add_degree(float a, float b);
 
 void	breakdown(char **map);
-char	**mockup_map(int i);
 void	disappear(void *param);
 void	set_game(t_cube	*game);
-void	set_input(t_input *input, char **map);
 
 #endif
