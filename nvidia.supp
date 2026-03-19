@@ -1,0 +1,100 @@
+{
+   nvidia_glcore_cond
+   Memcheck:Cond
+   obj:*/libnvidia-glcore.so*
+}
+
+{
+   nvidia_glcore_value8
+   Memcheck:Value8
+   obj:*/libnvidia-glcore.so*
+}
+
+{
+   nvidia_glx_cond
+   Memcheck:Cond
+   obj:*/libGLX_nvidia.so*
+}
+
+{
+   nvidia_glx_value8
+   Memcheck:Value8
+   obj:*/libGLX_nvidia.so*
+}
+
+{
+   nvidia_all_uninit
+   Memcheck:Cond
+   ...
+   obj:*/libnvidia*
+}
+
+{
+   nvidia_all_value8
+   Memcheck:Value8
+   ...
+   obj:*/libnvidia*
+}
+
+{
+   nvidia_all_value4
+   Memcheck:Value4
+   ...
+   obj:*/libnvidia*
+}
+
+{
+   nvidia_rindex
+   Memcheck:Cond
+   fun:rindex
+   ...
+   obj:*/libnvidia*
+}
+
+{
+   nvidia_rawmemchr
+   Memcheck:Value8
+   fun:rawmemchr
+   ...
+   obj:*/libnvidia*
+}
+
+{
+   nvidia_sscanf
+   Memcheck:Cond
+   fun:__vfscanf_internal
+   fun:sscanf
+   ...
+   obj:*/libnvidia*
+}
+
+{
+   nvidia_io_sputbackc
+   Memcheck:Cond
+   fun:_IO_sputbackc
+   ...
+   obj:*/libnvidia*
+}
+
+{
+   dbus_leak
+   Memcheck:Leak
+   ...
+   obj:*/libdbus*
+}
+
+{
+   dl_find_object_leak
+   Memcheck:Leak
+   fun:malloc
+   fun:malloc
+   fun:_dl_find_object_update
+}
+
+{
+   system_dlopen_leak
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:dlopen*
+}
