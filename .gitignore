@@ -8,3 +8,6 @@ cub3d
 /home/schappuy/00_Root/09_Cub3D/libft
 /home/schappuy/00_Root/09_Cub3D/get_next_line
 /home/schappuy/00_Root/09_Cub3D/MLX42
+
+# Filter out driver mem leaks in Valgrind
+nvidia.supp

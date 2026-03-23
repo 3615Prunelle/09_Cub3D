@@ -14,18 +14,19 @@ void	breakdown(char **map)
 	free(map);
 }
 
+// Commented out to avoid the 'aborted' issue at every test
 void	disappear(void *param)
 {
-	t_cube	*game;
-	game = param;
-	if (game->minimap)
-		mlx_delete_image(game->window, game->minimap);
-	if (game->view)
-		mlx_delete_image(game->window, game->view);
-	if (game->window)
-		mlx_terminate(game->window);
-	if (game->input->map_info->map)
-		breakdown(game->input->map_info->map);
+	// t_cube	*game;
+	// game = param;
+	// if (game->minimap)
+	// 	mlx_delete_image(game->window, game->minimap);
+	// if (game->view)
+	// 	mlx_delete_image(game->window, game->view);
+	// if (game->window)
+	// 	mlx_terminate(game->window);
+	// if (game->input->map_info->map)
+	// 	breakdown(game->input->map_info->map);
 	exit(0);
 }
 

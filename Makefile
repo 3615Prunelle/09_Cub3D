@@ -3,7 +3,7 @@ NAME = cub3d
 CC = cc
 
 # Add -Wall -Wextra -Werror when we have something functional
-CFLAGS = -g -I ./includes -I ./MLX42/include/MLX42 -I ./libft
+CFLAGS = -g -I ./includes -I ./MLX42/include/MLX42 -I ./libft #-fsanitize=address
 
 # Linking flags
 LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft #-lglfw goes with mlx42 and -lm is needed for math

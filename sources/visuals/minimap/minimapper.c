@@ -6,12 +6,13 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/19 12:02:35 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/19 13:30:11 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// 0 0 is top left
 void	draw_ray(t_cube *game, float y, float x, char **minimap)
 {
 	float	i;

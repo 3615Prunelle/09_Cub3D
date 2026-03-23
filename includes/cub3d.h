@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/16 18:29:03 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:35:22 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ typedef struct s_cube
 	mlx_t			*window;
 	mlx_image_t		*view;
 	mlx_image_t		*minimap;
-} t_cube;
+}	t_cube;
 
 // main.c
 int		main(int ac, char **av);
@@ -122,10 +122,11 @@ void	actions(mlx_key_data_t key, void *params);
 //movements.c
 void	turn_right(t_cube *game);
 void	turn_left(t_cube *game);
-void	move_forward(t_cube *game);
-void	move_backward(t_cube *game);
-void	move_right(t_cube *game);
-void	move_left(t_cube *game);
+void	move_south(t_cube *game);
+void	move_north(t_cube *game);
+void	move_east(t_cube *game);
+void	move_west(t_cube *game);
+void	move(t_cube *game, float diff_x, float diff_y);
 
 //ft_math.c
 float	add_degree(float a, float b);
