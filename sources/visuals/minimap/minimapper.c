@@ -22,15 +22,15 @@ void	draw_ray(t_cube *game, float y, float x, char **minimap)
 
 	i = 0.f;
 	j = 0.f;
-	ppr = game->input->map_info->max_columns * 32;
-	while (game->player->position[1] + i > 0 && game->player->position[1] + i < 320
-		&& game->player->position[0] + j > 0 && game->player->position[0] + j < 320)
+	ppr = MINI_WIDTH;
+	while (MINI_HEIGHT / 2 + i > 0 && MINI_HEIGHT / 2 + i < MINI_HEIGHT
+		&& MINI_WIDTH / 2 + j > 0 && MINI_WIDTH / 2 + j < MINI_WIDTH)
 	{
 		ray[1] = (int)i;
 		ray[0] = (int)j;
 		if (minimap[(game->player->int_cords[1] + ray[1]) / 32][(game->player->int_cords[0] + ray[0]) / 32] != '1')
 		{
-			index = ((game->player->int_cords[1] + ray[1]) * ppr + game->player->int_cords[0] + ray[0]) * sizeof(int32_t);
+			index = ((MINI_HEIGHT / 2 + ray[1]) * ppr + MINI_WIDTH / 2 + ray[0]) * sizeof(int32_t);
 			pixel_to_image(&game->minimap->pixels[index], 0xFFFFFFFF);
 		}
 		else
@@ -77,17 +77,22 @@ void	draw_line(t_cube *game, char *line, int position)
 	i = 0;
 	j = position;
 	length = (ft_strlen(line) - 1) * 32;
-	while (j < position + 33)
+	while (j < position + 1 && j * i < MINI_WIDTH * MINI_HEIGHT)
 	{
-		while ( i < length)
+		while ( i < MINI_WIDTH)
 		{
-			index = (j * length + i) * sizeof(int32_t);
-			if (line[i / 32] == ' ')
+			index = (j * MINI_WIDTH + i) * sizeof(int32_t);
+			if (i + game->player->int_cords[0] - MINI_WIDTH / 2 > length || i + game->player->int_cords[0] - MINI_WIDTH / 2 < 0)
 				pixel_to_image(&game->minimap->pixels[index], 0x000000FF);
 			else
-				pixel_to_image(&game->minimap->pixels[index], 0x003388FF);
-			if (line[i / 32] == '1')
-				pixel_to_image(&game->minimap->pixels[index], 0x0000FFFF);
+			{
+				if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / 32] == ' ')
+					pixel_to_image(&game->minimap->pixels[index], 0x000000FF);
+				if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / 32] == '0')
+					pixel_to_image(&game->minimap->pixels[index], 0x003388FF);
+				if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / 32] == '1')
+					pixel_to_image(&game->minimap->pixels[index], 0x0000FFFF);
+			}
 			i++;
 		}
 		i = 0;
@@ -102,8 +107,8 @@ void	draw_player(t_cube *game, int x, int y)
 	int BPR;
 
 	BPP = sizeof(int32_t);
-	BPR = BPP * game->input->map_info->max_columns * 32;
-	index = (y * game->input->map_info->max_columns * 32 + x) * BPP;
+	BPR = BPP * MINI_WIDTH;
+	index = (MINI_HEIGHT / 2 * MINI_WIDTH + MINI_WIDTH) * BPP;
 	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
 	pixel_to_image(&game->minimap->pixels[index - BPP], 0xFF0000FF);
 	pixel_to_image(&game->minimap->pixels[index + BPP], 0xFF0000FF);
@@ -116,13 +121,16 @@ void	draw_minimap(t_cube *game, char **minimap)
 	int	i;
 
 	i = 0;
-	while (i < game->input->map_info->max_lines)
-	{
-		draw_line(game, minimap[i], i * 32);
-		i++;
-	}
 	game->player->int_cords[0] = (int)game->player->position[0];
 	game->player->int_cords[1] = (int)game->player->position[1];
+	while (i < MINI_HEIGHT)
+	{
+		if ((i + game->player->int_cords[1] - MINI_HEIGTH / 2) < 0 || (i + game->player->int_cords[1] - MINI_HEIGTH / 2) / 32 > game->input->map_info->max_lines)
+			draw_line(game, "", i);
+		else
+			draw_line(game, minimap[(i + game->player->int_cords[1] - MINI_HEIGHT / 2) / 32], i);
+		i++;
+	}
 	draw_cone(game, minimap);
 	draw_player(game, game->player->int_cords[0], game->player->int_cords[1]);
 }
