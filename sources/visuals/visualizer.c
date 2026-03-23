@@ -12,10 +12,41 @@
 
 #include "cub3d.h"
 
+void	fill_view(t_cube *game)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (j < VIEW_HEIGHT / 2)
+	{
+		while (i < VIEW_WIDTH)
+		{
+			pixel_to_image(&game->view->pixels[(j * VIEW_WIDTH + i) * sizeof(int32_t)], 0x000000FF);
+			i++;
+		}
+		i = 0;
+		j++;
+	}
+	while (j < VIEW_HEIGHT)
+	{
+		while (i < VIEW_WIDTH)
+		{
+			pixel_to_image(&game->view->pixels[(j * VIEW_WIDTH + i) * sizeof(int32_t)], 0xFFFFFFFF);
+			i++;
+		}
+		i = 0;
+		j++;
+	}
+}
+
 void	start_visuals(t_cube *game)
 {
 	draw_minimap(game, game->input->map_info->map);
+	fill_view(game);
 	mlx_image_to_window(game->window, game->minimap, 0, 0);
+	mlx_image_to_window(game->window, game->minimap, VIEW_HEIGHT - MINI_HEIGHT, VIEW_WIDTH - MINI_WIDTH);
 }
 
 void	pixel_to_image(uint8_t *pixel, uint32_t colour)
