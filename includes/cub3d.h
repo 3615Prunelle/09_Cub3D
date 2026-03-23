@@ -27,6 +27,11 @@
 # include <math.h>			//the scary stuff (tan, cos, sin, atan) but also yummy pie
 # include <stdio.h>			//mal lock mal nicht lock
 # include <MLX42.h>
+
+# define VIEW_WIDTH 640
+# define VIEW_HEIGHT 560
+# define MINI_WIDTH 160
+# define MINI_HEIGHT 160
 # define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
@@ -68,6 +73,12 @@ typedef	struct	s_input
 	t_player_data	player;
 
 }	t_input;
+
+typedef struct s_ray
+{
+	float	length;
+	char	*wall;
+} t_ray
 
 typedef struct s_cube
 {
