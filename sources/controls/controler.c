@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/23 18:22:03 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/24 16:24:17 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,24 @@ void	actions(mlx_key_data_t key, void *params)
 	game = params;
 	degree = game->player->direction;
 
-	// MOVING FORWARD BRAINSTORMING
-	// From 0 degrees		x++ y--
-	diff_x = (1/90) * degree;
-	diff_y = 1 - ((1/90) * degree);
+	/*
+	MOVING 1 STEP FORWARD -- BRAINSTORMING
+	START FROM POSITION [0][0]
+	*/
+	diff_x = (1/90) * degree;			// 0 deg	diff_x = 0 then increase till	|| 90 deg	diff_x = +1
+	diff_y = 1 - ((1/90) * degree);		// 			diff_y = +1 then decrease till	||			diff_y = 0
 
-	// From 90 degrees		x-- y--
-	diff_x = 1 - (1/90) * degree;
-	diff_y = 1 - ((1/90) * degree);
+	// From 91 degrees		x-- y--
+	diff_x = 1 - ((1/90) * (degree - 90));	// 91 deg	diff_x should be slightly below 1 then decrease till	|| 180 deg	diff_x should be 0
+	diff_y = 1 - ((1/90) * degree);			// 			diff_y = -0.01 then decrease till						|| 			diff_y = -1 >> OK
 
+	// From 181 degrees		x-- y++
+	diff_x = 							;		// 181 deg	diff_x should be -0.01 then decrease till	|| 270 deg	diff_x should be -1
+	diff_y = 1 - ((1/90) * (degree - 180));		// 			diff_y should be +0.99 then increase till	|| 			diff_y = 0
 
-	// From 180 degrees		x-- y++
-	diff_x = 1 - (1/90) * degree;
-	diff_y = (1/90) * degree;
-
-	// From 270 degrees		x++ y++
-	diff_x = (1/90) * degree;
-	diff_y = (1/90) * degree;
+	// From 271 degrees		x++ y++
+	diff_x = 1 - ((1/90) * (degree - 270));			// 271 deg	diff_x should be slightly below 1 then increase till	|| 359 deg	diff_x should be close to 0
+	diff_y = 				;						//			diff_y should be slightly above 0 then increase till	||			diff_y should be close to +1
 
 
 	if (key.key == MLX_KEY_RIGHT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
