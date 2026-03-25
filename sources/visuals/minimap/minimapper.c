@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/19 12:02:35 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/03/25 10:35:47 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ void	draw_line(t_cube *game, char *line, int position)
 			{
 				if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / 32] == ' ')
 					pixel_to_image(&game->minimap->pixels[index], 0x000000FF);
-				if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / 32] == '0')
+//				if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / 32] == '0')
+				else
 					pixel_to_image(&game->minimap->pixels[index], 0x003388FF);
 				if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / 32] == '1')
 					pixel_to_image(&game->minimap->pixels[index], 0x0000FFFF);
@@ -108,7 +109,7 @@ void	draw_player(t_cube *game, int x, int y)
 
 	BPP = sizeof(int32_t);
 	BPR = BPP * MINI_WIDTH;
-	index = (MINI_HEIGHT / 2 * MINI_WIDTH + MINI_WIDTH) * BPP;
+	index = (MINI_HEIGHT / 2 * MINI_WIDTH + MINI_WIDTH / 2) * BPP;
 	pixel_to_image(&game->minimap->pixels[index], 0xFF0000FF);
 	pixel_to_image(&game->minimap->pixels[index - BPP], 0xFF0000FF);
 	pixel_to_image(&game->minimap->pixels[index + BPP], 0xFF0000FF);
@@ -125,7 +126,7 @@ void	draw_minimap(t_cube *game, char **minimap)
 	game->player->int_cords[1] = (int)game->player->position[1];
 	while (i < MINI_HEIGHT)
 	{
-		if ((i + game->player->int_cords[1] - MINI_HEIGTH / 2) < 0 || (i + game->player->int_cords[1] - MINI_HEIGTH / 2) / 32 > game->input->map_info->max_lines)
+		if ((i + game->player->int_cords[1] - MINI_HEIGHT / 2) < 0 || (i + game->player->int_cords[1] - MINI_HEIGHT / 2) / 32 > game->input->map_info->max_lines)
 			draw_line(game, "", i);
 		else
 			draw_line(game, minimap[(i + game->player->int_cords[1] - MINI_HEIGHT / 2) / 32], i);

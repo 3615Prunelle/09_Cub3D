@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/16 18:29:03 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:12:30 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,16 @@ typedef	struct	s_input
 typedef struct s_ray
 {
 	float	length;
+	float	step_x;
+	float	step_y;
 	char	*wall;
-} t_ray
+} t_ray;
 
 typedef struct s_cube
 {
 	t_input			*input;
 	t_player_data	*player;
+	t_ray			**rays;
 	mlx_t			*window;
 	mlx_image_t		*view;
 	mlx_image_t		*minimap;

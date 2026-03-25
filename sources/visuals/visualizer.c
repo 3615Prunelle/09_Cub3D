@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:06:52 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/16 16:00:50 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:06:07 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ void	fill_view(t_cube *game)
 
 void	start_visuals(t_cube *game)
 {
+	cast_rays(game, game->input->map_info->map);
 	draw_minimap(game, game->input->map_info->map);
 	fill_view(game);
-	mlx_image_to_window(game->window, game->minimap, 0, 0);
-	mlx_image_to_window(game->window, game->minimap, VIEW_HEIGHT - MINI_HEIGHT, VIEW_WIDTH - MINI_WIDTH);
+	mlx_image_to_window(game->window, game->view, 0, 0);
+	mlx_image_to_window(game->window, game->minimap, VIEW_WIDTH - MINI_WIDTH, VIEW_HEIGHT - MINI_HEIGHT);
 }
 
 void	pixel_to_image(uint8_t *pixel, uint32_t colour)

@@ -17,6 +17,9 @@ void	breakdown(char **map)
 void	disappear(void *param)
 {
 	t_cube	*game;
+	int		i;
+
+	i = 0;
 	game = param;
 	if (game->minimap)
 		mlx_delete_image(game->window, game->minimap);
@@ -26,6 +29,13 @@ void	disappear(void *param)
 		mlx_terminate(game->window);
 	if (game->input->map_info->map)
 		breakdown(game->input->map_info->map);
+	while (i < VIEW_WIDTH)
+	{
+		if (game->rays[i])
+			free(game->rays[i];
+		game->rays[i] = NULL;
+		i++;
+	}
 	exit(0);
 }
 
@@ -35,6 +45,7 @@ void	set_game(t_cube	*game)
 	mlx_image_t	*map;
 	mlx_image_t	*field_of_vision;
 
+	game->rays = calloc(VIEW_WIDTH, sizeof(t_ray));
 	game->player->position[0] = game->player->int_cords[0] * 32 + 16;
 	game->player->position[1] = game->player->int_cords[1] * 32 + 16;
 	if (game->player->initial_direction == 'N')
