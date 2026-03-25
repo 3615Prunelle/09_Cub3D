@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:52:15 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/23 17:57:38 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/25 17:38:02 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,52 +30,83 @@ void	turn_left(t_cube *game)
 	game->player->direction = add_degree(i, -1);
 }
 
-// Make sure the move is possible (in case of wall) TBC - In the calling function ? Here ? Case already covered earlier in the code ?
-void	move_south(t_cube *game)
-{
-	float	y;
+// NEXT : Make sure the move is possible (in case of wall) TBC - In the calling function ? Here ? Case already covered earlier in the code ?
 
-	y = game->player->position[1];
-	game->player->position[1] = y + 1;		// Not sure about that - Double check w/ Maxi
+//	MOVING 1 STEP FORWARD
+//	Adjust the degree (in calling function) depending on key pressed
+void	move(t_cube *game, float degree)
+{
+	float	diff_x;
+	float	diff_y;
+	float	length_of_step = 1;							// Remove this variable and replace it by 1 in calculations below, because it won't ever change
+
+	float	sinus = fabsf(sinf(degree * DEG_TO_RAD));	// fabsf avoids negative values
+	diff_x = sinus * length_of_step;					// Same as sinus (because x1) - (Opposé = sin(α) × H)
+
+	float	cosinus = fabsf(cosf(degree * DEG_TO_RAD));
+	diff_y = cosinus * length_of_step;					// Same as cosinus (because x1) - (Adjacent = cos(α) × H)
+
+	// Could this be useful at some point ? : (sin(degree)²) + (cos(degree)²) = 1
+
+	// Do the opposite of what seems logic for y because the minimap is inverted (0 is up left) - x should stay the same
+	if(degree > 0 && degree <= 90)
+	{
+		diff_y *= -1;
+	}
+	// else if(degree > 90 && degree <= 180)			// No need because both diffs are positive
+	else if(degree > 180 && degree <= 270)
+	{
+		diff_x *= -1;
+	}
+	else if(degree > 270 || degree == 0)
+	{
+		diff_x *= -1;
+		diff_y *= -1;
+	}
+	game->player->position[0] += diff_x;
+	game->player->position[1] += diff_y;
 }
 
-void	move_north(t_cube *game)
+float	adjust_degree(enum e_directions direction, float degree)
 {
-	float	y;
+	float	diff;
 
-	y = game->player->position[1];
-	game->player->position[1] = y - 1;
-}
-
-void	move_east(t_cube *game)
-{
-	float	x;
-
-	x = game->player->position[0];
-	game->player->position[0] = x + 1;
-}
-
-void	move_west(t_cube *game)
-{
-	float	x;
-
-	x = game->player->position[0];
-	game->player->position[0] = x - 1;
-}
-// From -1 to +1
-// Smallest increase : (1/90)
-// X diff = (1/90) * degree
-// Y diff = 1 - ((1/90) * degree)
-void	move(t_cube *game, float diff_x, float diff_y)
-{
-	float	x;
-	float	y;
-
-	x = game->player->position[0];
-	printf("x + diff_x = [%f]\n", x + diff_x);
-	game->player->position[0] = x + diff_x;
-
-	y = game->player->position[1];
-	printf("y + diff_y = [%f]\n", y + diff_y);
-	game->player->position[1] = y + diff_y;
+	// Degree must be >= 0 and < 360
+	if (direction == RIGHT)
+	{
+		// Add 90 degrees, making sure I stay within the limits
+		if (degree < 270)
+		{
+			degree += 90;
+		}
+		else
+		{
+			degree -= 270;		// If degree = 271, new is 1
+		}
+	}
+	else if (direction == BACK)
+	{
+		// Remove 180 degrees, making sure I stay within the limits
+		if (degree >= 180)
+		{
+			degree -= 180;
+		}
+		else
+		{
+			degree = (180 + degree);		// If degree = 1, new is 181
+		}
+	}
+	else if (direction == LEFT)
+	{
+		// Remove 90 degrees, making sure I stay within the limits
+		if (degree >= 90)
+		{
+			degree -= 90;
+		}
+		else
+		{
+			degree = (270 + degree);		// If degree = 10, new is 280
+		}
+	}
+	return (degree);
 }

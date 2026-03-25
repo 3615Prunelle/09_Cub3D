@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/23 17:35:22 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/25 17:31:58 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@
 # define ERR_MSG_09	"Thanks for shopping at Cub, tschüssi !\n"
 
 // Structs
+typedef enum e_directions
+{
+	STRAIGHT,					// Not used (yet ?) - Remove if not necessary (keep the others though)
+	RIGHT,
+	BACK,
+	LEFT,
+}	t_directions;
+
 typedef struct s_player_data
 {
 	int		int_cords[2];		// [0] = X	[1] = Y
@@ -122,11 +130,8 @@ void	actions(mlx_key_data_t key, void *params);
 //movements.c
 void	turn_right(t_cube *game);
 void	turn_left(t_cube *game);
-void	move_south(t_cube *game);
-void	move_north(t_cube *game);
-void	move_east(t_cube *game);
-void	move_west(t_cube *game);
-void	move(t_cube *game, float diff_x, float diff_y);
+void	move(t_cube *game, float degree);
+float	adjust_degree(enum e_directions direction, float degree);
 
 //ft_math.c
 float	add_degree(float a, float b);

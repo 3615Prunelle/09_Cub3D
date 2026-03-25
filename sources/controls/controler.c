@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/24 16:24:17 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/25 17:32:55 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,51 +24,44 @@ Subject :
 void	actions(mlx_key_data_t key, void *params)
 {
 	t_cube	*game;
-	float	degree;
-	float	diff_x;
-	float	diff_y;
+	float	degree = 40;
 
 	game = params;
 	degree = game->player->direction;
 
-	/*
-	MOVING 1 STEP FORWARD -- BRAINSTORMING
-	START FROM POSITION [0][0]
-	*/
-	diff_x = (1/90) * degree;			// 0 deg	diff_x = 0 then increase till	|| 90 deg	diff_x = +1
-	diff_y = 1 - ((1/90) * degree);		// 			diff_y = +1 then decrease till	||			diff_y = 0
 
-	// From 91 degrees		x-- y--
-	diff_x = 1 - ((1/90) * (degree - 90));	// 91 deg	diff_x should be slightly below 1 then decrease till	|| 180 deg	diff_x should be 0
-	diff_y = 1 - ((1/90) * degree);			// 			diff_y = -0.01 then decrease till						|| 			diff_y = -1 >> OK
-
-	// From 181 degrees		x-- y++
-	diff_x = 							;		// 181 deg	diff_x should be -0.01 then decrease till	|| 270 deg	diff_x should be -1
-	diff_y = 1 - ((1/90) * (degree - 180));		// 			diff_y should be +0.99 then increase till	|| 			diff_y = 0
-
-	// From 271 degrees		x++ y++
-	diff_x = 1 - ((1/90) * (degree - 270));			// 271 deg	diff_x should be slightly below 1 then increase till	|| 359 deg	diff_x should be close to 0
-	diff_y = 				;						//			diff_y should be slightly above 0 then increase till	||			diff_y should be close to +1
-
+// All of the above works if player moves forward.
+// If player moves backwards, the exact opposite should happen (all positive becomes neg, and vice versa)
+// If player moves right, add 90 to the current degree ? And remove 90 for left ?
 
 	if (key.key == MLX_KEY_RIGHT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
 		turn_right(game);
 	if (key.key == MLX_KEY_LEFT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
 		turn_left(game);
 
-	if ((key.key == MLX_KEY_D && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
-			|| (key.key == MLX_KEY_A && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
-			|| (key.key == MLX_KEY_S && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
-			|| (key.key == MLX_KEY_W && (key.action == MLX_PRESS || key.action == MLX_REPEAT)))
+	if (key.key == MLX_KEY_W && (key.action == MLX_PRESS || key.action == MLX_REPEAT))	// Forward
 	{
-
-		printf("Before\t\tDiff x [%f] - Diff y [%f] - Direction : [%f] - Coords : [%d][%d]\n", diff_x, diff_y, game->player->direction,
-			game->player->int_cords[0], game->player->int_cords[1]);
-		game->player->position[0] += diff_x;		// Something wrong here
-		game->player->position[1] += diff_y;		// Something wrong here
-		printf("After\t\tDiff x [%f] - Diff y [%f] - Direction : [%f] - Coords : [%d][%d]\n", diff_x, diff_y, game->player->direction,
-			game->player->int_cords[0], game->player->int_cords[1]);
+		move(game, degree);
 	}
+	if (key.key == MLX_KEY_D && (key.action == MLX_PRESS || key.action == MLX_REPEAT))	// Right
+	{
+		degree = adjust_degree(RIGHT, degree);
+		move(game, degree);
+	}
+	if (key.key == MLX_KEY_S && (key.action == MLX_PRESS || key.action == MLX_REPEAT))	// Backwards
+	{
+		degree = adjust_degree(BACK, degree);
+		move(game, degree);
+	}
+	if (key.key == MLX_KEY_A && (key.action == MLX_PRESS || key.action == MLX_REPEAT))	// Left
+	{
+		degree = adjust_degree(LEFT, degree);
+		move(game, degree);
+	}
+
+// printf("Degree [%f] - Diff x [%f] - Diff y [%f] - Coords : [%d][%d]\n", degree, diff_x, diff_y, game->player->int_cords[0], game->player->int_cords[1]);
+// game->player->position[0] += diff_x;
+// game->player->position[1] += diff_y;
 
 	// implement escape
 	if (key.key == MLX_KEY_ESCAPE && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
@@ -95,9 +88,8 @@ If player looking	North -	right = D	left = A	up = W			down = S (classic)
 					West -	right = W	left = S	straight = A	backwards = D
 
 Implement directions :
-move_north etc ...
-if degree = X ,
-else if etc
+
+
 
 When done : make sure player doesn't go through walls
 */
