@@ -46,6 +46,29 @@ void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, floa
 	ray->length = fabs(fabs(wall_posi[1] - game->player->position[1]) / sin(deg * DEG_TO_RAD));
 }
 
+void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
+{
+	int		int_step[2];
+	float	position[2];
+	int		int_pos[2];
+
+	set_x_y_int_steps(&int_step, deg);
+	position[0] = game->player->int_cords[0] / 32 + 0.5;
+	position[1] = game->player->int_cords[1] / 32 + 0.5;
+	int_pos[0] = (int)position[0];
+	int_pos[1] = (int)position[1];
+	ray->step_y = (float)int_step[1];
+	ray->step_x = int_step[0] * fabsf(int_step[1] * tanf(deg * DEG_TO_RAD));
+	while (map[int_pos[1]][int_pos[0]] != '1')
+	{
+		position[0] += ray->step_x;
+		position[1] += ray->step_y;
+		int_pos[0] = (int)position[0];
+		int_pos[1] = (int)position[1];
+	}
+	calculate_ray_length_and_wallside(game, ray, deg, position);
+}
+
 void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 {
 	int		int_step[2];
