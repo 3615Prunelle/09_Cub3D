@@ -12,6 +12,41 @@
 
 #include "cub3d.h"
 
+u32int_t	paint_wall(t_cube *game, t_ray *ray, int[2] borders)
+{
+	if (borders[0] > borders[1])
+		return (0x000000FF);
+	if (ray->wall[0] = 'N' && game->input->NO)
+		return (0x0000FFFF);
+	if (ray->wall[0] = 'S' && game->input->SO)
+		return (0xFFFF00FF);
+	if (ray->wall[0] = 'W' && game->input->WE)
+		return (0xFF00FFFF);
+	if (ray->wall[0] = 'E' && game->input->EA)
+		return (0xFF0000FF);
+}
+
+void	draw_rays(t_cube *game)
+{
+	int			i;
+	u32int_t	color;
+	int			borders[2];
+
+	i = 0;
+	while (i < VIEW_WIDTH)
+	{
+		borders[0] = (int)game->rays[i]->length;
+		borders[1] = VIEW_HEIGHT - borders[0];
+		while (borders[0] < borders[1])
+		{
+			color = paint_wall(game, game->rays[i], borders);
+			pixel_to_image(&game->view->pixels[(borders[0] * VIEW_WIDTH + i) * sizeof(int32_t)], color);
+			borders[0]++;
+		}
+		i++;
+	}
+}
+
 void	fill_view(t_cube *game)
 {
 	int	i;
@@ -46,6 +81,7 @@ void	start_visuals(t_cube *game)
 	cast_rays(game, game->input->map_info->map);
 	draw_minimap(game, game->input->map_info->map);
 	fill_view(game);
+	draw_rays(game);
 	mlx_image_to_window(game->window, game->view, 0, 0);
 	mlx_image_to_window(game->window, game->minimap, VIEW_WIDTH - MINI_WIDTH, VIEW_HEIGHT - MINI_HEIGHT);
 }
