@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/25 18:53:10 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:26:09 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	start_visuals(t_cube *game);
 //visualiser.c
 void	pixel_to_image(uint8_t *pixel, uint32_t colour);
 
-//controller.c
+//controler.c
 void	actions(mlx_key_data_t key, void *params);
 bool	is_move_possible(t_cube *game, float degree);
 
@@ -138,6 +138,7 @@ float	adjust_degree(enum e_directions direction, float degree);
 //ft_math.c
 float	add_degree(float a, float b);
 
+//image_handler.c
 void	breakdown(char **map);
 void	disappear(void *param);
 void	set_game(t_cube	*game);
