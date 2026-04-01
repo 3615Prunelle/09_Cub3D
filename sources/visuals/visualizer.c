@@ -6,30 +6,33 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:06:52 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/25 11:06:07 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:42:08 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-u32int_t	paint_wall(t_cube *game, t_ray *ray, int[2] borders)
+uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders)
 {
 	if (borders[0] > borders[1])
 		return (0x000000FF);
-	if (ray->wall[0] = 'N' && game->input->NO)
+	if (ray->wall[0] == 'N' && game->input->NO)
 		return (0x0000FFFF);
-	if (ray->wall[0] = 'S' && game->input->SO)
+	if (ray->wall[0] == 'S' && game->input->SO)
 		return (0xFFFF00FF);
-	if (ray->wall[0] = 'W' && game->input->WE)
+	if (ray->wall[0] == 'W' && game->input->WE)
 		return (0xFF00FFFF);
-	if (ray->wall[0] = 'E' && game->input->EA)
+	if (ray->wall[0] == 'E' && game->input->EA)
 		return (0xFF0000FF);
+	if (ray->wall[0] == 'K' && game->input->SO)
+		return (0x00FF00FF);
+	return (0x000000FF);
 }
 
 void	draw_rays(t_cube *game)
 {
 	int			i;
-	u32int_t	color;
+	uint32_t	color;
 	int			borders[2];
 
 	i = 0;

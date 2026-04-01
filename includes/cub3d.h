@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/03/25 11:12:30 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:47:45 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@
 # include <stdio.h>			//mal lock mal nicht lock
 # include <MLX42.h>
 
-# define VIEW_WIDTH 640
-# define VIEW_HEIGHT 560
-# define MINI_WIDTH 160
-# define MINI_HEIGHT 160
+# define VIEW_WIDTH 1640
+# define VIEW_HEIGHT 650
+# define MINI_WIDTH 200
+# define MINI_HEIGHT 200
 # define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
@@ -45,6 +45,14 @@
 # define ERR_MSG_09	"Thanks for shopping at Cub, tschüssi !\n"
 
 // Structs
+typedef enum e_directions
+{
+	STRAIGHT,					// Not used (yet ?) - Remove if not necessary (keep the others though)
+	RIGHT,
+	BACK,
+	LEFT,
+}	t_directions;
+
 typedef struct s_player_data
 {
 	int		int_cords[2];		// [0] = X	[1] = Y
@@ -125,25 +133,38 @@ int		update_player_info(t_input *input_info);
 void	draw_minimap(t_cube *game, char **minimap);
 void	draw_line(t_cube *game, char *line, int position);
 void	draw_cone(t_cube * game, char **minimap);
-void	start_visuals(t_cube *game);
+
+//ray_casting.c
+void	set_wallside(t_ray *ray, int *position, int *wall_position);
+void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, float *position);
+void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map);
+void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map);
+void	cast_rays(t_cube *game, char **map);
+
 
 //visualiser.c
+uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders);
+void	draw_rays(t_cube *game);
+void	fill_view(t_cube *game);
+void	start_visuals(t_cube *game);
 void	pixel_to_image(uint8_t *pixel, uint32_t colour);
 
-//controller.c
+//controler.c
 void	actions(mlx_key_data_t key, void *params);
+bool	is_move_possible(t_cube *game, float degree);
 
 //movements.c
 void	turn_right(t_cube *game);
 void	turn_left(t_cube *game);
-void	move_forward(t_cube *game);
-void	move_backward(t_cube *game);
-void	move_right(t_cube *game);
-void	move_left(t_cube *game);
+void	move(t_cube *game, float degree);
+float	adjust_degree(enum e_directions direction, float degree);
 
 //ft_math.c
+void	coordinates_float_to_int(int *ints, float *floats);
+void	set_x_y_int_steps(int *steps, float deg);
 float	add_degree(float a, float b);
 
+//image_handler.c
 void	breakdown(char **map);
 void	disappear(void *param);
 void	set_game(t_cube	*game);

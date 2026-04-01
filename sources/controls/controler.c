@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/16 19:23:36 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:15:06 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,66 +22,84 @@ Subject :
 void	actions(mlx_key_data_t key, void *params)
 {
 	t_cube	*game;
+	float	degree;
 
 	game = params;
+	degree = game->player->direction;
+
 	if (key.key == MLX_KEY_RIGHT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
 		turn_right(game);
 	if (key.key == MLX_KEY_LEFT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
 		turn_left(game);
-	// implement move right = D /left = A /up = W /down = S )
-	if (key.key == MLX_KEY_D && key.action == MLX_PRESS || key.action == MLX_REPEAT)
-		move_right(game);
-	if (key.key == MLX_KEY_A && key.action == MLX_PRESS || key.action == MLX_REPEAT)
-		move_left(game);
-	if (key.key == MLX_KEY_W && key.action == MLX_PRESS || key.action == MLX_REPEAT)
-		move_forward(game);
-	if (key.key == MLX_KEY_S && key.action == MLX_PRESS || key.action == MLX_REPEAT)
-		move_backward(game);
+
+	if ((key.key == MLX_KEY_W && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
+		|| (key.key == MLX_KEY_D && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
+		|| (key.key == MLX_KEY_S && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
+		|| (key.key == MLX_KEY_A && (key.action == MLX_PRESS || key.action == MLX_REPEAT)))
+	{
+		if (key.key == MLX_KEY_D)		// Right
+			degree = adjust_degree(RIGHT, degree);
+		else if (key.key == MLX_KEY_S)	// Backwards
+			degree = adjust_degree(BACK, degree);
+		else if (key.key == MLX_KEY_A)	// Left
+			degree = adjust_degree(LEFT, degree);
+
+		// HERE : Make sure the move is possible (player doesn't go through walls)
+		if (!is_move_possible(game, degree))
+			return ;
+		move(game, degree);
+	}
+
 	// implement escape
 	if (key.key == MLX_KEY_ESCAPE && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
 	{
 		printf(ERR_MSG_09);
-		// clean and exit properly - See w/ Maxi for the clean MLX
+		exit (1);		// clean and exit properly instead - See w/ Maxi for the clean MLX (disappear function ? TBC)
 	}
-	// implement red cross mouse hook (maybe not here ?)
+	// implement red cross mouse hook - Nope ? Already dealt with through mlx_close_hook function (in main) TBC ? Check mem leaks
+
 	draw_minimap(game, game->input->map_info->map);
+	cast_rays(game, game->input->map_info->map);
+	fill_view(game);
+	draw_rays(game);
 }
 
-/*
-NOTES FROM SO_LONG
-
-Je passe l'adresse de game dans la fonction appelante car je dois
-respecter le "void param" que mlx_key_hook me demande
-Variable move est utilisée dans la fonction target_position
-A chaque touche pressée, on check le nombre de collectibles restants
-
-void	key_actions(mlx_key_data_t keydata, void *param)
+bool	is_move_possible(t_cube *game, float degree)
 {
-	t_game	*game;
-	int		move;
+	// Check which element is in the direction we're going
+	// If wall, return false
+	char	**map;
+	map = game->input->map_info->map;
 
-	game = param;
-	move = 0;
-	if (!game || !game->playr_img || game->playr_img->count < 1)
-		return ;
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+	float	*current_position;
+	current_position = game->player->position;
+
+	float		target_position[2];
+	target_position[0] = current_position[0];	// Line
+	target_position[1] = current_position[1];	// Column
+
+	// Find the target position depending on the degree - Caution : The changes are in pixels, they'll be converted to int at the next step
+	if (degree > 315 || degree <= 45) // Looking North
+		target_position[1] -= 3;							// Up one line, column unchanged
+	if (degree > 45 && degree <= 135) // Looking East
+		target_position[0] += 3;							// One column right, line unchanged
+	if (degree > 135 && degree <= 225) // Looking South
+		target_position[1] += 3;							// Down one line, column unchanged
+	if (degree > 225 && degree <= 315) // Looking West
+		target_position[0] -= 3;							// One column left, line unchanged
+
+	// Convert the float position[2] array into ints[2] to find what is the element that matches the target, in the logical map
+	int		conv_position[2];
+	conv_position[0] = (target_position[1]/*  - 16 */) / 32;
+	conv_position[1] = (target_position[0]/*  - 16 */) / 32;
+
+	// Check what element is at the target
+	char	check;
+	check = map[conv_position[0]][conv_position[1]];
+	if (check == '1')
 	{
-		ft_printf(MSG_02);
-		clean_and_exit(game);
+		printf("Boom - Oops, looks like there's a wall at [%d][%d]\n", conv_position[0], conv_position[1]);
+		return (false);
 	}
-	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
-		move = RIGHT;
-	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-		move = LEFT;
-	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_PRESS)
-		move = UP;
-	if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_PRESS)
-		move = DOWN;
-	if (!move)
-		return ;
-	move_player_logic(*game, move);
-	move_player_graphic(game);
-	delete_collectible_instance(game);
+	return (true);
 }
-
-*/

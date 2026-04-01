@@ -32,11 +32,41 @@ void	disappear(void *param)
 	while (i < VIEW_WIDTH)
 	{
 		if (game->rays[i])
-			free(game->rays[i];
+		{
+			free(game->rays[i]->wall);
+			free(game->rays[i]);
+		}
 		game->rays[i] = NULL;
 		i++;
 	}
 	exit(0);
+}
+
+bool	ray_allocation(t_ray **rays)
+{
+	t_ray	*ray;
+	int		i;
+	char	*c;
+
+	i = 0;
+	while (i < VIEW_WIDTH)
+	{
+		ray = malloc(sizeof(t_ray));
+		if (!ray)
+			return (false);
+		c = malloc(2 * sizeof(char));
+		if (!c)
+			return (false);
+		ray->length = 0.0;
+		ray->step_x = 0;
+		ray->step_y = 0;
+		c[0] = '0';
+		c[1] = '\0';
+		ray->wall = c;
+		rays[i] = ray;
+		i++;
+	}
+	return (true);
 }
 
 void	set_game(t_cube	*game)
@@ -45,7 +75,9 @@ void	set_game(t_cube	*game)
 	mlx_image_t	*map;
 	mlx_image_t	*field_of_vision;
 
-	game->rays = calloc(VIEW_WIDTH, sizeof(t_ray));
+	game->rays = malloc(VIEW_WIDTH * sizeof(t_ray *));
+	if (!ray_allocation(game->rays))
+		disappear(game);
 	game->player->position[0] = game->player->int_cords[0] * 32 + 16;
 	game->player->position[1] = game->player->int_cords[1] * 32 + 16;
 	if (game->player->initial_direction == 'N')

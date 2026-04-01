@@ -16,6 +16,7 @@ SRCS =	./sources/main.c \
 		./sources/visuals/minimap/minimapper.c \
 		./sources/visuals/image_handler.c \
 		./sources/visuals/visualizer.c \
+		./sources/visuals/ray_casting.c \
 		./sources/visuals/ft_math.c \
 		./sources/controls/movements.c \
 		./sources/controls/controler.c

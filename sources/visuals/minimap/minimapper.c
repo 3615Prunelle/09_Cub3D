@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/25 10:35:47 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/04/01 15:08:50 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	draw_cone(t_cube * game, char **minimap)
 
 	i = 30.0f;
 	base = game->player->direction;
-	fov_step = 60.f / 320;
+	fov_step = 60.f / VIEW_WIDTH;
 	while (i > -30.0f)
 	{
 		ray_step[0] = 1;
