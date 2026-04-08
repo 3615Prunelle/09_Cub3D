@@ -28,10 +28,12 @@
 # include <stdio.h>			//mal lock mal nicht lock
 # include <MLX42.h>
 
-# define VIEW_WIDTH 1640
-# define VIEW_HEIGHT 650
-# define MINI_WIDTH 200
-# define MINI_HEIGHT 200
+# define VIEW_WIDTH 1040
+# define VIEW_HEIGHT 700
+# define MINI_WIDTH 100
+# define MINI_HEIGHT 100
+# define MAP_SCALE 32
+# define FOW 100.0
 # define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
@@ -84,6 +86,9 @@ typedef	struct	s_input
 
 typedef struct s_ray
 {
+	float	degree;
+	float	x_contact;
+	float	y_contact;
 	float	length;
 	float	step_x;
 	float	step_y;
@@ -92,6 +97,7 @@ typedef struct s_ray
 
 typedef struct s_cube
 {
+	float			viewdistance;
 	t_input			*input;
 	t_player_data	*player;
 	t_ray			**rays;
@@ -135,7 +141,8 @@ void	draw_line(t_cube *game, char *line, int position);
 void	draw_cone(t_cube * game, char **minimap);
 
 //ray_casting.c
-void	set_wallside(t_ray *ray, int *position, int *wall_position);
+void	set_corners(t_cube *game, t_ray *ray, int *position);
+void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map);
 void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, float *position);
 void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map);
 void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map);
