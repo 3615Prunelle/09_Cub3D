@@ -78,6 +78,7 @@ void	set_game(t_cube	*game)
 	game->rays = malloc(VIEW_WIDTH * sizeof(t_ray *));
 	if (!ray_allocation(game->rays))
 		disappear(game);
+	game->viewdistance = VIEW_WIDTH / (2 * tanf((FOW / 2) * DEG_TO_RAD));
 	game->player->position[0] = game->player->int_cords[0] * 32 + 16;
 	game->player->position[1] = game->player->int_cords[1] * 32 + 16;
 	if (game->player->initial_direction == 'N')
