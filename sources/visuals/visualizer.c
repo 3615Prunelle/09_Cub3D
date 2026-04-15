@@ -36,10 +36,21 @@ void	draw_rays(t_cube *game)
 	int			borders[2];
 
 	i = 0;
+//	printf("\n");//debug
 	while (i < VIEW_WIDTH)
 	{
-		borders[0] = (int)game->rays[i]->length;
-		borders[1] = VIEW_HEIGHT - borders[0];
+//		borders[0] = sqrt(game->rays[i]->length) * 5;
+//		borders[1] = VIEW_HEIGHT - borders[0];
+		borders[0] = VIEW_HEIGHT / 2 - (int)((((MAP_SCALE / 8) * game->viewdistance / game->rays[i]->length)) / 2);
+		borders[1] = VIEW_HEIGHT / 2 + (int)((((MAP_SCALE / 8) * game->viewdistance / game->rays[i]->length)) / 2);
+		if (i < VIEW_WIDTH - 4)
+			ft_spike(game, i, borders);//debug
+//		if (i % 10 == 0)
+//			printf("%d borders: %d / %d\t", i, borders[0], borders[1]);//debug
+		if (borders[0] < 0)
+			borders[0] = 0;
+		if (borders[1] > VIEW_HEIGHT)
+			borders[1] = VIEW_HEIGHT;
 		while (borders[0] < borders[1])
 		{
 			color = paint_wall(game, game->rays[i], borders);
@@ -81,8 +92,8 @@ void	fill_view(t_cube *game)
 
 void	start_visuals(t_cube *game)
 {
-	cast_rays(game, game->input->map_info->map);
 	draw_minimap(game, game->input->map_info->map);
+	cast_rays(game, game->input->map_info->map);
 	fill_view(game);
 	draw_rays(game);
 	mlx_image_to_window(game->window, game->view, 0, 0);
