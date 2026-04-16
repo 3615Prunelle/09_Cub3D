@@ -60,19 +60,19 @@ void	set_corners(t_cube *game, t_ray *ray, int *position)
 
 void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map)
 {
-	if (wall_position[0] == position[0])
+	if (ray->contact_y - (int)ray->contact_y < 0.00)
 	{
-		if (wall_position[1] - position[1] == 1)
+		if (ray->step_y < 0)
 			ray->wall[0] = 'N';
-		if (wall_position[1] - position[1] == -1)
+		if (ray->step_y > 0)
 			ray->wall[0] = 'S';
 		return ;
 	}
-	else if (wall_position[1] == position[1])
+	else if (ray->contact_x - (int)ray->contact_x < 0.00)
 	{
-		if (wall_position[0] - position[0] == 1)
+		if (ray->step_x < 0)	
 			ray->wall[0] = 'W';
-		if (wall_position[0] - position[0] == -1)
+		if (ray->step_x > 0)
 			ray->wall[0] = 'E';
 		return ;
 	}

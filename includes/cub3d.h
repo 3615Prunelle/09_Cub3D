@@ -28,12 +28,12 @@
 # include <stdio.h>			//mal lock mal nicht lock
 # include <MLX42.h>
 
-# define VIEW_WIDTH 1040
-# define VIEW_HEIGHT 700
+# define VIEW_WIDTH 1240
+# define VIEW_HEIGHT 550
 # define MINI_WIDTH 100
 # define MINI_HEIGHT 100
 # define MAP_SCALE 32
-# define FOW 100.0
+# define FOW 90.0
 # define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
@@ -103,6 +103,7 @@ typedef struct s_cube
 	t_player_data	*player;
 	t_ray			**rays;
 	mlx_t			*window;
+	mlx_texture_t	**textures;
 	mlx_image_t		*view;
 	mlx_image_t		*minimap;
 } t_cube;
@@ -151,7 +152,7 @@ void	cast_rays(t_cube *game, char **map);
 
 
 //visualiser.c
-uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders);
+uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders, int j);
 void	draw_rays(t_cube *game);
 void	fill_view(t_cube *game);
 void	start_visuals(t_cube *game);
@@ -177,6 +178,10 @@ float	add_degree(float a, float b);
 void	breakdown(char **map);
 void	disappear(void *param);
 void	set_game(t_cube	*game);
+
+//textures.c
+uint32_t	get_south_north_color(t_cube *game, t_ray *ray, int *borders, int place);
+uint32_t	get_west_east_color(t_cube *game, t_ray *ray, int *borders, int place);
 
 //debug.c
 void	ft_spike(t_cube *game, int i, int *borders);

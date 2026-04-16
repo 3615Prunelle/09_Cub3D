@@ -12,18 +12,32 @@
 
 #include "cub3d.h"
 
-uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders)
+uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders, int j)
 {
+	uint32_t color;
+
 	if (borders[0] > borders[1])
 		return (0x000000FF);
 	if (ray->wall[0] == 'N' && game->input->NO)
-		return (0x0000FFFF);
+	{
+		color = get_south_north_color(game, ray, borders, j);
+		return (color);
+	}
 	if (ray->wall[0] == 'S' && game->input->SO)
-		return (0xFFFF00FF);
+	{
+		color = get_south_north_color(game, ray, borders, j);
+		return (color);
+	}
 	if (ray->wall[0] == 'W' && game->input->WE)
-		return (0xFF00FFFF);
+	{
+		color = get_west_east_color(game, ray, borders, j);
+		return (color);
+	}
 	if (ray->wall[0] == 'E' && game->input->EA)
-		return (0xFF0000FF);
+	{
+		color = get_west_east_color(game, ray, borders, j);
+		return (color);
+	}
 	if (ray->wall[0] == 'K' && game->input->SO)
 		return (0x00FF00FF);
 	return (0x000000FF);
@@ -32,6 +46,7 @@ uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders)
 void	draw_rays(t_cube *game)
 {
 	int			i;
+	int			j;
 	uint32_t	color;
 	int			borders[2];
 
@@ -41,21 +56,22 @@ void	draw_rays(t_cube *game)
 	{
 //		borders[0] = sqrt(game->rays[i]->length) * 5;
 //		borders[1] = VIEW_HEIGHT - borders[0];
-		borders[0] = VIEW_HEIGHT / 2 - (int)((((MAP_SCALE / 8) * game->viewdistance / game->rays[i]->length)) / 2);
-		borders[1] = VIEW_HEIGHT / 2 + (int)((((MAP_SCALE / 8) * game->viewdistance / game->rays[i]->length)) / 2);
-		if (i < VIEW_WIDTH - 4)
-			ft_spike(game, i, borders);//debug
+		borders[0] = VIEW_HEIGHT / 2 - (int)((((8) * game->viewdistance / game->rays[i]->length)) / 2);
+		borders[1] = VIEW_HEIGHT / 2 + (int)((((8) * game->viewdistance / game->rays[i]->length)) / 2);
+//		if (i < VIEW_WIDTH - 4)
+//			ft_spike(game, i, borders);//debug
 //		if (i % 10 == 0)
 //			printf("%d borders: %d / %d\t", i, borders[0], borders[1]);//debug
 		if (borders[0] < 0)
 			borders[0] = 0;
 		if (borders[1] > VIEW_HEIGHT)
 			borders[1] = VIEW_HEIGHT;
-		while (borders[0] < borders[1])
+		j = 0;
+		while (borders[0] + j < borders[1])
 		{
-			color = paint_wall(game, game->rays[i], borders);
-			pixel_to_image(&game->view->pixels[(borders[0] * VIEW_WIDTH + i) * sizeof(int32_t)], color);
-			borders[0]++;
+			color = paint_wall(game, game->rays[i], borders, j);
+			pixel_to_image(&game->view->pixels[((borders[0] + j) * VIEW_WIDTH + i) * sizeof(int32_t)], color);
+			j++;
 		}
 		i++;
 	}

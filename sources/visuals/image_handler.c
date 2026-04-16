@@ -14,6 +14,27 @@ void	breakdown(char **map)
 	free(map);
 }
 
+mlx_texture_t **load_textures(t_cube *game, t_input *input)
+{
+	mlx_texture_t	**textures;
+	textures = malloc(4 * sizeof(mlx_texture_t *));
+	if (!textures)
+		return (NULL);
+	textures[0] = mlx_load_png(input->NO);
+	if (!textures[0])
+		return (NULL);
+	textures[1] = mlx_load_png(input->SO);
+	if (!textures[1])
+		return (NULL);
+	textures[2] = mlx_load_png(input->WE);
+	if (!textures[2])
+		return (NULL);
+	textures[3] = mlx_load_png(input->EA);
+	if (!textures[3])
+		return (NULL);
+	return (textures);
+}
+
 void	disappear(void *param)
 {
 	t_cube	*game;
@@ -77,6 +98,9 @@ void	set_game(t_cube	*game)
 
 	game->rays = malloc(VIEW_WIDTH * sizeof(t_ray *));
 	if (!ray_allocation(game->rays))
+		disappear(game);
+	game->textures = load_textures(game, game->input);
+	if (!game->textures)
 		disappear(game);
 	game->viewdistance = VIEW_WIDTH / (2 * tanf((FOW / 2) * DEG_TO_RAD));
 	game->player->position[0] = game->player->int_cords[0] * MAP_SCALE + MAP_SCALE / 2;

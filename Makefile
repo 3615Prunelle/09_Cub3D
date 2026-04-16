@@ -18,6 +18,7 @@ SRCS =	./sources/main.c \
 		./sources/visuals/visualizer.c \
 		./sources/visuals/ray_casting.c \
 		./sources/visuals/ft_math.c \
+		./sources/visuals/textures.c\
 		./sources/visuals/debug.c \
 		./sources/controls/movements.c \
 		./sources/controls/controler.c
