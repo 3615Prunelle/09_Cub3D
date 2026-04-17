@@ -50,6 +50,8 @@ void	read_scene_description(t_input *input_info)
 	int		line_counter;
 	int		i = 0;
 	int		elements_counter;
+	char	*first_spaces_removed;
+	char	**splitted_line;
 
 	line_counter = count_lines_from_scene_description(input_info);
 	elements_counter = 0;
@@ -59,32 +61,42 @@ void	read_scene_description(t_input *input_info)
 	if (!file_content)
 		print_error_free_exit(input_info, strerror(errno), false, NULL);
 	file_content[i] = get_next_line(fd);				// Ⓜ️ (for each line)
-	// No need to check for error because count_lines_from_scene_description function already made sure there's something to read
+	// Count_lines_from_scene_description function already made sure there's something to read
+
 	while (file_content[i])
 	{
-		if (file_content[i][0] == 'N' || file_content[i][0] == 'S' || file_content[i][0] == 'W' || file_content[i][0] == 'E')
+		if(file_content[i][0] != '\n' && (strchr(file_content[i], '\n')))
+			file_content[i][ft_strlen(file_content[i]) - 1] = ' ';		// Remplace le \n par un espace
+		splitted_line = ft_split(file_content[i], ' ');
+		if(!splitted_line)
+			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
+		// Caution - The \n at the end is kept (either as last separated section, either at the end of the last)
+		if (splitted_line[0][0] == 'N' || splitted_line[0][0] == 'S' || splitted_line[0][0] == 'W' || splitted_line[0][0] == 'E')
 		{
-			if (!check_and_add_texture_path(file_content[i], input_info))
+			if (!check_and_add_texture_path(splitted_line, input_info))
 				print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
 			elements_counter++;
 		}
-		else if (file_content[i][0] == 'F' || file_content[i][0] == 'C')
+
+
+		else if (splitted_line[0][0] == 'F' || splitted_line[0][0] == 'C')
 		{
-			if (!check_and_add_colors(file_content[i], input_info))
+			if (!check_and_add_colors(splitted_line, input_info))
 				print_error_free_exit(input_info, ERR_MSG_06, true, file_content);
 			elements_counter++;
 		}
-		else if ((file_content[i][0] == ' ') || (file_content[i][0] == '1'))
+		else if ((splitted_line[0][0] == ' ') || (splitted_line[0][0] == '1'))
 		{
 			if((is_line_from_map(file_content[i])) && (elements_counter == 6))
 				break;
 			else
 				print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
 		}
-		else if (file_content[i][0] != '\n')
+		else if (splitted_line[0][0] != '\n')
 		{
 			print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
 		}
+		free_strings_array(splitted_line);
 		i++;
 		file_content[i] = get_next_line(fd);
 	}

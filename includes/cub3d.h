@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/04/01 14:01:16 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/04/17 20:20:22 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,9 @@ bool	is_line_from_map(char *line);
 void	spaces_fill_up(t_map_info *map_info);
 
 // fetch_elements.c
-int		check_and_add_texture_path(char *line, t_input *input_info);
-char	*clean_path(char *full_line);
-int		check_and_add_colors(char *line, t_input *input_info);
-char	**get_rgb_array(char *full_line);
+int		check_and_add_texture_path(char **splitted_line, t_input *input_info);
+bool	is_image_reachable(char *path);
+int		check_and_add_colors(char **splitted_line, t_input *input_info);
 void	add_line_in_map_struct(char *line, t_input *input_info);
 
 // free_functions.c
