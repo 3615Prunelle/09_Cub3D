@@ -45,72 +45,121 @@ bool	is_filename_correct(char *path_to_map)
 
 void	read_scene_description(t_input *input_info)
 {
-	int		fd;
 	char	**file_content;
-	int		line_counter;
-	int		i = 0;
-	int		elements_counter;
-	char	*first_spaces_removed;
 	char	**splitted_line;
+	int		i;
+	int		elements_counter;
 
-	line_counter = count_lines_from_scene_description(input_info);
+	i = 0;
 	elements_counter = 0;
-
-	fd = open(input_info->path_to_map, O_RDONLY);
-	file_content = ft_calloc(sizeof(char *), line_counter + 1);
-	if (!file_content)
-		print_error_free_exit(input_info, strerror(errno), false, NULL);
-	file_content[i] = get_next_line(fd);				// Ⓜ️ (for each line)
-	// Count_lines_from_scene_description function already made sure there's something to read
+	file_content = open_fd_export_content(input_info);
 
 	while (file_content[i])
 	{
-		if(file_content[i][0] != '\n' && (strchr(file_content[i], '\n')))
-			file_content[i][ft_strlen(file_content[i]) - 1] = ' ';		// Remplace le \n par un espace
+		// remove \n to avoid to deal w/ it after split
+		// deal w/ spaces au début de chaque ligne (autrement qu'avec ft_split)
+		// tester une fonction par type d'info
+		// path = ft_split
+		// RGB = comma count + replace puis ft_split
+		// map = sortir de la loop
+
+
+
+		if(file_content[i][0] != '\n' && (strchr(file_content[i], '\n')) && (elements_counter != 6))
+			clean_line(&file_content[i], '\n');				// Keeps the commas for now
 		splitted_line = ft_split(file_content[i], ' ');
 		if(!splitted_line)
 			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
-		// Caution - The \n at the end is kept (either as last separated section, either at the end of the last)
 		if (splitted_line[0][0] == 'N' || splitted_line[0][0] == 'S' || splitted_line[0][0] == 'W' || splitted_line[0][0] == 'E')
 		{
 			if (!check_and_add_texture_path(splitted_line, input_info))
 				print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
 			elements_counter++;
 		}
-
-
 		else if (splitted_line[0][0] == 'F' || splitted_line[0][0] == 'C')
 		{
-			if (!check_and_add_colors(splitted_line, input_info))
+			if (!check_and_add_colors(file_content[i], splitted_line, input_info))			// Send also the whole line
 				print_error_free_exit(input_info, ERR_MSG_06, true, file_content);
 			elements_counter++;
 		}
-		else if ((splitted_line[0][0] == ' ') || (splitted_line[0][0] == '1'))
+		else if (splitted_line[0][0] == '1')
 		{
 			if((is_line_from_map(file_content[i])) && (elements_counter == 6))
+			{
+				free_strings_array(splitted_line);
 				break;
+			}
 			else
 				print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
 		}
 		else if (splitted_line[0][0] != '\n')
 		{
-			print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
+			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
 		}
 		free_strings_array(splitted_line);
 		i++;
-		file_content[i] = get_next_line(fd);
 	}
 	// when out of this loop, we're reaching the map part
-	input_info->map_info->map = ft_calloc(sizeof(char *), line_counter);
+	input_info->map_info->map = export_map(input_info, file_content, i);
+}
+
+void	clean_line(char **line, char to_remove)
+{
+	// Changer les chars dans la mémoire
+	// remplace to_remove par des espaces (concu pour \n et ',')
+	// vérif si virgules présentes pour RGB sinon erreur
+	int	i;
+
+	i = 0;
+	while ((*line)[i])
+	{
+		if ((*line)[i] == to_remove)
+		{
+			(*line)[i] = ' ';
+		}
+		i++;
+	}
+}
+
+char	**export_map(t_input *input_info, char **file_content, int i)
+{
+	int		line_counter;
+
+	line_counter = count_lines_from_scene_description(input_info);			// Not ideal because count all the lines
+	input_info->map_info->map = ft_calloc(sizeof(char *), line_counter);	// Too much, just allocate for map size
 	while (file_content[i])
 	{
 		add_line_in_map_struct(file_content[i], input_info);				// Ⓜ️
 		i++;
-		file_content[i] = get_next_line(fd);
+		// file_content[i] = get_next_line(fd);		// No need, been exported already earlier
 		if(file_content[i] && !(is_line_from_map(file_content[i])))
 			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
 	}
 	free_strings_array(file_content);
+	return (input_info->map_info->map);
+}
+
+char	**open_fd_export_content(t_input *input_info)
+{
+	int		i;
+	int		fd;
+	int		line_counter;
+	char	**file_content;
+
+	i = 0;
+	fd = open(input_info->path_to_map, O_RDONLY);
+	line_counter = count_lines_from_scene_description(input_info);
+	// Count_lines_from_scene_description function makes sure there's something to read, otherwise exit
+	file_content = ft_calloc(sizeof(char *), line_counter + 1);
+	if (!file_content)
+		print_error_free_exit(input_info, strerror(errno), false, NULL);
+	while (i < line_counter)
+	{
+		file_content[i] = get_next_line(fd);				// Ⓜ️ (for each line)
+		i++;
+	}
+	close(fd);
+	return (file_content);
 }
 
 int		count_lines_from_scene_description(t_input *input_info)

@@ -94,6 +94,9 @@ int		main(int ac, char **av);
 void	parsing(char *path_to_map, t_input *input_info);
 bool	is_filename_correct(char *path_to_map);
 void	read_scene_description(t_input *input_info);
+void	clean_line(char **line, char to_remove);
+char	**open_fd_export_content(t_input *input_info);
+char	**export_map(t_input *input_info, char **file_content, int i);
 int		count_lines_from_scene_description(t_input *input_info);
 bool	is_line_from_map(char *line);
 void	spaces_fill_up(t_map_info *map_info);
@@ -101,7 +104,7 @@ void	spaces_fill_up(t_map_info *map_info);
 // fetch_elements.c
 int		check_and_add_texture_path(char **splitted_line, t_input *input_info);
 bool	is_image_reachable(char *path);
-int		check_and_add_colors(char **splitted_line, t_input *input_info);
+int		check_and_add_colors(char *line, char **splitted_line, t_input *input_info);
 void	add_line_in_map_struct(char *line, t_input *input_info);
 
 // free_functions.c

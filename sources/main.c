@@ -17,7 +17,7 @@ int	main(int ac, char **av)
 	// render final map & movements in loop
 	game.input = input_info;
 	game.player = &input_info->player;
-	set_game(&game);
+	set_game(&game);					// Keep breakpoint to avoid segfault
 	// av[1] = a map in format *.cub
 	// 1st function = parsing & checking
 	// rendering in minimap

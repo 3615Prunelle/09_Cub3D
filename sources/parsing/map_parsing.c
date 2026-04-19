@@ -59,16 +59,13 @@ bool	are_surroundings_valid(char **map, int element_line, int element_column)
 	}
 	else
 		return (false);
-
 	while (i <= element_line + 1)
 	{
 		j = element_column - 1;
 		while (j <= element_column + 1)
 		{
-			if ((i == element_line) && (j == element_column))
-				j++;
-			else if ((map[i][j] == '0') || (map[i][j] == '1')
-				|| (map[i][j] == 'N') || (map[i][j] == 'S') || (map[i][j] == 'E') || (map[i][j] == 'W'))
+			if (((i == element_line) && (j == element_column)) || ((map[i][j] == '0') || (map[i][j] == '1')
+				|| (map[i][j] == 'N') || (map[i][j] == 'S') || (map[i][j] == 'E') || (map[i][j] == 'W')))
 				j++;
 			else
 				return (false);
@@ -93,7 +90,6 @@ int		update_player_info(t_input *input_info)
 	player_found = false;
 	line = 0;
 	column = 0;
-
 	while (map[line])
 	{
 		column = 0;
