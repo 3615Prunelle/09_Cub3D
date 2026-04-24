@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/31 12:12:02 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/04/01 14:15:06 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ void	actions(mlx_key_data_t key, void *params)
 	// implement red cross mouse hook - Nope ? Already dealt with through mlx_close_hook function (in main) TBC ? Check mem leaks
 
 	draw_minimap(game, game->input->map_info->map);
+	cast_rays(game, game->input->map_info->map);
+	fill_view(game);
+	draw_rays(game);
 }
 
 bool	is_move_possible(t_cube *game, float degree)
@@ -77,13 +80,13 @@ bool	is_move_possible(t_cube *game, float degree)
 
 	// Find the target position depending on the degree - Caution : The changes are in pixels, they'll be converted to int at the next step
 	if (degree > 315 || degree <= 45) // Looking North
-		target_position[1] -= 1;							// Up one line, column unchanged
+		target_position[1] -= 3;							// Up one line, column unchanged
 	if (degree > 45 && degree <= 135) // Looking East
-		target_position[0] += 1;							// One column right, line unchanged
+		target_position[0] += 3;							// One column right, line unchanged
 	if (degree > 135 && degree <= 225) // Looking South
-		target_position[1] += 1;							// Down one line, column unchanged
+		target_position[1] += 3;							// Down one line, column unchanged
 	if (degree > 225 && degree <= 315) // Looking West
-		target_position[0] -= 1;							// One column left, line unchanged
+		target_position[0] -= 3;							// One column left, line unchanged
 
 	// Convert the float position[2] array into ints[2] to find what is the element that matches the target, in the logical map
 	int		conv_position[2];

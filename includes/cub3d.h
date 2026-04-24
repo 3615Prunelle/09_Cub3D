@@ -27,6 +27,14 @@
 # include <math.h>			//the scary stuff (tan, cos, sin, atan) but also yummy pie
 # include <stdio.h>			//mal lock mal nicht lock
 # include <MLX42.h>
+
+# define VIEW_WIDTH 100
+# define VIEW_HEIGHT 100
+# define MINI_WIDTH 50
+# define MINI_HEIGHT 50
+# define MAP_SCALE 32
+# define FOV 100.0
+# define VIEW_DISTANCE 3
 # define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
@@ -78,11 +86,26 @@ typedef	struct	s_input
 
 }	t_input;
 
+typedef struct s_ray
+{
+	float	degree;
+	float	contact_x;
+	float	contact_y;
+	float	length;
+	float	step_x;
+	float	step_y;
+	char	*wall;
+	char	direction;
+} t_ray;
+
 typedef struct s_cube
 {
+	float			viewplane;
 	t_input			*input;
 	t_player_data	*player;
+	t_ray			**rays;
 	mlx_t			*window;
+	mlx_texture_t	**textures;
 	mlx_image_t		*view;
 	mlx_image_t		*minimap;
 }	t_cube;
@@ -122,9 +145,21 @@ int		update_player_info(t_input *input_info);
 void	draw_minimap(t_cube *game, char **minimap);
 void	draw_line(t_cube *game, char *line, int position);
 void	draw_cone(t_cube * game, char **minimap);
-void	start_visuals(t_cube *game);
+
+//ray_casting.c
+void	set_corners(t_cube *game, t_ray *ray, int *position);
+void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map);
+void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, float *position);
+void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map);
+void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map);
+void	cast_rays(t_cube *game, char **map);
+
 
 //visualiser.c
+uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders, int j);
+void	draw_rays(t_cube *game);
+void	fill_view(t_cube *game);
+void	start_visuals(t_cube *game);
 void	pixel_to_image(uint8_t *pixel, uint32_t colour);
 
 //controler.c
@@ -138,11 +173,22 @@ void	move(t_cube *game, float degree);
 float	adjust_degree(enum e_directions direction, float degree);
 
 //ft_math.c
+void	unify_step(t_ray *ray);
+void	coordinates_float_to_int(int *ints, float *floats);
+void	set_x_y_int_steps(int *steps, float deg);
 float	add_degree(float a, float b);
 
 //image_handler.c
 void	breakdown(char **map);
 void	disappear(void *param);
 void	set_game(t_cube	*game);
+
+//textures.c
+uint32_t	get_south_north_color(t_cube *game, t_ray *ray, int *borders, int place);
+uint32_t	get_west_east_color(t_cube *game, t_ray *ray, int *borders, int place);
+uint32_t	load_color(int *colors);
+
+//debug.c
+void	ft_spike(t_cube *game, int i, int *borders);
 
 #endif
