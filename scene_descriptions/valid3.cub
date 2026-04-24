@@ -1,9 +1,9 @@
   F 141,   52 ,142
-EA textures/east.xpm
+EA textures/Trees_9.png
 C 218,   166, 249
-WE textures/north.xpm
-SO         textures/south.xpm
-        NO textures/west.xpm
+WE textures/Trees_9.png
+SO         textures/Trees_9.png
+        NO textures/Trees_9.png
 
  111111
  10W0011111
