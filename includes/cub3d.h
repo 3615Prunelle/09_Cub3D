@@ -28,12 +28,13 @@
 # include <stdio.h>			//mal lock mal nicht lock
 # include <MLX42.h>
 
-# define VIEW_WIDTH 1240
-# define VIEW_HEIGHT 550
-# define MINI_WIDTH 100
-# define MINI_HEIGHT 100
+# define VIEW_WIDTH 100
+# define VIEW_HEIGHT 100
+# define MINI_WIDTH 50
+# define MINI_HEIGHT 50
 # define MAP_SCALE 32
-# define FOW 90.0
+# define FOV 100.0
+# define VIEW_DISTANCE 3
 # define DEG_TO_RAD 0.017453293
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
@@ -98,7 +99,7 @@ typedef struct s_ray
 
 typedef struct s_cube
 {
-	float			viewdistance;
+	float			viewplane;
 	t_input			*input;
 	t_player_data	*player;
 	t_ray			**rays;
@@ -182,6 +183,7 @@ void	set_game(t_cube	*game);
 //textures.c
 uint32_t	get_south_north_color(t_cube *game, t_ray *ray, int *borders, int place);
 uint32_t	get_west_east_color(t_cube *game, t_ray *ray, int *borders, int place);
+uint32_t	load_color(int *colors);
 
 //debug.c
 void	ft_spike(t_cube *game, int i, int *borders);

@@ -12,34 +12,28 @@
 
 #include "cub3d.h"
 
-void	add_partially(t_ray *ray, float *diff, float *wall_posi, int factor)
+int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 {
-	ray->contact_x += ray->step_x / factor;
-	ray->contact_y += ray->step_y / factor;
-	diff[0] = ray->contact_x - (int)wall_posi[0];
-	diff[1] = ray->contact_y - (int)wall_posi[1];
-}
+	int	map_posi[2];
+	int	dirayction[2];
+	int	flag;
 
-void	smooth_wall(t_ray *ray, float *wall_posi)
-{
-	float	diff[2];
-
-	ray->contact_x = wall_posi[0];
-	ray->contact_y = wall_posi[1];
-	diff[0] = ray->contact_x - (int)wall_posi[0];
-	diff[1] = ray->contact_y - (int)wall_posi[1];
-	if ((diff[0] > 0.5 && diff[0] < 0.99) || (diff[0] > 0.01 && diff[0] < 0.5) || (diff[1] > 0.5 && diff[1] < 0.99) || (diff[1] > 0.01 && diff[1] < 0.5))
-		add_partially(ray, diff, wall_posi, 2);
-	if ((diff[0] > 0.5 && diff[0] < 0.99) || (diff[0] > 0.01 && diff[0] < 0.5) || (diff[1] > 0.5 && diff[1] < 0.99) || (diff[1] > 0.01 && diff[1] < 0.5))
-		add_partially(ray, diff, wall_posi, 4);
-	if ((diff[0] > 0.75 && diff[0] < 0.99) || (diff[0] > 0.01 && diff[0] < 0.25) || (diff[1] > 0.75 && diff[1] < 0.99) || (diff[1] > 0.1 && diff[1] < 0.25))
-		add_partially(ray, diff, wall_posi, 8);
-	if ((diff[0] > 0.875 && diff[0] < 0.99) || (diff[0] > 0.01 && diff[0] < 0.125) || (diff[1] > 0.875 && diff[1] < 0.99) || (diff[1] > 0.01 && diff[1] < 0.125))
-		add_partially(ray, diff, wall_posi, 16);
-	if ((diff[0] > 0.9375 && diff[0] < 0.99) || (diff[0] > 0.01 && diff[0] < 0.0625) || (diff[1] > 0.9375 && diff[1] < 0.99) || (diff[1] > 0.01 && diff[1] < 0.0625))
-		add_partially(ray, diff, wall_posi, 32);
-	if ((diff[0] > 0.96875 && diff[0] < 0.99) || (diff[0] > 0.01 && diff[0] < 0.03125) || (diff[1] > 0.96875 && diff[1] < 0.99) || (diff[1] > 0.01 && diff[1] < 0.03125))
-		add_partially(ray, diff, wall_posi, 64);
+	flag = 0;
+	dirayction[0] = fabs(ray->step_x) / ray->step_x;
+	dirayction[1] = fabs(ray->step_y) / ray->step_y;
+	map_posi[0] = int_pos[0] / MAP_SCALE;
+	map_posi[1] = int_pos[1] / MAP_SCALE;
+	while (map[map_posi[1] - dirayction[1]][map_posi[0]] == '1' &&
+		 map[map_posi[1]][map_posi[0] - dirayction[0]] == '1')
+	{
+		posi[0] -= ray->step_x /5;
+		posi[1] -= ray->step_y /5;
+		coordinates_float_to_int(int_pos, posi);
+		map_posi[0] = int_pos[0] / MAP_SCALE;
+		map_posi[1] = int_pos[1] / MAP_SCALE;
+		flag = 1;
+	}
+	return (flag);
 }
 
 void	set_corners(t_cube *game, t_ray *ray, int *position)
@@ -53,8 +47,8 @@ void	set_corners(t_cube *game, t_ray *ray, int *position)
 	else if (game->player->position[1] >= position[1])
 		ray->wall[0] = 'N';
 	else if (game->player->position[0] >= position[0])
-		ray->wall[0] = 'W';*/
-	//else
+		ray->wall[0] = 'W';
+	else*/
 		ray->wall[0] = 'K';
 }
 
@@ -174,10 +168,9 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 //	printf("cast verti\t");//debug
 	pre_length = ray->length;
 	set_x_y_int_steps(int_step, deg);
-	position[0] = game->player->int_cords[0];
-	position[1] = game->player->int_cords[1];
-	int_pos[0] = (int)position[0];
-	int_pos[1] = (int)position[1];
+	position[0] = game->player->position[0];
+	position[1] = game->player->position[1];
+	coordinates_float_to_int(int_pos, position);
 	ray->step_y = (float)int_step[1];
 	ray->step_x = int_step[0] * fabsf(int_step[1] * tanf(deg * DEG_TO_RAD));
 	unify_step(ray);
@@ -185,8 +178,9 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 	{
 		position[0] += ray->step_x;
 		position[1] += ray->step_y;
-		int_pos[0] = (int)position[0];
-		int_pos[1] = (int)position[1];
+		coordinates_float_to_int(int_pos, position);
+		if (corner(map, ray, position, int_pos) == 1)
+			break ;
 	}
 	calculate_ray_length_and_wallside_v(game, ray, deg, position);
 	if (pre_length != 1.0 && ray->length < pre_length)
@@ -206,10 +200,9 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 
 //	printf("cast horizont\t");//debug
 	set_x_y_int_steps(int_step, deg);
-	position[0] = game->player->int_cords[0];
-	position[1] = game->player->int_cords[1];
-	int_pos[0] = (int)position[0];
-	int_pos[1] = (int)position[1];
+	position[0] = game->player->position[0];
+	position[1] = game->player->position[1];
+	coordinates_float_to_int(int_pos, position);
 	ray->step_x = (float)int_step[0];
 	ray->step_y = int_step[1] * fabsf((int_step[0] / tanf(deg * DEG_TO_RAD)));
 	unify_step(ray);
@@ -217,8 +210,9 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 	{
 		position[0] += ray->step_x;
 		position[1] += ray->step_y;
-		int_pos[0] = (int)position[0];
-		int_pos[1] = (int)position[1];
+		coordinates_float_to_int(int_pos, position);
+		if (corner(map, ray, position, int_pos) == 1)
+			break ;
 	}
 	calculate_ray_length_and_wallside_h(game, ray, deg, position);
 	ray->direction = 'h';
@@ -277,15 +271,18 @@ void	cast_rays(t_cube *game, char **map)
 //	int		test;//debug
 	float	fov_step;
 	float	degry;
+	float	view_pos;
 
 //	printf("\n");//debug
 	i = 0;
-	fov_step = FOW / VIEW_WIDTH;
+	fov_step = FOV / VIEW_WIDTH;
 	while (i < VIEW_WIDTH)
 	{
+		view_pos = (((i * 2.0) - (VIEW_WIDTH - 1.0)) / (VIEW_WIDTH - 1.0)) * (game->viewplane / 2);
 		game->rays[i]->direction = '0';
 		game->rays[i]->length = 1.0;
-		degry = add_degree(game->player->direction, (-1 * FOW / 2) + (fov_step * i));
+//		degry = add_degree(game->player->direction, (-1 * FOV / 2) + (fov_step * i));
+		degry = add_degree(game->player->direction, atan2(view_pos, game->viewplane) / DEG_TO_RAD);
 		game->rays[i]->degree = degry;
 //		test = i / 10;//debug
 //		printf("Ray [%d - %d]\tdegree: %.2f\t", i, i + 10,degry);//debug
@@ -302,7 +299,8 @@ void	cast_rays(t_cube *game, char **map)
 			game->rays[i]->wall = game->rays[i - 1]->wall;
 		}//debug
 		printf("length: %.2f\n", game->rays[i]->length);//debug*/
-		game->rays[i]->length = game->rays[i]->length * cosf(((-1 * FOW / 2) + (fov_step * i)) * DEG_TO_RAD);
+		game->rays[i]->length = game->rays[i]->length * cosf(atan2(view_pos, game->viewplane));
+//		game->rays[i]->length = game->rays[i]->length * cosf(((-1 * FOV / 2) + (fov_step * i)) * DEG_TO_RAD);
 		i++;
 	}
 }

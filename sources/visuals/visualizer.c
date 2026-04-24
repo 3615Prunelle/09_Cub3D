@@ -54,24 +54,28 @@ void	draw_rays(t_cube *game)
 //	printf("\n");//debug
 	while (i < VIEW_WIDTH)
 	{
-//		borders[0] = sqrt(game->rays[i]->length) * 5;
-//		borders[1] = VIEW_HEIGHT - borders[0];
-		borders[0] = VIEW_HEIGHT / 2 - (int)((((8) * game->viewdistance / game->rays[i]->length)) / 2);
-		borders[1] = VIEW_HEIGHT / 2 + (int)((((8) * game->viewdistance / game->rays[i]->length)) / 2);
+//		borders[0] = VIEW_HEIGHT / 2 - (int)((VIEW_HEIGHT / game->rays[i]->length));
+//		borders[1] = VIEW_HEIGHT / 2 + (int)((VIEW_HEIGHT / game->rays[i]->length));
+		borders[0] = VIEW_HEIGHT / 2 - (int)((((MAP_SCALE * VIEW_HEIGHT) / (game->rays[i]->length + VIEW_DISTANCE))) / 2);
+		borders[1] = VIEW_HEIGHT / 2 + (int)((((MAP_SCALE * VIEW_HEIGHT) / (game->rays[i]->length + VIEW_DISTANCE))) / 2);
 //		if (i < VIEW_WIDTH - 4)
 //			ft_spike(game, i, borders);//debug
 //		if (i % 10 == 0)
 //			printf("%d borders: %d / %d\t", i, borders[0], borders[1]);//debug
-		if (borders[0] < 0)
+/*		if (borders[0] < 0)
 			borders[0] = 0;
 		if (borders[1] > VIEW_HEIGHT)
-			borders[1] = VIEW_HEIGHT;
+			borders[1] = VIEW_HEIGHT;*/
 		j = 0;
 		while (borders[0] + j < borders[1])
 		{
+			while (borders[0] + j < 0)
+				j++;
 			color = paint_wall(game, game->rays[i], borders, j);
 			pixel_to_image(&game->view->pixels[((borders[0] + j) * VIEW_WIDTH + i) * sizeof(int32_t)], color);
 			j++;
+			if (borders[0] + j >= VIEW_HEIGHT)
+				break ;
 		}
 		i++;
 	}
@@ -81,14 +85,17 @@ void	fill_view(t_cube *game)
 {
 	int	i;
 	int	j;
+	uint32_t	colors[2];
 
 	i = 0;
 	j = 0;
+	colors[0] = load_color(game->input->ceiling);
+	colors[1] = load_color(game->input->floor);
 	while (j < VIEW_HEIGHT / 2)
 	{
 		while (i < VIEW_WIDTH)
 		{
-			pixel_to_image(&game->view->pixels[(j * VIEW_WIDTH + i) * sizeof(int32_t)], 0x000000FF);
+			pixel_to_image(&game->view->pixels[(j * VIEW_WIDTH + i) * sizeof(int32_t)], colors[0]);
 			i++;
 		}
 		i = 0;
@@ -98,7 +105,7 @@ void	fill_view(t_cube *game)
 	{
 		while (i < VIEW_WIDTH)
 		{
-			pixel_to_image(&game->view->pixels[(j * VIEW_WIDTH + i) * sizeof(int32_t)], 0xFFFFFFFF);
+			pixel_to_image(&game->view->pixels[(j * VIEW_WIDTH + i) * sizeof(int32_t)], colors[1]);
 			i++;
 		}
 		i = 0;

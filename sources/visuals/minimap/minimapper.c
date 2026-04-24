@@ -47,10 +47,10 @@ void	draw_cone(t_cube * game, char **minimap)
 	float	fov_step;
 	int		ray_step[2]; //0 for x 1 for y, so the direction is right
 
-	i = FOW / 2;
+	i = FOV / 2;
 	base = game->player->direction;
-	fov_step = FOW / VIEW_WIDTH;
-	while (i > - FOW / 2)
+	fov_step = FOV / VIEW_WIDTH;
+	while (i > - FOV / 2)
 	{
 		ray_step[0] = 1;
 		ray_step[1] = 1;

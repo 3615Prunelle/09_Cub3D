@@ -102,7 +102,7 @@ void	set_game(t_cube	*game)
 	game->textures = load_textures(game, game->input);
 	if (!game->textures)
 		disappear(game);
-	game->viewdistance = VIEW_WIDTH / (2 * tanf((FOW / 2) * DEG_TO_RAD));
+	game->viewplane = VIEW_DISTANCE * (2 * tanf((FOV / 2) * DEG_TO_RAD));
 	game->player->position[0] = game->player->int_cords[0] * MAP_SCALE + MAP_SCALE / 2;
 	game->player->position[1] = game->player->int_cords[1] * MAP_SCALE + MAP_SCALE / 2;
 	if (game->player->initial_direction == 'N')
