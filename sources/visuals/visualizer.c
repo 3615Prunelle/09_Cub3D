@@ -115,8 +115,8 @@ void	fill_view(t_cube *game)
 
 void	start_visuals(t_cube *game)
 {
-	draw_minimap(game, game->input->map_info->map);
 	cast_rays(game, game->input->map_info->map);
+	draw_minimap(game, game->input->map_info->map);
 	fill_view(game);
 	draw_rays(game);
 	mlx_image_to_window(game->window, game->view, 0, 0);

@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-void	draw_ray(t_cube *game, float y, float x, char **minimap)
+/*void	draw_ray(t_cube *game, float y, float x, char **minimap)
 {
 	float	i;
 	float	j;
@@ -64,6 +64,36 @@ void	draw_cone(t_cube * game, char **minimap)
 		if ((add_degree(base, i) >= 314 || add_degree(base, i) <= 46) || (add_degree(base, i) >= 134 && add_degree(base, i) <= 226))
 			draw_ray(game, ray_step[1], ray_step[0] * fabsf(tanf(add_degree(base, i) * DEG_TO_RAD)), minimap);
 		i -= fov_step;
+	}
+}*/
+
+void	draw_cone(t_cube * game, float *position)
+{
+	int		i;
+	float	step[2];
+	int		index;
+	t_ray	*ray;
+
+	i = 0;
+	while (i < VIEW_WIDTH)
+	{
+		step[0] = position[0];
+		step[1] = position[1];
+		ray = game->rays[i];
+		while (step[0] - position[0] < MINI_WIDTH / 2 - 1 && step[1] -
+			position[1] < MINI_HEIGHT / 2 - 1 && step[0] - position[0] >
+			-MINI_WIDTH / 2 + 1 && step[1] - position[1] > -MINI_HEIGHT / 2 + 1)
+		{
+			if ((int)step[0] == (int)ray->contact_x && (int)step[1] == (int)ray->contact_y)
+				break ;
+			step[0] += ray->step_x;
+			step[1] += ray->step_y;
+			index = ((MINI_HEIGHT / 2 + (int)step[1] - (int)position[1]) *
+				MINI_WIDTH + MINI_WIDTH / 2 + ((int)step[0] -
+				(int)position[0])) * sizeof(int32_t);
+			pixel_to_image(&game->minimap->pixels[index], 0xFFFFFFFF);
+		}
+		i++;
 	}
 }
 
@@ -132,6 +162,6 @@ void	draw_minimap(t_cube *game, char **minimap)
 			draw_line(game, minimap[(i + game->player->int_cords[1] - MINI_HEIGHT / 2) / MAP_SCALE], i);
 		i++;
 	}
-	draw_cone(game, minimap);
+	draw_cone(game, game->player->position);
 	draw_player(game, game->player->int_cords[0], game->player->int_cords[1]);
 }

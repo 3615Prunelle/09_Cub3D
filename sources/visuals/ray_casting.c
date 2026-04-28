@@ -21,16 +21,12 @@ int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 	flag = 0;
 	dirayction[0] = fabs(ray->step_x) / ray->step_x;
 	dirayction[1] = fabs(ray->step_y) / ray->step_y;
-	map_posi[0] = int_pos[0] / MAP_SCALE;
-	map_posi[1] = int_pos[1] / MAP_SCALE;
-	while (map[map_posi[1] - dirayction[1]][map_posi[0]] == '1' &&
-		 map[map_posi[1]][map_posi[0] - dirayction[0]] == '1')
+	if (map[(int_pos[1] - dirayction[1]) / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1' &&
+		 map[int_pos[1] / MAP_SCALE][(int_pos[0] - dirayction[0]) / MAP_SCALE] == '1')
 	{
 		posi[0] -= ray->step_x /5;
 		posi[1] -= ray->step_y /5;
 		coordinates_float_to_int(int_pos, posi);
-		map_posi[0] = int_pos[0] / MAP_SCALE;
-		map_posi[1] = int_pos[1] / MAP_SCALE;
 		flag = 1;
 	}
 	return (flag);
@@ -176,8 +172,8 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 	unify_step(ray);
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
 	{
-		position[0] += ray->step_x;
-		position[1] += ray->step_y;
+		position[0] += ray->step_x / 3;
+		position[1] += ray->step_y / 3;
 		coordinates_float_to_int(int_pos, position);
 		if (corner(map, ray, position, int_pos) == 1)
 			break ;
@@ -208,8 +204,8 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 	unify_step(ray);
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
 	{
-		position[0] += ray->step_x;
-		position[1] += ray->step_y;
+		position[0] += ray->step_x / 3;
+		position[1] += ray->step_y / 3;
 		coordinates_float_to_int(int_pos, position);
 		if (corner(map, ray, position, int_pos) == 1)
 			break ;

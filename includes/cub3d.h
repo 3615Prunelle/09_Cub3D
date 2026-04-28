@@ -28,10 +28,10 @@
 # include <stdio.h>			//mal lock mal nicht lock
 # include <MLX42.h>
 
-# define VIEW_WIDTH 100
-# define VIEW_HEIGHT 100
-# define MINI_WIDTH 50
-# define MINI_HEIGHT 50
+# define VIEW_WIDTH 1000
+# define VIEW_HEIGHT 1000
+# define MINI_WIDTH 350
+# define MINI_HEIGHT 350
 # define MAP_SCALE 32
 # define FOV 100.0
 # define VIEW_DISTANCE 3
@@ -141,7 +141,7 @@ int		update_player_info(t_input *input_info);
 //minimapper.c
 void	draw_minimap(t_cube *game, char **minimap);
 void	draw_line(t_cube *game, char *line, int position);
-void	draw_cone(t_cube * game, char **minimap);
+void	draw_cone(t_cube * game, float *position);
 
 //ray_casting.c
 void	set_corners(t_cube *game, t_ray *ray, int *position);

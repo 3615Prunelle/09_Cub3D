@@ -58,10 +58,10 @@ void	actions(mlx_key_data_t key, void *params)
 	}
 	// implement red cross mouse hook - Nope ? Already dealt with through mlx_close_hook function (in main) TBC ? Check mem leaks
 
-	draw_minimap(game, game->input->map_info->map);
 	cast_rays(game, game->input->map_info->map);
 	fill_view(game);
 	draw_rays(game);
+	draw_minimap(game, game->input->map_info->map);
 }
 
 bool	is_move_possible(t_cube *game, float degree)
