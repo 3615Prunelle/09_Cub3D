@@ -66,32 +66,50 @@ void	draw_cone(t_cube * game, char **minimap)
 		i -= fov_step;
 	}
 }*/
+int	ray_contact(t_ray *ray, float *position, float *step, int *index)
+{
+	int	contact;
+
+	contact = 0;
+	step[0] += ray->step_x;
+	step[1] += ray->step_y;
+	if ((ray->step_x < 0 && step[0] <= ray->contact_x) || (ray->step_x > 0 &&
+		 step[0] >= ray->contact_x))
+		contact++;
+	if ((ray->step_y < 0 && step[1] <= ray->contact_y) || (ray->step_y > 0 &&
+		 step[1] >= ray->contact_y))
+		contact++;
+	if (contact == 2)
+		return (1);
+	index[0] = ((index[2] + (int)step[1] - (int)position[1]) * MINI_WIDTH +
+		index[1] + ((int)step[0] - (int)position[0])) * sizeof(int32_t);
+	return (0);
+}
 
 void	draw_cone(t_cube * game, float *position)
 {
 	int		i;
 	float	step[2];
-	int		index;
+	int		index[3];
 	t_ray	*ray;
 
 	i = 0;
+	index[1] = MINI_WIDTH /2;
+	index[2] = MINI_HEIGHT / 2;
 	while (i < VIEW_WIDTH)
 	{
 		step[0] = position[0];
 		step[1] = position[1];
 		ray = game->rays[i];
-		while (step[0] - position[0] < MINI_WIDTH / 2 - 1 && step[1] -
-			position[1] < MINI_HEIGHT / 2 - 1 && step[0] - position[0] >
-			-MINI_WIDTH / 2 + 1 && step[1] - position[1] > -MINI_HEIGHT / 2 + 1)
+		while (step[0] - position[0] < index[1] - 1 && step[1] - position[1] <
+			index[2] - 1 && step[0] - position[0] >	- index[1] + 1 &&
+			 step[1] - position[1] > -index[2] + 1)
 		{
-			if ((int)step[0] == (int)ray->contact_x && (int)step[1] == (int)ray->contact_y)
+			if (ray_contact(ray, position, step, index) == 1 ||
+				game->input->map_info->map[(int)step[1] / MAP_SCALE]
+				[(int)step[0] / MAP_SCALE] == '1')
 				break ;
-			step[0] += ray->step_x;
-			step[1] += ray->step_y;
-			index = ((MINI_HEIGHT / 2 + (int)step[1] - (int)position[1]) *
-				MINI_WIDTH + MINI_WIDTH / 2 + ((int)step[0] -
-				(int)position[0])) * sizeof(int32_t);
-			pixel_to_image(&game->minimap->pixels[index], 0xFFFFFFFF);
+			pixel_to_image(&game->minimap->pixels[index[0]], 0xFFFFFFFF);
 		}
 		i++;
 	}
