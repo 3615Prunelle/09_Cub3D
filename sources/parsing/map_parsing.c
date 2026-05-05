@@ -47,37 +47,51 @@ bool	is_wall_only(char *line)
 	return (true);
 }
 
+// Ne pas checker les diagonales partant de l'element
 bool	are_surroundings_valid(char **map, int element_line, int element_column)
 {
-	int		i;
-	int		j;
+	// OLD CODE BEFORE OPTIMIZATION - KEEP IF ISSUE
+	// char	to_check;
 
-	if ((element_line != 0) && (element_column != 0))
-	{
-		i = element_line - 1;
-		j = element_column - 1;
-	}
-	else
+	// if ((element_line == 0) || (element_column == 0))
+	// 	return (false);									// No element (player or '0') should be at line 0 or column 0
+
+	// to_check = map[element_line][element_column + 1];	// What's on the left ?
+	// if (!ft_strchr("01NSEW", to_check))
+	// 	return(false);
+
+	// to_check = map[element_line][element_column - 1];	// What's on the right ?
+	// if (!ft_strchr("01NSEW", to_check))
+	// 	return(false);
+
+	// to_check = map[element_line - 1][element_column];	// What's above ?
+	// if (!ft_strchr("01NSEW", to_check))
+	// return(false);
+
+	// to_check = map[element_line + 1][element_column];	// What's below ?
+	// if (!ft_strchr("01NSEW", to_check))
+	// 	return(false);
+
+	// return (true);
+
+	static int	directions[4][2] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};	// static so it's norminette approved for decl + init on same line
+	int			i;
+
+	i = 0;
+	if (element_line == 0 || element_column == 0)
 		return (false);
-	while (i <= element_line + 1)
+	while (i < 4)
 	{
-		j = element_column - 1;
-		while (j <= element_column + 1)
-		{
-			if (((i == element_line) && (j == element_column)) || ((map[i][j] == '0') || (map[i][j] == '1')
-				|| (map[i][j] == 'N') || (map[i][j] == 'S') || (map[i][j] == 'E') || (map[i][j] == 'W')))
-				j++;
-			else
-				return (false);
-		}
+		if (!ft_strchr("01NSEW", map[element_line + directions[i][0]][element_column + directions[i][1]]))
+			return (false);
 		i++;
 	}
 	return (true);
 }
 
 /*
-return -1 if error(no player or multiple or position outside game)
-check if inside game : char before + after + above + below + 4 diagonals must be either 0 or 1
+Checks if inside game : char before + after + above + below + 4 diagonals must be either 0 or 1
+Returns -1 if error(no player or multiple or position outside game)
 */
 int		update_player_info(t_input *input_info)
 {

@@ -1,10 +1,10 @@
 #include "cub3d.h"
 
+// Check direction
+// Ignore spaces
+// Fetch clean path and fill struct
 int		check_and_add_texture_path(char **splitted_line, t_input *input_info)
 {
-	// check direction
-	// ignore spaces
-	// fetch clean path and fill struct
 	if (!splitted_line[1] || !is_image_reachable(splitted_line[1]))
 		return (0);
 
@@ -41,57 +41,60 @@ bool	is_image_reachable(char *path)
 	return (true);
 }
 
-// return 0 if error
 int		check_and_add_colors(char *line, char **splitted_line, t_input *input_info)
 {
-	int		i;
-	int		j;
-	int		comma_count;
-	int		number_to_check;
-	char	**RGB_split;
+	int	i;
+	int	number_to_check;
 
 	i = 0;
-	comma_count = 0;
-
-	if ((ft_strncmp(splitted_line[0], "F", 2) == 0) || (ft_strncmp(splitted_line[0], "C", 2) == 0))
+	if (!coma_check(line))
+		return (0);
+	while (splitted_line[i + 1])
 	{
-		while (line[i] != '\0')
+		remove_char_from_line(&splitted_line[i + 1], ',');
+		number_to_check = ft_atoi(splitted_line[i + 1]);
+		if (number_to_check >= 0 && number_to_check <= 255)
 		{
-			if (line[i] == ',')
-				comma_count++;		// Ne check pas si les virgules séparent des nombres, mais fuck it
-			i++;
+			if (splitted_line[0][0] == 'F')
+				input_info->floor[i] = number_to_check;
+			if (splitted_line[0][0] == 'C')
+				input_info->ceiling[i] = number_to_check;
 		}
-		if (comma_count != 2)
+		else
 			return (0);
-		clean_line(&line, ',');
-		RGB_split = ft_split(line, ' ');
-		i = 0;
-		while (RGB_split[i + 1])
-		{
-			j = 0;
-			while (RGB_split[i + 1][j])
-			{
-				if ((ft_isdigit(RGB_split[i + 1][j])) && (i < 3))		// Avoids extra numbers
-					j++;
-				else
-					return (0);
-			}
-			number_to_check = atoi(RGB_split[i + 1]);
-			if (number_to_check >= 0 && number_to_check <= 255)
-			{
-				if (RGB_split[0][0] == 'F')
-					input_info->floor[i] = number_to_check;
-				if (RGB_split[0][0] == 'C')
-					input_info->ceiling[i] = number_to_check;
-			}
-			else
-				return (0);
-			i++;
-		}
+		i++;
 	}
-	else
-			return (0);
+	if (i != 3)				// Not the right amount of numbers
+		return (0);
 	return (1);
+}
+
+// Return 0 if error
+int		coma_check(char *line)
+{
+	int	i;
+	int	coma_count;
+
+	i = 0;
+	coma_count = 0;
+	while (line[i] != '\0')
+	{
+		while(line[i] == ' ' || line[i] == 'F' || line[i] == 'C')
+			i++;
+		while (ft_isdigit(line[i]))
+			i++;
+		while(line[i] == ' ')
+			i++;
+		if (line[i] == '\0')
+			break;
+		if (line[i] != ',')
+			return(0);
+		coma_count++;
+		i++;
+	}
+	if (coma_count == 2)
+		return (1);
+	return (0);
 }
 
 void	add_line_in_map_struct(char *line, t_input *input_info)

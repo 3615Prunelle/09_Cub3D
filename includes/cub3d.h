@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/04/17 20:20:22 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/04 13:54:54 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,13 @@ int		main(int ac, char **av);
 
 // input_parsing.c
 void	parsing(char *path_to_map, t_input *input_info);
-bool	is_filename_correct(char *path_to_map);
 void	read_scene_description(t_input *input_info);
-void	clean_line(char **line, char to_remove);
-char	**open_fd_export_content(t_input *input_info);
 char	**export_map(t_input *input_info, char **file_content, int i);
+char	**open_fd_export_content(t_input *input_info);
+
+// parsing_helpers.c
+bool	is_filename_correct(char *path_to_map);
+void	remove_char_from_line(char **line, char to_remove);
 int		count_lines_from_scene_description(t_input *input_info);
 bool	is_line_from_map(char *line);
 void	spaces_fill_up(t_map_info *map_info);
@@ -128,6 +130,7 @@ void	spaces_fill_up(t_map_info *map_info);
 int		check_and_add_texture_path(char **splitted_line, t_input *input_info);
 bool	is_image_reachable(char *path);
 int		check_and_add_colors(char *line, char **splitted_line, t_input *input_info);
+int		coma_check(char *line);
 void	add_line_in_map_struct(char *line, t_input *input_info);
 
 // free_functions.c

@@ -13,6 +13,7 @@ SRCS =	./sources/main.c \
 		./sources/parsing/fetch_elements.c \
 		./sources/parsing/free_functions.c \
 		./sources/parsing/map_parsing.c \
+		./sources/parsing/parsing_helpers.c \
 		./sources/visuals/minimap/minimapper.c \
 		./sources/visuals/image_handler.c \
 		./sources/visuals/visualizer.c \
