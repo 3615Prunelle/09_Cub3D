@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/04 13:54:54 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:49:59 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@
 
 # define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
 # define ERR_MSG_02	"No jeans, no sneakers, no .cub - Can't get in, sorry.\n"
-# define ERR_MSG_03	"Invalid line in scene description (path to texture)\n"
-# define ERR_MSG_04	"Missing element(s) or invalid line (map)\n"
+# define ERR_MSG_03	"Missing element(s) or invalid line\n"
+
 # define ERR_MSG_05	"Empty .cub file\n"
-# define ERR_MSG_06	"Invalid line in scene description (color)\n"
+
 # define ERR_MSG_07	"Invalid map\n"
 # define ERR_MSG_08	"Something wrong with the player\n"
 # define ERR_MSG_09	"Thanks for shopping at Cub, tschüssi !\n"
@@ -75,6 +75,7 @@ typedef struct s_map_info
 typedef	struct	s_input
 {
 	char			*path_to_map;
+	char			**scene_description;
 	char			*NO;
 	char			*SO;
 	char			*WE;
@@ -115,23 +116,23 @@ int		main(int ac, char **av);
 
 // input_parsing.c
 void	parsing(char *path_to_map, t_input *input_info);
-void	read_scene_description(t_input *input_info);
-char	**export_map(t_input *input_info, char **file_content, int i);
+void	read_scene_description(t_input *input_info, char **scene_description);
+char	**export_map(t_input *input_info, char **scene_description, int i);
 char	**open_fd_export_content(t_input *input_info);
+int		line_management(t_input *input_info, char **splitted_line, int i, int *elements_counter);
 
-// parsing_helpers.c
+// input_parsing_helpers.c
 bool	is_filename_correct(char *path_to_map);
 void	remove_char_from_line(char **line, char to_remove);
 int		count_lines_from_scene_description(t_input *input_info);
-bool	is_line_from_map(char *line);
-void	spaces_fill_up(t_map_info *map_info);
+int		coma_check(char *line);
 
 // fetch_elements.c
 int		check_and_add_texture_path(char **splitted_line, t_input *input_info);
 bool	is_image_reachable(char *path);
-int		check_and_add_colors(char *line, char **splitted_line, t_input *input_info);
-int		coma_check(char *line);
+int		check_and_add_colors(char *line, t_input *input_info);
 void	add_line_in_map_struct(char *line, t_input *input_info);
+int		add_rgb_in_struct(t_input *input_info, char *identifier, int color, int i);
 
 // free_functions.c
 void	print_error_free_exit(t_input *input_info, char *error_message, bool free_array, char **array);
@@ -140,9 +141,14 @@ void	free_input_info_struct(t_input *input_info);
 
 // map_parsing.c
 bool	is_map_valid(t_map_info *map_info);
+int		check_player(t_input *input_info, char **map);
+void	add_player_info_in_struct(t_input *input_info, int line, int column);
+
+// map_parsing_helpers.c
+bool	is_line_from_map(char *line);
+void	spaces_fill_up(t_map_info *map_info);
 bool	is_wall_only(char *line);
 bool	are_surroundings_valid(char **map, int element_line, int element_column);
-int		update_player_info(t_input *input_info);
 
 //minimapper.c
 void	draw_minimap(t_cube *game, char **minimap);

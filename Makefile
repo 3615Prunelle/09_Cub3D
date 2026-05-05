@@ -10,10 +10,11 @@ LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft 
 
 SRCS =	./sources/main.c \
 		./sources/parsing/input_parsing.c \
+		./sources/parsing/input_parsing_helpers.c \
 		./sources/parsing/fetch_elements.c \
 		./sources/parsing/free_functions.c \
 		./sources/parsing/map_parsing.c \
-		./sources/parsing/parsing_helpers.c \
+		./sources/parsing/map_parsing_helpers.c \
 		./sources/visuals/minimap/minimapper.c \
 		./sources/visuals/image_handler.c \
 		./sources/visuals/visualizer.c \

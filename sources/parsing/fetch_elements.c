@@ -38,63 +38,49 @@ bool	is_image_reachable(char *path)
 		return(false);
 	if((file_fd = open(path, O_RDONLY)) == -1)
 		return (false);
+	close(file_fd);
 	return (true);
 }
 
-int		check_and_add_colors(char *line, char **splitted_line, t_input *input_info)
+int		check_and_add_colors(char *line, t_input *input_info)
 {
-	int	i;
-	int	number_to_check;
+	int		i;
+	int		number_to_check;
+	char	**RGB_split;
 
 	i = 0;
 	if (!coma_check(line))
 		return (0);
-	while (splitted_line[i + 1])
+	remove_char_from_line(&line, ',');
+	RGB_split = ft_split(line, ' ');
+	while (RGB_split[i + 1])
 	{
-		remove_char_from_line(&splitted_line[i + 1], ',');
-		number_to_check = ft_atoi(splitted_line[i + 1]);
-		if (number_to_check >= 0 && number_to_check <= 255)
+		number_to_check = ft_atoi(RGB_split[i + 1]);
+		if(!add_rgb_in_struct(input_info, RGB_split[0], number_to_check, i))
 		{
-			if (splitted_line[0][0] == 'F')
-				input_info->floor[i] = number_to_check;
-			if (splitted_line[0][0] == 'C')
-				input_info->ceiling[i] = number_to_check;
-		}
-		else
+			free_strings_array(RGB_split);
 			return (0);
+		}
 		i++;
 	}
+	free_strings_array(RGB_split);
 	if (i != 3)				// Not the right amount of numbers
 		return (0);
 	return (1);
 }
 
-// Return 0 if error
-int		coma_check(char *line)
+int		add_rgb_in_struct(t_input *input_info, char *identifier, int color, int i)
 {
-	int	i;
-	int	coma_count;
-
-	i = 0;
-	coma_count = 0;
-	while (line[i] != '\0')
+	if (color >= 0 && color <= 255)
 	{
-		while(line[i] == ' ' || line[i] == 'F' || line[i] == 'C')
-			i++;
-		while (ft_isdigit(line[i]))
-			i++;
-		while(line[i] == ' ')
-			i++;
-		if (line[i] == '\0')
-			break;
-		if (line[i] != ',')
-			return(0);
-		coma_count++;
-		i++;
-	}
-	if (coma_count == 2)
+		if (identifier[0] == 'F')
+			input_info->floor[i] = color;
+		if (identifier[0] == 'C')
+			input_info->ceiling[i] = color;
 		return (1);
-	return (0);
+	}
+	else
+		return (0);
 }
 
 void	add_line_in_map_struct(char *line, t_input *input_info)

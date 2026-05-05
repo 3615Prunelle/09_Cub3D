@@ -10,90 +10,87 @@ void	parsing(char *path, t_input *input_info)
 		exit (1);
 	}
 	input_info->map_info = ft_calloc(sizeof(t_map_info), 1);
-	read_scene_description(input_info);
+	input_info->scene_description = open_fd_export_content(input_info);
+	read_scene_description(input_info, input_info->scene_description);
 	// map is saved, but needs to be adjusted (spaces to fill blanks)
 	spaces_fill_up(input_info->map_info);
-	if (update_player_info(input_info) == -1)			// Checks if only one player + surroundings ok + update struct
+	if (check_player(input_info, input_info->map_info->map) == -1)	// Checks if only one player + surroundings ok + update struct
 		print_error_free_exit(input_info, ERR_MSG_08, false, NULL);
 
 	if(!is_map_valid(input_info->map_info))
 		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
 }
 
-void	read_scene_description(t_input *input_info)
+void	read_scene_description(t_input *input_info, char **scene_description)
 {
-	char	**file_content;
 	char	**splitted_line;
 	int		i;
 	int		elements_counter;
+	int		line_management_return;
 
 	i = 0;
 	elements_counter = 0;
-	file_content = open_fd_export_content(input_info);
-
-	while (file_content[i])
+	while (scene_description[i])
 	{
-		if(file_content[i][0] != '\n' && (strchr(file_content[i], '\n')) && (elements_counter != 6))
-			remove_char_from_line(&file_content[i], '\n');
-		splitted_line = ft_split(file_content[i], ' ');
+		if(scene_description[i][0] != '\n' && (strchr(scene_description[i], '\n')) && (elements_counter != 6))
+			remove_char_from_line(&scene_description[i], '\n');
+		splitted_line = ft_split(scene_description[i], ' ');
 		if(!splitted_line)
-			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
-
-		// create function 'categorize_line'
-
-		if (ft_strchr("NSWE", splitted_line[0][0]))
-		{
-			if (!check_and_add_texture_path(splitted_line, input_info))
-				print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
-			elements_counter++;
-		}
-		else if (ft_strcmp(splitted_line[0], "F") || ft_strcmp(splitted_line[0], "C"))
-		{
-			if (!check_and_add_colors(file_content[i], splitted_line, input_info))
-				print_error_free_exit(input_info, ERR_MSG_06, true, file_content);
-			elements_counter++;
-		}
-		else if (splitted_line[0][0] == '1')
-		{
-			if((is_line_from_map(file_content[i])) && (elements_counter == 6))
-			{
-				free_strings_array(splitted_line);
-				break;
-			}
-			else
-				print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
-		}
-		else if (splitted_line[0][0] != '\n')
-		{
-			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
-		}
+			print_error_free_exit(input_info, ERR_MSG_03, true, scene_description);
+		line_management_return = line_management(input_info, splitted_line, i, &elements_counter);
 		free_strings_array(splitted_line);
+		if (line_management_return == -1)
+			print_error_free_exit(input_info, ERR_MSG_03, true, scene_description);
+		else if (line_management_return == 1)
+			break;			// when out of this loop, we're reaching the map part
 		i++;
 	}
-	// when out of this loop, we're reaching the map part
-	input_info->map_info->map = export_map(input_info, file_content, i);
+	input_info->map_info->map = export_map(input_info, scene_description, i);
 }
 
-int		line_management(char **splitted_line, t_input *input_info, )
+int		line_management(t_input *input_info, char **splitted_line, int i, int *elements_counter)
 {
-
+	char	**scene_description = input_info->scene_description;
+	if (ft_strchr("NSWE", splitted_line[0][0]))
+	{
+		if (!check_and_add_texture_path(splitted_line, input_info))
+			return (-1);
+		(*elements_counter)++;
+	}
+	else if (!ft_strcmp(splitted_line[0], "F") || !ft_strcmp(splitted_line[0], "C"))
+	{
+		if (!check_and_add_colors(scene_description[i], input_info))
+			return (-1);
+		(*elements_counter)++;
+	}
+	else if (splitted_line[0][0] == '1')
+	{
+		if((is_line_from_map(scene_description[i])) && (*elements_counter == 6))
+			return (1);
+		else
+			return (-1);
+	}
+	else if (splitted_line[0][0] != '\n')
+		return (-1);
+	return (0);			// Success
 }
 
-char	**export_map(t_input *input_info, char **file_content, int i)
+char	**export_map(t_input *input_info, char **scene_description, int i)
 {
 	int		line_counter;
+	int		lines_in_map;
 
-	line_counter = count_lines_from_scene_description(input_info);			// Not ideal because count all the lines
-	input_info->map_info->map = ft_calloc(sizeof(char *), line_counter);	// Too much, just allocate for map size
-	while (file_content[i])
+	line_counter = count_lines_from_scene_description(input_info);
+	lines_in_map = line_counter - i;
+	input_info->map_info->map = ft_calloc(sizeof(char *), lines_in_map + 1);
+	while (scene_description[i])
 	{
-		add_line_in_map_struct(file_content[i], input_info);				// Ⓜ️
+		add_line_in_map_struct(scene_description[i], input_info);				// Ⓜ️
 		i++;
-		// file_content[i] = get_next_line(fd);		// No need, been exported already earlier
-		if(file_content[i] && !(is_line_from_map(file_content[i])))
-			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
+		if(scene_description[i] && !(is_line_from_map(scene_description[i])))
+			print_error_free_exit(input_info, ERR_MSG_03, true, scene_description);
 	}
-	free_strings_array(file_content);
+	free_strings_array(scene_description);
 	return (input_info->map_info->map);
 }
 
@@ -102,20 +99,20 @@ char	**open_fd_export_content(t_input *input_info)
 	int		i;
 	int		fd;
 	int		line_counter;
-	char	**file_content;
+	char	**scene_description;
 
 	i = 0;
 	fd = open(input_info->path_to_map, O_RDONLY);
 	line_counter = count_lines_from_scene_description(input_info);
 	// Count_lines_from_scene_description function makes sure there's something to read, otherwise exit
-	file_content = ft_calloc(sizeof(char *), line_counter + 1);
-	if (!file_content)
+	scene_description = ft_calloc(sizeof(char *), line_counter + 1);
+	if (!scene_description)
 		print_error_free_exit(input_info, strerror(errno), false, NULL);
 	while (i < line_counter)
 	{
-		file_content[i] = get_next_line(fd);				// Ⓜ️ (for each line)
+		scene_description[i] = get_next_line(fd);				// Ⓜ️ (for each line)
 		i++;
 	}
 	close(fd);
-	return (file_content);
+	return (scene_description);
 }

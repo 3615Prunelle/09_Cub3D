@@ -1,0 +1,16 @@
+EA textures/milky_way.png
+WE textures/earth.png
+SO textures/moon.png
+NO textures/shooting_star.png
+
+C 0,0,65
+F 0,0,65
+
+    11111
+   1000001
+    10001
+     100011111111111
+    100001010101011
+     1E0000000000001
+    100010101010101
+    111111111111111

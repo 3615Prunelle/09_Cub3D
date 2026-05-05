@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_casting.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:07:54 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/04/01 14:43:38 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/05 13:47:23 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map)
 	}
 	else if (ray->contact_x - (int)ray->contact_x < 0.00)
 	{
-		if (ray->step_x < 0)	
+		if (ray->step_x < 0)
 			ray->wall[0] = 'W';
 		if (ray->step_x > 0)
 			ray->wall[0] = 'E';
@@ -99,7 +99,8 @@ void	calculate_ray_length_and_wallside_v(t_cube *game, t_ray *ray, float deg, fl
 	coordinates_float_to_int(int_wall_p, wall_posi);
 	coordinates_float_to_int(int_pos, position);
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
-	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
+	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1' ||
+		map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == ' ')
 	{
 		wall_posi[0] -= ray->step_x /50;
 		wall_posi[1] -= ray->step_y /50;
@@ -133,7 +134,8 @@ void	calculate_ray_length_and_wallside_h(t_cube *game, t_ray *ray, float deg, fl
 	coordinates_float_to_int(int_wall_p, wall_posi);
 	coordinates_float_to_int(int_pos, position);
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
-	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
+	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1' ||
+		map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == ' ')
 	{
 		wall_posi[0] -= ray->step_x /50;
 		wall_posi[1] -= ray->step_y /50	;
@@ -170,7 +172,8 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 	ray->step_y = (float)int_step[1];
 	ray->step_x = int_step[0] * fabsf(int_step[1] * tanf(deg * DEG_TO_RAD));
 	unify_step(ray);
-	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
+	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1' &&
+		map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != ' ')
 	{
 		position[0] += ray->step_x / 4;
 		position[1] += ray->step_y / 4;
@@ -202,7 +205,8 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 	ray->step_x = (float)int_step[0];
 	ray->step_y = int_step[1] * fabsf((int_step[0] / tanf(deg * DEG_TO_RAD)));
 	unify_step(ray);
-	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
+	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1' &&
+		map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != ' ')
 	{
 		position[0] += ray->step_x / 4;
 		position[1] += ray->step_y / 4;

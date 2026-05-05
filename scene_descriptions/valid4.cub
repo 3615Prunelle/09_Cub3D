@@ -1,7 +1,7 @@
-NO ./textures/ic_Collectible_Corn.png
-SO ./textures/ic_Escape_Bike.png
-WE ./textures/ic_Escape_Scooter.png
-EA ./textures/ic_Player_Diplo.png
+NO ./textures/corn.png.png
+SO ./textures/bike.png
+WE ./textures/scooter.png
+EA ./textures/diplo.png
 
 F 220,100,0
 C 225,30,0
