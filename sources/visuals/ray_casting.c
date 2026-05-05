@@ -21,16 +21,12 @@ int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 	flag = 0;
 	dirayction[0] = fabs(ray->step_x) / ray->step_x;
 	dirayction[1] = fabs(ray->step_y) / ray->step_y;
-	map_posi[0] = int_pos[0] / MAP_SCALE;
-	map_posi[1] = int_pos[1] / MAP_SCALE;
-	while (map[map_posi[1] - dirayction[1]][map_posi[0]] == '1' &&
-		 map[map_posi[1]][map_posi[0] - dirayction[0]] == '1')
+	if (map[(int_pos[1] - dirayction[1]) / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1' &&
+		 map[int_pos[1] / MAP_SCALE][(int_pos[0] - dirayction[0]) / MAP_SCALE] == '1')
 	{
 		posi[0] -= ray->step_x /5;
 		posi[1] -= ray->step_y /5;
 		coordinates_float_to_int(int_pos, posi);
-		map_posi[0] = int_pos[0] / MAP_SCALE;
-		map_posi[1] = int_pos[1] / MAP_SCALE;
 		flag = 1;
 	}
 	return (flag);
@@ -40,7 +36,7 @@ void	set_corners(t_cube *game, t_ray *ray, int *position)
 {
 	position[0] *= 32;
 	position[1] *= 32;
-/*	if (game->player->position[1] <= position[1])
+	if (game->player->position[1] <= position[1])
 		ray->wall[0] = 'S';
 	else if (game->player->position[0] <= position[0])
 		ray->wall[0] = 'E';
@@ -48,7 +44,7 @@ void	set_corners(t_cube *game, t_ray *ray, int *position)
 		ray->wall[0] = 'N';
 	else if (game->player->position[0] >= position[0])
 		ray->wall[0] = 'W';
-	else*/
+	else
 		ray->wall[0] = 'K';
 }
 
@@ -105,8 +101,8 @@ void	calculate_ray_length_and_wallside_v(t_cube *game, t_ray *ray, float deg, fl
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
 	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
 	{
-		wall_posi[0] -= ray->step_x /100;
-		wall_posi[1] -= ray->step_y /100;
+		wall_posi[0] -= ray->step_x /50;
+		wall_posi[1] -= ray->step_y /50;
 		coordinates_float_to_int(int_wall_p, wall_posi);
 	}
 	int_wall_p[0] /=MAP_SCALE;
@@ -139,8 +135,8 @@ void	calculate_ray_length_and_wallside_h(t_cube *game, t_ray *ray, float deg, fl
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
 	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
 	{
-		wall_posi[0] -= ray->step_x /100;
-		wall_posi[1] -= ray->step_y /100;
+		wall_posi[0] -= ray->step_x /50;
+		wall_posi[1] -= ray->step_y /50	;
 		coordinates_float_to_int(int_wall_p, wall_posi);
 	}
 	int_wall_p[0] /=MAP_SCALE;
@@ -176,8 +172,8 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 	unify_step(ray);
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
 	{
-		position[0] += ray->step_x;
-		position[1] += ray->step_y;
+		position[0] += ray->step_x / 4;
+		position[1] += ray->step_y / 4;
 		coordinates_float_to_int(int_pos, position);
 		if (corner(map, ray, position, int_pos) == 1)
 			break ;
@@ -208,8 +204,8 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 	unify_step(ray);
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
 	{
-		position[0] += ray->step_x;
-		position[1] += ray->step_y;
+		position[0] += ray->step_x / 4;
+		position[1] += ray->step_y / 4;
 		coordinates_float_to_int(int_pos, position);
 		if (corner(map, ray, position, int_pos) == 1)
 			break ;
