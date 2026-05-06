@@ -12,25 +12,23 @@
 
 #include "cub3d.h"
 
-/*int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
+void	scale_ray_steps(t_ray *ray)
 {
-	int	map_posi[2];
-	int	dirayction[2];
-	int	flag;
+	ray->step_x[0] *= MAP_SCALE;
+	ray->step_x[1] *= MAP_SCALE;
+	ray->step_x[2] *= MAP_SCALE;
+	ray->step_y[0] *= MAP_SCALE;
+	ray->step_y[1] *= MAP_SCALE;
+	ray->step_y[2] *= MAP_SCALE;
+}
 
-	flag = 0;
-	dirayction[0] = fabs(ray->step_x) / ray->step_x;
-	dirayction[1] = fabs(ray->step_y) / ray->step_y;
-	if (map[(int_pos[1] / MAP_SCALE) - dirayction[1]][int_pos[0] / MAP_SCALE] == '1' &&
-		 map[int_pos[1] / MAP_SCALE][(int_pos[0] / MAP_SCALE) - dirayction[0]] == '1')
-	{
-		posi[0] -= ray->step_x /5;
-		posi[1] -= ray->step_y /5;
-		coordinates_float_to_int(int_pos, posi);
-		flag = 1;
-	}
-	return (flag);
-}*/
+void	raystepping(t_ray *ray, float *position, float *cur_s)
+{
+	if (ray->step_x[2] * ray->step_x[3] < ray->step_y[2] * ray->step_y[3] && cur_s == ray->step_x)
+		ray->step_x[3]++;
+	else if (cur_s == ray->step_y)
+		ray->step_y[3]++;
+}
 
 int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 {
@@ -41,13 +39,13 @@ int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 	flag = 0;
 	pre_posi[0] = posi[0];
 	pre_posi[1] = posi[1];
-	tiny_step[0] = ray->step_x / 300;
-	tiny_step[1] = ray->step_y / 300;
+	tiny_step[0] = ray->step_x[0] / 300;
+	tiny_step[1] = ray->step_y[1] / 300;
 	coordinates_float_to_int(int_pos, posi);
-	if (map[(int_pos[1] + (int)ray->step_y) / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1' ||
-		map[int_pos[1] / MAP_SCALE][(int_pos[0] + (int)ray->step_x) / MAP_SCALE] == '1')
+	if (map[(int_pos[1] + (int)ray->step_y[1]) / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1' ||
+		map[int_pos[1] / MAP_SCALE][(int_pos[0] + (int)ray->step_x[0]) / MAP_SCALE] == '1')
 	{
-		while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1' && posi[0] != pre_posi[0] + ray->step_x)
+		while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1' && posi[0] != pre_posi[0] + ray->step_x[0])
 		{
 			posi[0] += tiny_step[0];
 			posi[1] += tiny_step[1];
@@ -137,8 +135,8 @@ void	calculate_ray_length_and_wallside_v(t_cube *game, t_ray *ray, float deg, fl
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
 	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
 	{
-		wall_posi[0] -= ray->step_x /400;
-		wall_posi[1] -= ray->step_y /400;
+		wall_posi[0] -= ray->step_x[0] /40;
+		wall_posi[1] -= ray->step_y[1] /40;
 		coordinates_float_to_int(int_wall_p, wall_posi);
 	}
 	int_wall_p[0] /=MAP_SCALE;
@@ -171,8 +169,8 @@ void	calculate_ray_length_and_wallside_h(t_cube *game, t_ray *ray, float deg, fl
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
 	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
 	{
-		wall_posi[0] -= ray->step_x /400;
-		wall_posi[1] -= ray->step_y /400;
+		wall_posi[0] -= ray->step_x[0] /40;
+		wall_posi[1] -= ray->step_y[1] /40;
 		coordinates_float_to_int(int_wall_p, wall_posi);
 	}
 	int_wall_p[0] /=MAP_SCALE;
@@ -192,41 +190,41 @@ void	calculate_ray_length_and_wallside_h(t_cube *game, t_ray *ray, float deg, fl
 
 void	base_position(char **map,t_ray *ray, float deg, float *position)
 {
-	int	pre_pos[2];
-	int	int_step[2];
+	int		pre_pos[2];
+	int		int_step[2];
+	float	*cur_s;
 
-	pre_pos[0] = (int)position[0];
-	pre_pos[1] = (int)position[1];
+	coordinates_float_to_int(pre_pos, position);
 	set_x_y_int_steps(int_step, deg);
-	if (ray->direction == 'h')
-	{
-		ray->step_x = int_step[0];
-		ray->step_y = int_step[1] * fabsf(int_step[0] / tanf(deg * DEG_TO_RAD));
-	}
+	ray->step_x[0] = int_step[0];
+	ray->step_x[1] = int_step[1] * fabsf(int_step[0] / tanf(deg * DEG_TO_RAD));
+	ray->step_x[2] = sqrt(pow(ray->step_x[0], 2) + pow(ray->step_x[1], 2));
+	ray->step_x[3] = 1;
+	ray->step_y[0] = int_step[0] * fabsf(int_step[1] * tanf(deg * DEG_TO_RAD));
+	ray->step_y[1] = int_step[1];
+	ray->step_y[2] = sqrt(pow(ray->step_y[0], 2) + pow(ray->step_y[1], 2));
+	ray->step_y[3] = 1;
+	if (ray->step_x[2] * ray->step_x[3] < ray->step_y[2] * ray->step_y[3])
+		cur_s = ray->step_x;
 	else
+		cur_s = ray->step_y;
+	while ((int)(position[0] + cur_s[0] * cur_s[3]) / MAP_SCALE ==
+		pre_pos[0] / MAP_SCALE && (int)(position[1] + cur_s[1] * cur_s[3]) / MAP_SCALE ==
+		pre_pos[1] / MAP_SCALE &&
+		map[(int)(position[1] + cur_s[1] * cur_s[3]) / MAP_SCALE]
+		[(int)(position[0] + cur_s[0] * cur_s[3]) /	MAP_SCALE] != '1')
 	{
-		ray->step_x = int_step[0] * fabsf(int_step[1] * tanf(deg * DEG_TO_RAD));
-		ray->step_y = int_step[1];
+		raystepping(ray, position, cur_s);
+		if (ray->step_x[2] * ray->step_x[3] < ray->step_y[2] * ray->step_y[3])
+			cur_s = ray->step_x;
+		else
+			cur_s = ray->step_y;
 	}
-	unify_step(ray);
-	if (ray->direction == 'h')
-	{
-		while ((int)position[0] / MAP_SCALE == pre_pos[0] / MAP_SCALE && map[(int)position[1] / MAP_SCALE][(int)position[0] / MAP_SCALE] != '1')
-		{
-			position[0] += ray->step_x;
-			position[1] += ray->step_y;
-		}
-	}
-	else
-	{
-		while ((int)position[1] / MAP_SCALE == pre_pos[1] / MAP_SCALE && map[(int)position[1] / MAP_SCALE][(int)position[0] / MAP_SCALE] != '1')
-		{
-			position[0] += ray->step_x;
-			position[1] += ray->step_y;
-		}
-	}
-	ray->step_x *= MAP_SCALE;
-	ray->step_y *= MAP_SCALE;
+	position[0] += cur_s[0] * cur_s[3];
+	position[1] += cur_s[1] * cur_s[3];
+	ray->step_x[3] = 1;
+	ray->step_y[3] = 1;
+	scale_ray_steps(ray);
 }
 
 void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
@@ -235,6 +233,7 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 	float	position[2];
 	int		int_pos[2];
 	float	pre_length;
+	float	*cur_s;
 
 //	printf("cast verti\t");//debug
 	pre_length = ray->length;
@@ -243,15 +242,20 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 	position[1] = game->player->position[1];
 	base_position(map,ray, deg, position);
 	coordinates_float_to_int(int_pos, position);
-	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
+	if (ray->step_x[2] * ray->step_x[3] < ray->step_y[2] * ray->step_y[3])
+		cur_s = ray->step_x;
+	else
+		cur_s = ray->step_y;
+	while (map[(int)(position[1] + cur_s[1] * cur_s[3]) / MAP_SCALE][(int)(position[0] + cur_s[0] * cur_s[3]) / MAP_SCALE] != '1')
 	{
-		if (corner(map, ray, position, int_pos) == 1)
-			break ;
-		position[0] += ray->step_x;
-		position[1] += ray->step_y;
-		coordinates_float_to_int(int_pos, position);
-
+		raystepping(ray, position, cur_s);
+		if (ray->step_x[2] * ray->step_x[3] < ray->step_y[2] * ray->step_y[3])
+			cur_s = ray->step_x;
+		else
+			cur_s = ray->step_y;
 	}
+	position[0] += cur_s[0] * cur_s[3];
+	position[1] += cur_s[1] * cur_s[3];
 	calculate_ray_length_and_wallside_v(game, ray, deg, position);
 	if (pre_length != 1.0 && ray->length > pre_length)
 	{
@@ -266,6 +270,7 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 {
 	float	position[2];
 	int		int_pos[2];
+	float	*cur_s;
 
 //	printf("cast horizont\t");//debug
 	ray->direction = 'h';
@@ -273,15 +278,20 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 	position[1] = game->player->position[1];
 	base_position(map,ray, deg, position);
 	coordinates_float_to_int(int_pos, position);
-	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
+	if (ray->step_x[2] * ray->step_x[3] < ray->step_y[2] * ray->step_y[3])
+		cur_s = ray->step_x;
+	else
+		cur_s = ray->step_y;
+	while (map[(int)(position[1] + cur_s[1] * cur_s[3]) / MAP_SCALE][(int)(position[0] + cur_s[0] * cur_s[3]) / MAP_SCALE] != '1')
 	{
-		if (corner(map, ray, position, int_pos) == 1)
-			break ;
-		position[0] += ray->step_x;
-		position[1] += ray->step_y;
-		coordinates_float_to_int(int_pos, position);
-
+		raystepping(ray, position, cur_s);
+		if (ray->step_x[2] * ray->step_x[3] < ray->step_y[2] * ray->step_y[3])
+			cur_s = ray->step_x;
+		else
+			cur_s = ray->step_y;
 	}
+	position[0] += cur_s[0] * cur_s[3];
+	position[1] += cur_s[1] * cur_s[3];
 	calculate_ray_length_and_wallside_h(game, ray, deg, position);
 
 }

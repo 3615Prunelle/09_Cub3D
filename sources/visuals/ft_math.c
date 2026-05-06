@@ -21,13 +21,21 @@ void	coordinates_float_to_int(int *ints, float *floats)
 
 void	unify_step(t_ray *ray)
 {
+	float	max_step_x;
+	float	max_step_y;
 	float	max_step;
 
-	max_step = fmaxf(fabsf(ray->step_x), fabsf(ray->step_y));
-	if (max_step > 1)
+	max_step_x = fmaxf(fabsf(ray->step_x[0]), fabsf(ray->step_x[1]));
+	if (max_step_x > 1)
 	{
-		ray->step_x /= max_step;
-		ray->step_y /= max_step;
+		ray->step_x[0] /= max_step_x;
+		ray->step_x[1] /= max_step_x;
+	}
+	max_step_y = fmaxf(fabsf(ray->step_y[0]), fabsf(ray->step_y[1]));
+	if (max_step_y > 1)
+	{
+		ray->step_y[0] /= max_step_y;
+		ray->step_y[1] /= max_step_y;
 	}
 }
 

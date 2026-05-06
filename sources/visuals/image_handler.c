@@ -63,6 +63,19 @@ void	disappear(void *param)
 	exit(0);
 }
 
+void	ray_number(t_ray *ray)
+{
+	ray->step_x[0] = 0;
+	ray->step_y[0] = 0;
+	ray->step_x[1] = 0;
+	ray->step_y[1] = 0;
+	ray->step_x[2] = 0;
+	ray->step_y[2] = 0;
+	ray->step_x[3] = 0;
+	ray->step_y[3] = 0;
+	ray->length = 0.0;
+}
+
 bool	ray_allocation(t_ray **rays)
 {
 	t_ray	*ray;
@@ -78,9 +91,7 @@ bool	ray_allocation(t_ray **rays)
 		c = malloc(2 * sizeof(char));
 		if (!c)
 			return (false);
-		ray->length = 0.0;
-		ray->step_x = 0;
-		ray->step_y = 0;
+		ray_number(ray);
 		c[0] = '0';
 		c[1] = '\0';
 		ray->wall = c;

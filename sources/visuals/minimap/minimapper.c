@@ -72,12 +72,12 @@ int	ray_contact(t_ray *ray, float *position, float *step, int *index)
 	int	contact;
 
 	contact = 0;
-	step[0] += ray->step_x / MAP_SCALE;
-	step[1] += ray->step_y / MAP_SCALE;
-	if ((ray->step_x < 0 && step[0] <= ray->contact_x) || (ray->step_x > 0 &&
+	step[0] += ray->step_x[0] / MAP_SCALE;
+	step[1] += ray->step_y[1] / MAP_SCALE;
+	if ((ray->step_x[0] < 0 && step[0] <= ray->contact_x) || (ray->step_x[0] > 0 &&
 		 step[0] >= ray->contact_x))
 		contact++;
-	if ((ray->step_y < 0 && step[1] <= ray->contact_y) || (ray->step_y > 0 &&
+	if ((ray->step_y[1] < 0 && step[1] <= ray->contact_y) || (ray->step_y[1] > 0 &&
 		 step[1] >= ray->contact_y))
 		contact++;
 	if (contact == 2)
