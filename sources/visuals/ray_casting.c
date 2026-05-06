@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
+/*int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 {
 	int	map_posi[2];
 	int	dirayction[2];
@@ -21,8 +21,8 @@ int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 	flag = 0;
 	dirayction[0] = fabs(ray->step_x) / ray->step_x;
 	dirayction[1] = fabs(ray->step_y) / ray->step_y;
-	if (map[(int_pos[1] - dirayction[1]) / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1' &&
-		 map[int_pos[1] / MAP_SCALE][(int_pos[0] - dirayction[0]) / MAP_SCALE] == '1')
+	if (map[(int_pos[1] / MAP_SCALE) - dirayction[1]][int_pos[0] / MAP_SCALE] == '1' &&
+		 map[int_pos[1] / MAP_SCALE][(int_pos[0] / MAP_SCALE) - dirayction[0]] == '1')
 	{
 		posi[0] -= ray->step_x /5;
 		posi[1] -= ray->step_y /5;
@@ -30,13 +30,49 @@ int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 		flag = 1;
 	}
 	return (flag);
+}*/
+
+int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
+{
+	float	pre_posi[2];
+	float	tiny_step[2];
+	int		flag;
+
+	flag = 0;
+	pre_posi[0] = posi[0];
+	pre_posi[1] = posi[1];
+	tiny_step[0] = ray->step_x / 300;
+	tiny_step[1] = ray->step_y / 300;
+	coordinates_float_to_int(int_pos, posi);
+	if (map[(int_pos[1] + (int)ray->step_y) / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1' ||
+		map[int_pos[1] / MAP_SCALE][(int_pos[0] + (int)ray->step_x) / MAP_SCALE] == '1')
+	{
+		while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1' && posi[0] != pre_posi[0] + ray->step_x)
+		{
+			posi[0] += tiny_step[0];
+			posi[1] += tiny_step[1];
+			coordinates_float_to_int(int_pos, posi);
+			if (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1' || (map[int_pos[1] / MAP_SCALE][(int_pos[0] - (int)tiny_step[0] * 50) / MAP_SCALE] == '1' && map[(int_pos[1] - (int)tiny_step[1] * 50) / MAP_SCALE][int_pos[0] / MAP_SCALE] == '1'))
+				{
+					flag = 1;
+					break ;
+				}
+		}
+	}
+	if (flag == 0)
+	{
+		posi[0] = pre_posi[0];
+		posi[1] = pre_posi[1];
+	}
+	coordinates_float_to_int(int_pos, posi);
+	return (flag);
 }
 
 void	set_corners(t_cube *game, t_ray *ray, int *position)
 {
 	position[0] *= 32;
 	position[1] *= 32;
-	if (game->player->position[1] <= position[1])
+/*	if (game->player->position[1] <= position[1])
 		ray->wall[0] = 'S';
 	else if (game->player->position[0] <= position[0])
 		ray->wall[0] = 'E';
@@ -44,13 +80,13 @@ void	set_corners(t_cube *game, t_ray *ray, int *position)
 		ray->wall[0] = 'N';
 	else if (game->player->position[0] >= position[0])
 		ray->wall[0] = 'W';
-	else
+	else*/
 		ray->wall[0] = 'K';
 }
 
 void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map)
 {
-	if (ray->contact_y - (int)ray->contact_y < 0.00)
+	/*if (ray->contact_y - (int)ray->contact_y < 0.01)
 	{
 		if (ray->step_y < 0)
 			ray->wall[0] = 'N';
@@ -58,7 +94,7 @@ void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map)
 			ray->wall[0] = 'S';
 		return ;
 	}
-	else if (ray->contact_x - (int)ray->contact_x < 0.00)
+	else if (ray->contact_x - (int)ray->contact_x < 0.01)
 	{
 		if (ray->step_x < 0)	
 			ray->wall[0] = 'W';
@@ -66,7 +102,7 @@ void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map)
 			ray->wall[0] = 'E';
 		return ;
 	}
-	else if (map[wall_position[1]][position[0]] == '1')
+	else*/ if (map[wall_position[1]][position[0]] == '1')
 	{
 		if (wall_position[0] - position[0] == 1)
 			ray->wall[0] = 'W';
@@ -101,8 +137,8 @@ void	calculate_ray_length_and_wallside_v(t_cube *game, t_ray *ray, float deg, fl
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
 	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
 	{
-		wall_posi[0] -= ray->step_x /50;
-		wall_posi[1] -= ray->step_y /50;
+		wall_posi[0] -= ray->step_x /400;
+		wall_posi[1] -= ray->step_y /400;
 		coordinates_float_to_int(int_wall_p, wall_posi);
 	}
 	int_wall_p[0] /=MAP_SCALE;
@@ -135,8 +171,8 @@ void	calculate_ray_length_and_wallside_h(t_cube *game, t_ray *ray, float deg, fl
 //	printf("wall raycord[%.2f/%.2f]\t", position[0], position[1]);//debug
 	while (map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] == '1')
 	{
-		wall_posi[0] -= ray->step_x /50;
-		wall_posi[1] -= ray->step_y /50	;
+		wall_posi[0] -= ray->step_x /400;
+		wall_posi[1] -= ray->step_y /400;
 		coordinates_float_to_int(int_wall_p, wall_posi);
 	}
 	int_wall_p[0] /=MAP_SCALE;
@@ -154,35 +190,73 @@ void	calculate_ray_length_and_wallside_h(t_cube *game, t_ray *ray, float deg, fl
 //	ray->length = fabs(fabs(wall_posi[0] - game->player->position[0]) / sin(deg * DEG_TO_RAD));
 }
 
+void	base_position(char **map,t_ray *ray, float deg, float *position)
+{
+	int	pre_pos[2];
+	int	int_step[2];
+
+	pre_pos[0] = (int)position[0];
+	pre_pos[1] = (int)position[1];
+	set_x_y_int_steps(int_step, deg);
+	if (ray->direction == 'h')
+	{
+		ray->step_x = int_step[0];
+		ray->step_y = int_step[1] * fabsf(int_step[0] / tanf(deg * DEG_TO_RAD));
+	}
+	else
+	{
+		ray->step_x = int_step[0] * fabsf(int_step[1] * tanf(deg * DEG_TO_RAD));
+		ray->step_y = int_step[1];
+	}
+	unify_step(ray);
+	if (ray->direction == 'h')
+	{
+		while ((int)position[0] / MAP_SCALE == pre_pos[0] / MAP_SCALE && map[(int)position[1] / MAP_SCALE][(int)position[0] / MAP_SCALE] != '1')
+		{
+			position[0] += ray->step_x;
+			position[1] += ray->step_y;
+		}
+	}
+	else
+	{
+		while ((int)position[1] / MAP_SCALE == pre_pos[1] / MAP_SCALE && map[(int)position[1] / MAP_SCALE][(int)position[0] / MAP_SCALE] != '1')
+		{
+			position[0] += ray->step_x;
+			position[1] += ray->step_y;
+		}
+	}
+	ray->step_x *= MAP_SCALE;
+	ray->step_y *= MAP_SCALE;
+}
+
 void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 {
-	int		int_step[2];
+	
 	float	position[2];
 	int		int_pos[2];
 	float	pre_length;
 
 //	printf("cast verti\t");//debug
 	pre_length = ray->length;
-	set_x_y_int_steps(int_step, deg);
+	ray->direction = 'v';
 	position[0] = game->player->position[0];
 	position[1] = game->player->position[1];
+	base_position(map,ray, deg, position);
 	coordinates_float_to_int(int_pos, position);
-	ray->step_y = (float)int_step[1];
-	ray->step_x = int_step[0] * fabsf(int_step[1] * tanf(deg * DEG_TO_RAD));
-	unify_step(ray);
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
 	{
-		position[0] += ray->step_x / 4;
-		position[1] += ray->step_y / 4;
-		coordinates_float_to_int(int_pos, position);
 		if (corner(map, ray, position, int_pos) == 1)
 			break ;
+		position[0] += ray->step_x;
+		position[1] += ray->step_y;
+		coordinates_float_to_int(int_pos, position);
+
 	}
 	calculate_ray_length_and_wallside_v(game, ray, deg, position);
-	if (pre_length != 1.0 && ray->length < pre_length)
+	if (pre_length != 1.0 && ray->length > pre_length)
 	{
 		ray->length = pre_length;
-		ray->direction = 'v';
+		ray->direction = 'h';
 	}
 	else if(ray->direction != 'h')
 		ray->direction = 'v';
@@ -190,28 +264,26 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 
 void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 {
-	int		int_step[2];
 	float	position[2];
 	int		int_pos[2];
 
 //	printf("cast horizont\t");//debug
-	set_x_y_int_steps(int_step, deg);
+	ray->direction = 'h';
 	position[0] = game->player->position[0];
 	position[1] = game->player->position[1];
+	base_position(map,ray, deg, position);
 	coordinates_float_to_int(int_pos, position);
-	ray->step_x = (float)int_step[0];
-	ray->step_y = int_step[1] * fabsf((int_step[0] / tanf(deg * DEG_TO_RAD)));
-	unify_step(ray);
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '1')
 	{
-		position[0] += ray->step_x / 4;
-		position[1] += ray->step_y / 4;
-		coordinates_float_to_int(int_pos, position);
 		if (corner(map, ray, position, int_pos) == 1)
 			break ;
+		position[0] += ray->step_x;
+		position[1] += ray->step_y;
+		coordinates_float_to_int(int_pos, position);
+
 	}
 	calculate_ray_length_and_wallside_h(game, ray, deg, position);
-	ray->direction = 'h';
+
 }
 /*void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 {
@@ -282,9 +354,9 @@ void	cast_rays(t_cube *game, char **map)
 		game->rays[i]->degree = degry;
 //		test = i / 10;//debug
 //		printf("Ray [%d - %d]\tdegree: %.2f\t", i, i + 10,degry);//debug
-		if ((degry >= 15 && degry <= 165) || (degry >= 195 && degry <= 345))
+		if ((degry >= 40 && degry <= 140) || (degry >= 220 && degry <= 320))
 			cast_horizontaly(game,game->rays[i], degry, map);
-		if (degry > 285 || degry < 75 || (degry > 105 && degry < 255))
+		if (degry > 310 || degry < 50 || (degry > 130 && degry < 230))
 			cast_verticaly(game, game->rays[i], degry, map);
 /*		while (i / 10 == test && VIEW_WIDTH - 1 > i)//debug
 		{
