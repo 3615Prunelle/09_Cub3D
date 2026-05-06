@@ -35,12 +35,11 @@ void	spaces_fill_up(t_map_info *map_info)
 {
 	int		i;
 	int		j;
-	char	**map;
+	char	**map;			// Pass as arg to gain 2 lines
 	char	*tmp;
 
 	i = 0;
-	j = 0;
-	map = map_info->map;
+	map = map_info->map;	// Pass as arg to gain 2 lines
 	while (i <= map_info->max_lines)
 	{
 		j = map_info->max_columns - 1;									// To jump over the last '\0'
@@ -50,17 +49,19 @@ void	spaces_fill_up(t_map_info *map_info)
 			ft_memcpy(tmp, map[i], ft_strlen(map[i]));
 			tmp[j] = '\n';
 			j--;
-			while (tmp[j] != '\n')										// start by the end, put spaces till reaching the \n
+			while (tmp[j] != '\n')										// start by the end, put spaces till reaching the initial \n
 			{
 				tmp[j] = ' ';
 				j--;
 			}
-			tmp[j] = ' ';
+			tmp[j] = ' ';												// To replace initial \n by a space - Can probably be optimized
 			free(map[i]);
 			map[i] = tmp;
 		}
 		i++;
 	}
+	// Put the 2 following lines in the calling function to make room ?
+	// Or find another way to shorten the function
 	map_info->max_columns--;		// To exclude the \n at the end once we're done checking
 	map_info->max_lines++;			// From index to regular digit
 }
