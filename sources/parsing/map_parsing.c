@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_parsing.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/08 16:29:29 by schappuy          #+#    #+#             */
+/*   Updated: 2026/05/08 16:29:31 by schappuy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 bool	is_map_valid(t_map_info *map_info)
@@ -9,7 +21,6 @@ bool	is_map_valid(t_map_info *map_info)
 	line = 0;
 	column = 0;
 	map = map_info->map;
-
 	while (line < map_info->total_lines)
 	{
 		column = 0;
@@ -60,13 +71,14 @@ int		check_player(t_input *input_info, char **map)
 	return (1);
 }
 
+// Switched line & column for Maxi to handle
 void	add_player_info_in_struct(t_input *input_info, int line, int column)
 {
 	char	**map;
 
 	map = input_info->map_info->map;
 	input_info->player.initial_direction = map[line][column];
-	input_info->player.int_cords[0] = column;			// Switched line & column for Maxi to handle
+	input_info->player.int_cords[0] = column;
 	input_info->player.int_cords[1] = line;
 	map[line][column] = '0';
 }

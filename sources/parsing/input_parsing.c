@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/08 16:29:42 by schappuy          #+#    #+#             */
+/*   Updated: 2026/05/08 18:18:44 by schappuy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	parsing(char *path, t_input *input_info)
@@ -7,17 +19,18 @@ void	parsing(char *path, t_input *input_info)
 	{
 		printf("%s", ERR_MSG_02);
 		free(input_info);
-		exit (1);
+		exit(1);
 	}
 	input_info->map_info = ft_calloc(sizeof(t_map_info), 1);
 	input_info->scene_description = open_fd_export_content(input_info);
 	read_scene_description(input_info, input_info->scene_description);
 	spaces_fill_up(input_info->map_info);
-	if (check_player(input_info, input_info->map_info->map) == -1)	// Checks if only one player + surroundings ok + update struct
+	if (check_player(input_info, input_info->map_info->map) == -1)
+	// Checks if only one player + surroundings ok + update struct
 		print_error_free_exit(input_info, ERR_MSG_08, false, NULL);
-
-	if(!is_map_valid(input_info->map_info))
-		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
+	if (!is_map_valid(input_info->map_info))
+		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);
+			// array has been freed in read_scene_description function
 }
 
 void	read_scene_description(t_input *input_info, char **scene_description)
@@ -31,32 +44,40 @@ void	read_scene_description(t_input *input_info, char **scene_description)
 	elements_counter = 0;
 	while (scene_description[i])
 	{
-		if(scene_description[i][0] != '\n' && (strchr(scene_description[i], '\n')) && (elements_counter != 6))
+		if (scene_description[i][0] != '\n' && (strchr(scene_description[i],
+					'\n')) && (elements_counter != 6))
 			remove_char_from_line(&scene_description[i], '\n');
 		splitted_line = ft_split(scene_description[i], ' ');
-		if(!splitted_line)
-			print_error_free_exit(input_info, ERR_MSG_03, true, scene_description);
-		line_management_return = line_management(input_info, splitted_line, i, &elements_counter);
+		if (!splitted_line)
+			print_error_free_exit(input_info, ERR_MSG_03, true,
+					scene_description);
+		line_management_return = line_management(input_info, splitted_line, i,
+					&elements_counter);
 		free_strings_array(splitted_line);
 		if (line_management_return == -1)
-			print_error_free_exit(input_info, ERR_MSG_03, true, scene_description);
+			print_error_free_exit(input_info, ERR_MSG_03, true,
+					scene_description);
 		else if (line_management_return == 1)
-			break;			// when out of this loop, we're reaching the map part
+			break ; // when out of this loop, we're reaching the map part
 		i++;
 	}
 	input_info->map_info->map = export_map(input_info, scene_description, i);
 }
 
-int		line_management(t_input *input_info, char **splitted_line, int i, int *elements_counter)
+int	line_management(t_input *input_info, char **splitted_line, int i,
+		int *elements_counter)
 {
-	char	**scene_description = input_info->scene_description;
+	char	**scene_description;
+
+	scene_description = input_info->scene_description;
 	if (ft_strchr("NSWE", splitted_line[0][0]))
 	{
 		if (!check_and_add_texture_path(splitted_line, input_info))
 			return (-1);
 		(*elements_counter)++;
 	}
-	else if (!ft_strcmp(splitted_line[0], "F") || !ft_strcmp(splitted_line[0], "C"))
+	else if (!ft_strcmp(splitted_line[0], "F") || !ft_strcmp(splitted_line[0],
+				"C"))
 	{
 		if (!check_and_add_colors(scene_description[i], input_info))
 			return (-1);
@@ -64,35 +85,38 @@ int		line_management(t_input *input_info, char **splitted_line, int i, int *elem
 	}
 	else if (splitted_line[0][0] == '1')
 	{
-		if((is_line_from_map(scene_description[i])) && (*elements_counter == 6))
+		if ((is_line_from_map(scene_description[i]))
+			&& (*elements_counter == 6))
 			return (1);
 		else
 			return (-1);
 	}
 	else if (splitted_line[0][0] != '\n')
 		return (-1);
-	return (0);			// Success
+	return (0); // Success
 }
 
 char	**export_map(t_input *input_info, char **scene_description, int i)
 {
-	int		line_counter;
-	int		lines_in_map;
+	int	line_counter;
+	int	lines_in_map;
 
 	line_counter = count_lines_from_scene_description(input_info);
 	lines_in_map = line_counter - i;
 	input_info->map_info->map = ft_calloc(sizeof(char *), lines_in_map + 1);
 	while (scene_description[i])
 	{
-		add_line_in_map_struct(scene_description[i], input_info);				// Ⓜ️
+		add_line_in_map_struct(scene_description[i], input_info);
 		i++;
-		if(scene_description[i] && !(is_line_from_map(scene_description[i])))
-			print_error_free_exit(input_info, ERR_MSG_03, true, scene_description);
+		if (scene_description[i] && !(is_line_from_map(scene_description[i])))
+			print_error_free_exit(input_info, ERR_MSG_03, true,
+					scene_description);
 	}
 	free_strings_array(scene_description);
 	return (input_info->map_info->map);
 }
 
+// Malloc for scene description char*array + every line (through GNL)
 char	**open_fd_export_content(t_input *input_info)
 {
 	int		i;
@@ -103,13 +127,14 @@ char	**open_fd_export_content(t_input *input_info)
 	i = 0;
 	fd = open(input_info->path_to_map, O_RDONLY);
 	line_counter = count_lines_from_scene_description(input_info);
-	// Count_lines_from_scene_description function makes sure there's something to read, otherwise exit
+	// Count_lines_from_scene_description function makes sure there's something to read,
+	//	otherwise exit
 	scene_description = ft_calloc(sizeof(char *), line_counter + 1);
 	if (!scene_description)
 		print_error_free_exit(input_info, strerror(errno), false, NULL);
 	while (i < line_counter)
 	{
-		scene_description[i] = get_next_line(fd);				// Ⓜ️ (for each line)
+		scene_description[i] = get_next_line(fd);
 		i++;
 	}
 	close(fd);

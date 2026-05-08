@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_parsing_helpers.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/08 16:29:37 by schappuy          #+#    #+#             */
+/*   Updated: 2026/05/08 16:29:38 by schappuy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 /* The map must be composed of only 6 possible characters:
@@ -82,6 +94,22 @@ bool	is_wall_only(char *line)
 // Ne pas checker les diagonales partant de l'element
 bool	are_surroundings_valid(char **map, int element_line, int element_column)
 {
+	// static so it's norminette approved for decl + init on same line (replace by old code below if issue)
+	static int	directions[4][2] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+	int			i;
+
+	i = 0;
+	if (element_line == 0 || element_column == 0)
+		return (false);
+	while (i < 4)
+	{
+		if (!ft_strchr("01NSEW", map[element_line + directions[i][0]][element_column + directions[i][1]]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 	// OLD CODE BEFORE OPTIMIZATION - KEEP IF ISSUE
 	// char	to_check;
 
@@ -105,18 +133,3 @@ bool	are_surroundings_valid(char **map, int element_line, int element_column)
 	// 	return(false);
 
 	// return (true);
-
-	static int	directions[4][2] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};	// static so it's norminette approved for decl + init on same line
-	int			i;
-
-	i = 0;
-	if (element_line == 0 || element_column == 0)
-		return (false);
-	while (i < 4)
-	{
-		if (!ft_strchr("01NSEW", map[element_line + directions[i][0]][element_column + directions[i][1]]))
-			return (false);
-		i++;
-	}
-	return (true);
-}
