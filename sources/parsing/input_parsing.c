@@ -12,7 +12,6 @@ void	parsing(char *path, t_input *input_info)
 	input_info->map_info = ft_calloc(sizeof(t_map_info), 1);
 	input_info->scene_description = open_fd_export_content(input_info);
 	read_scene_description(input_info, input_info->scene_description);
-	// map is saved, but needs to be adjusted (spaces to fill blanks)
 	spaces_fill_up(input_info->map_info);
 	if (check_player(input_info, input_info->map_info->map) == -1)	// Checks if only one player + surroundings ok + update struct
 		print_error_free_exit(input_info, ERR_MSG_08, false, NULL);

@@ -90,11 +90,11 @@ void	add_line_in_map_struct(char *line, t_input *input_info)
 
 	if (ft_strlen(line) > j)
 	{
-		j = ft_strlen(line);		// To get the length of the longuest line - Will include \n - Corrected in spaces_fill_up function
-		input_info->map_info->max_columns = j;
+		j = ft_strlen(line);		// To get the length of the longuest line (including \n) - Corrected in spaces_fill_up function
+		input_info->map_info->total_columns = j;
 	}
 
 	input_info->map_info->map[i] = ft_strdup(line);					// Ⓜ️
-	input_info->map_info->max_lines = i;
+	input_info->map_info->total_lines = i;
 	i++;
 }

@@ -35,35 +35,27 @@ void	spaces_fill_up(t_map_info *map_info)
 {
 	int		i;
 	int		j;
-	char	**map;			// Pass as arg to gain 2 lines
+	char	**map;
 	char	*tmp;
 
 	i = 0;
-	map = map_info->map;	// Pass as arg to gain 2 lines
-	while (i <= map_info->max_lines)
+	map = map_info->map;
+	map_info->total_columns--;		// To exclude the \n at the end (will be replaced by a \0)
+	map_info->total_lines++;		// From index to regular digit
+	while (i < map_info->total_lines)
 	{
-		j = map_info->max_columns - 1;									// To jump over the last '\0'
-		if (ft_strlen(map[i]) < map_info->max_columns)
+		j = ft_strchr(map[i], '\n') - map[i];	// \n index
+		tmp = calloc(sizeof(char), map_info->total_columns);
+		ft_memcpy(tmp, map[i], j);				// doesn't copy the \n
+		while (j < map_info->total_columns)
 		{
-			tmp = ft_calloc(sizeof(char), map_info->max_columns + 1);	// +1 for last '\0'
-			ft_memcpy(tmp, map[i], ft_strlen(map[i]));
-			tmp[j] = '\n';
-			j--;
-			while (tmp[j] != '\n')										// start by the end, put spaces till reaching the initial \n
-			{
-				tmp[j] = ' ';
-				j--;
-			}
-			tmp[j] = ' ';												// To replace initial \n by a space - Can probably be optimized
-			free(map[i]);
-			map[i] = tmp;
+			tmp[j] = ' ';	// replace \0 by ' ' till idx max
+			j++;
 		}
+		free(map[i]);
+		map[i] = tmp;
 		i++;
 	}
-	// Put the 2 following lines in the calling function to make room ?
-	// Or find another way to shorten the function
-	map_info->max_columns--;		// To exclude the \n at the end once we're done checking
-	map_info->max_lines++;			// From index to regular digit
 }
 
 // Ignore spaces, then must be consecutive '1' or spaces
@@ -82,7 +74,7 @@ bool	is_wall_only(char *line)
 	{
 		i++;
 	}
-	if ((i == 0) || (line[i] != '\n'))			// other characters than spaces/walls have been found
+	if ((i == 0) || (line[i] != '\0'))			// other characters than spaces/walls have been found
 		return (false);
 	return (true);
 }

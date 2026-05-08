@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/05 13:27:21 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/08 15:30:24 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	draw_minimap(t_cube *game, char **minimap)
 	game->player->int_cords[1] = (int)game->player->position[1];
 	while (i < MINI_HEIGHT)
 	{
-		if ((i + game->player->int_cords[1] - MINI_HEIGHT / 2) < 0 || (i + game->player->int_cords[1] - MINI_HEIGHT / 2) / 32 >= game->input->map_info->max_lines)
+		if ((i + game->player->int_cords[1] - MINI_HEIGHT / 2) < 0 || (i + game->player->int_cords[1] - MINI_HEIGHT / 2) / 32 >= game->input->map_info->total_lines)
 			draw_line(game, "", i);
 		else
 			draw_line(game, minimap[(i + game->player->int_cords[1] - MINI_HEIGHT / 2) / MAP_SCALE], i);

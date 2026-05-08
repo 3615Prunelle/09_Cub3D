@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/05 18:49:59 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/08 15:30:24 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ typedef struct s_player_data
 typedef struct s_map_info
 {
 	char	**map;
-	int		max_columns;
-	int		max_lines;
+	int		total_columns;
+	int		total_lines;
 }	t_map_info;
 
 typedef	struct	s_input
