@@ -1,6 +1,6 @@
-  F 141,   52 ,142
+  F 147,   70 ,3
 EA textures/car.png
-C 218,   166, 249
+C 0,   150, 255
 WE textures/city.png
 SO         textures/diplo.png
         NO textures/trex.png
