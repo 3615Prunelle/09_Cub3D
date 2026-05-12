@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:47 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/08 16:32:23 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/12 13:57:26 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	remove_char_from_line(char **line, char to_remove)
 	}
 }
 
-int	count_lines_from_scene_description(t_input *input_info)
+int	count_lines_from_scene(t_input *input_info)
 {
 	int		fd;
 	int		line_counter;
@@ -87,11 +87,11 @@ int	coma_check(char *line)
 		if (line[i] == '\0')
 			break ;
 		if (line[i] != ',')
-			return (0);
+			return (FAIL);
 		coma_count++;
 		i++;
 	}
 	if (coma_count == 2)
-		return (1);
-	return (0);
+		return (SUCCESS);
+	return (FAIL);
 }

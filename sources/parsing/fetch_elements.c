@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:54 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/08 18:12:42 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/12 14:07:15 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,27 @@
 // Ignore spaces
 // Fetch clean path and fill struct
 // Malloc for each strdup
-int	check_and_add_texture_path(char **splitted_line, t_input *input_info)
+int	check_and_add_texture_path(char **split_line, t_input *input_info)
 {
-	if (!splitted_line[1] || !is_image_reachable(splitted_line[1]))
-		return (0);
-	if (ft_strncmp(splitted_line[0], "NO", 3) == 0)
+	if (!split_line[1] || !is_image_reachable(split_line[1]))
+		return (FAIL);
+	if (ft_strncmp(split_line[0], "NO", 3) == 0)
 	{
-		input_info->NO = ft_strdup(splitted_line[1]);
+		input_info->NO = ft_strdup(split_line[1]);
 	}
-	else if (ft_strncmp(splitted_line[0], "SO", 3) == 0)
+	else if (ft_strncmp(split_line[0], "SO", 3) == 0)
 	{
-		input_info->SO = ft_strdup(splitted_line[1]);
+		input_info->SO = ft_strdup(split_line[1]);
 	}
-	else if (ft_strncmp(splitted_line[0], "WE", 3) == 0)
+	else if (ft_strncmp(split_line[0], "WE", 3) == 0)
 	{
-		input_info->WE = ft_strdup(splitted_line[1]);
+		input_info->WE = ft_strdup(split_line[1]);
 	}
-	else if (ft_strncmp(splitted_line[0], "EA", 3) == 0)
+	else if (ft_strncmp(split_line[0], "EA", 3) == 0)
 	{
-		input_info->EA = ft_strdup(splitted_line[1]);
+		input_info->EA = ft_strdup(split_line[1]);
 	}
-	return (1);
+	return (SUCCESS);
 }
 
 bool	is_image_reachable(char *path)
@@ -64,7 +64,7 @@ int	check_and_add_colors(char *line, t_input *input_info)
 
 	i = 0;
 	if (!coma_check(line))
-		return (0);
+		return (FAIL);
 	remove_char_from_line(&line, ',');
 	rgb_split = ft_split(line, ' ');
 	while (rgb_split[i + 1])
@@ -73,14 +73,14 @@ int	check_and_add_colors(char *line, t_input *input_info)
 		if (!add_rgb_in_struct(input_info, rgb_split[0], number_to_check, i))
 		{
 			free_strings_array(rgb_split);
-			return (0);
+			return (FAIL);
 		}
 		i++;
 	}
 	free_strings_array(rgb_split);
 	if (i != 3)
-		return (0);
-	return (1);
+		return (FAIL);
+	return (SUCCESS);
 }
 
 int	add_rgb_in_struct(t_input *input_info, char *identifier, int color, int i)
@@ -91,10 +91,10 @@ int	add_rgb_in_struct(t_input *input_info, char *identifier, int color, int i)
 			input_info->floor[i] = color;
 		if (identifier[0] == 'C')
 			input_info->ceiling[i] = color;
-		return (1);
+		return (SUCCESS);
 	}
 	else
-		return (0);
+		return (FAIL);
 }
 
 // total_columns is the length of the longuest line including \n
@@ -102,8 +102,8 @@ int	add_rgb_in_struct(t_input *input_info, char *identifier, int color, int i)
 // malloc in strdup
 void	add_line_in_map_struct(char *line, t_input *input_info)
 {
-	static int	i;
-	static int	j;
+	static int		i;
+	static size_t	j;
 
 	if (ft_strlen(line) > j)
 	{

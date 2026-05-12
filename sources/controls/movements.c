@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:52:15 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/25 17:56:12 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/12 14:40:30 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,22 @@ void	turn_left(t_cube *game)
 }
 
 
-//	MOVING 1 STEP FORWARD
-//	Adjust the degree (in calling function) depending on key pressed
+// MOVING 1 STEP FORWARD
+// Adjust the degree (in calling function) depending on key pressed
+// Could this be useful at some point ? : (sin(degree)²) + (cos(degree)²) = 1
+// Keep in mind that [0][0] is up left
+// fabsf avoids negative values
 void	move(t_cube *game, float degree)
 {
 	float	diff_x;
 	float	diff_y;
-	float	length_of_step = 1;							// Remove this variable and replace it by 1 in calculations below, because it won't ever change
+	float	sinus;
+	float	cosinus;
 
-	float	sinus = fabsf(sinf(degree * DEG_TO_RAD));	// fabsf avoids negative values
-	diff_x = sinus * length_of_step;					// Same as sinus (because x1) - (Opposé = sin(α) × H)
-
-	float	cosinus = fabsf(cosf(degree * DEG_TO_RAD));
-	diff_y = cosinus * length_of_step;					// Same as cosinus (because x1) - (Adjacent = cos(α) × H)
-
-	// Could this be useful at some point ? : (sin(degree)²) + (cos(degree)²) = 1
-
-	// Keep in mind that [0][0] is up left
+	sinus = fabsf(sinf(degree * DEG_TO_RAD));
+	diff_x = sinus * STEP_LENGTH;					// Same as sinus (because x1) - (Opposé = sin(α) × H)
+	cosinus = fabsf(cosf(degree * DEG_TO_RAD));
+	diff_y = cosinus * STEP_LENGTH;					// Same as cosinus (because x1) - (Adjacent = cos(α) × H)
 	if(degree > 0 && degree <= 90)
 	{
 		diff_y *= -1;

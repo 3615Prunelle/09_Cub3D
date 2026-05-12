@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/08 15:30:24 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/12 14:34:29 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void	draw_line(t_cube *game, char *line, int position)
 	}
 }
 
-void	draw_player(t_cube *game, int x, int y)
+void	draw_player(t_cube *game)
 {
 	int	index;
 	int	BPP;
@@ -174,12 +174,12 @@ void	draw_minimap(t_cube *game, char **minimap)
 	game->player->int_cords[1] = (int)game->player->position[1];
 	while (i < MINI_HEIGHT)
 	{
-		if ((i + game->player->int_cords[1] - MINI_HEIGHT / 2) < 0 || (i + game->player->int_cords[1] - MINI_HEIGHT / 2) / 32 >= game->input->map_info->total_lines)
+		if ((i + game->player->int_cords[1] - MINI_HEIGHT / 2) < 0 || (i + game->player->int_cords[1] - MINI_HEIGHT / 2) / MAP_SCALE >= game->input->map_info->total_lines)
 			draw_line(game, "", i);
 		else
 			draw_line(game, minimap[(i + game->player->int_cords[1] - MINI_HEIGHT / 2) / MAP_SCALE], i);
 		i++;
 	}
 	draw_cone(game, game->player->position);
-	draw_player(game, game->player->int_cords[0], game->player->int_cords[1]);
+	draw_player(game);
 }

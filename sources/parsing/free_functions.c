@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:59 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/08 16:34:42 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/11 12:47:21 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	print_error_free_exit(t_input *input_info, char *error_message,
 	exit(1);
 }
 
+// last gnl call avoids memleaks from buffer if exit before reaching EOF
 void	free_strings_array(char **array)
 {
 	int	i;
@@ -39,7 +40,7 @@ void	free_strings_array(char **array)
 	}
 	free(array);
 	array = NULL;
-	get_next_line(-1);		// avoids memleaks from buffer if exit before reaching EOF
+	get_next_line(-1);
 }
 
 void	free_input_info_struct(t_input *input_info)

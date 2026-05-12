@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/04/01 14:15:06 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/12 14:45:30 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	actions(mlx_key_data_t key, void *params)
 
 	game = params;
 	degree = game->player->direction;
-
 	if (key.key == MLX_KEY_RIGHT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
 		turn_right(game);
 	if (key.key == MLX_KEY_LEFT && (key.action == MLX_PRESS || key.action == MLX_REPEAT))
@@ -90,8 +89,8 @@ bool	is_move_possible(t_cube *game, float degree)
 
 	// Convert the float position[2] array into ints[2] to find what is the element that matches the target, in the logical map
 	int		conv_position[2];
-	conv_position[0] = (target_position[1]/*  - 16 */) / 32;
-	conv_position[1] = (target_position[0]/*  - 16 */) / 32;
+	conv_position[0] = (target_position[1]/*  - 16 */) / MAP_SCALE;
+	conv_position[1] = (target_position[0]/*  - 16 */) / MAP_SCALE;
 
 	// Check what element is at the target
 	char	check;

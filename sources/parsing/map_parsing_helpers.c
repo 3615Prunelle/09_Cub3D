@@ -6,20 +6,12 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:37 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/08 16:29:38 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/11 13:16:02 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/* The map must be composed of only 6 possible characters:
-0 for an empty space, 1 for a wall,
-and N,S,E or W for the player’s start position and spawning orientation
-+ spaces. Before & after space - Only :
-- space
-- wall
-- \0
-*/
 bool	is_line_from_map(char *line)
 {
 	int	i;
@@ -28,11 +20,12 @@ bool	is_line_from_map(char *line)
 	while (line[i] == ' ')
 		i++;
 	if (line[i] == '\n')
-		return (false);			// Avoids empty new lines in the middle of the map
+		return (false);
 	while (line[i] != '\0')
 	{
-		if ((line[i] == ' ' || line[i] == '0') || (line[i] == '1') || (line[i] == '\n')
-			|| (line[i] == 'N') || (line[i] == 'S') || (line[i] == 'E') || (line[i] == 'W'))
+		if ((line[i] == ' ' || line[i] == '0') || (line[i] == '1')
+			|| (line[i] == '\n') || (line[i] == 'N') || (line[i] == 'S')
+			|| (line[i] == 'E') || (line[i] == 'W'))
 		{
 			i++;
 		}
@@ -42,7 +35,7 @@ bool	is_line_from_map(char *line)
 	return (true);
 }
 
-// Fill empty spaces (at the end each line) with spaces to avoid segfault during parsing
+// Fill empty spaces (at the end each line) with spaces to avoid segfault
 void	spaces_fill_up(t_map_info *map_info)
 {
 	int		i;
@@ -52,16 +45,16 @@ void	spaces_fill_up(t_map_info *map_info)
 
 	i = 0;
 	map = map_info->map;
-	map_info->total_columns--;		// To exclude the \n at the end (will be replaced by a \0)
-	map_info->total_lines++;		// From index to regular digit
+	map_info->total_columns--;
+	map_info->total_lines++;
 	while (i < map_info->total_lines)
 	{
-		j = ft_strchr(map[i], '\n') - map[i];	// \n index
+		j = ft_strchr(map[i], '\n') - map[i];
 		tmp = calloc(sizeof(char), map_info->total_columns);
-		ft_memcpy(tmp, map[i], j);				// doesn't copy the \n
+		ft_memcpy(tmp, map[i], j);
 		while (j < map_info->total_columns)
 		{
-			tmp[j] = ' ';	// replace \0 by ' ' till idx max
+			tmp[j] = ' ';
 			j++;
 		}
 		free(map[i]);
@@ -73,28 +66,23 @@ void	spaces_fill_up(t_map_info *map_info)
 // Ignore spaces, then must be consecutive '1' or spaces
 bool	is_wall_only(char *line)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
 	while (line[i] == ' ')
-	{
 		i++;
-	}
 	while (line[i] == '1' || line[i] == ' ')
-	{
 		i++;
-	}
-	if ((i == 0) || (line[i] != '\0'))			// other characters than spaces/walls have been found
+	if ((i == 0) || (line[i] != '\0'))
 		return (false);
 	return (true);
 }
 
-// Ne pas checker les diagonales partant de l'element
+// Checks only above/below/right/left (not diagonal)
 bool	are_surroundings_valid(char **map, int element_line, int element_column)
 {
-	// static so it's norminette approved for decl + init on same line (replace by old code below if issue)
 	static int	directions[4][2] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
 	int			i;
 
@@ -103,33 +91,11 @@ bool	are_surroundings_valid(char **map, int element_line, int element_column)
 		return (false);
 	while (i < 4)
 	{
-		if (!ft_strchr("01NSEW", map[element_line + directions[i][0]][element_column + directions[i][1]]))
+		if (!ft_strchr("01NSEW",
+				map[element_line + directions[i][0]]
+			[element_column + directions[i][1]]))
 			return (false);
 		i++;
 	}
 	return (true);
 }
-
-	// OLD CODE BEFORE OPTIMIZATION - KEEP IF ISSUE
-	// char	to_check;
-
-	// if ((element_line == 0) || (element_column == 0))
-	// 	return (false);									// No element (player or '0') should be at line 0 or column 0
-
-	// to_check = map[element_line][element_column + 1];	// What's on the left ?
-	// if (!ft_strchr("01NSEW", to_check))
-	// 	return(false);
-
-	// to_check = map[element_line][element_column - 1];	// What's on the right ?
-	// if (!ft_strchr("01NSEW", to_check))
-	// 	return(false);
-
-	// to_check = map[element_line - 1][element_column];	// What's above ?
-	// if (!ft_strchr("01NSEW", to_check))
-	// return(false);
-
-	// to_check = map[element_line + 1][element_column];	// What's below ?
-	// if (!ft_strchr("01NSEW", to_check))
-	// 	return(false);
-
-	// return (true);

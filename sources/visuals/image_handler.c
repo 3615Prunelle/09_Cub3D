@@ -14,7 +14,7 @@ void	breakdown(char **map)
 	free(map);
 }
 
-mlx_texture_t **load_textures(t_cube *game, t_input *input)
+mlx_texture_t **load_textures(t_input *input)
 {
 	mlx_texture_t	**textures;
 	textures = malloc(4 * sizeof(mlx_texture_t *));
@@ -99,7 +99,7 @@ void	set_game(t_cube	*game)
 	game->rays = malloc(VIEW_WIDTH * sizeof(t_ray *));
 	if (!ray_allocation(game->rays))
 		disappear(game);
-	game->textures = load_textures(game, game->input);
+	game->textures = load_textures(game->input);
 	if (!game->textures)
 		disappear(game);
 	game->viewplane = VIEW_DISTANCE * (2 * tanf((FOV / 2) * DEG_TO_RAD));
