@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/12 14:37:43 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:15:59 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@
 # define ERR_MSG_07 "Invalid map\n"
 # define ERR_MSG_08 "Something wrong with the player\n"
 # define ERR_MSG_09 "Thanks for shopping at Cub, tschüssi !\n"
-# define ERR_MSG_10 "BOOM\n"
 
 // Structs
 typedef enum e_directions
@@ -190,6 +189,8 @@ void				pixel_to_image(uint8_t *pixel, uint32_t colour);
 
 // controler.c
 void				actions(mlx_key_data_t key, void *params);
+void				move_and_turn(mlx_key_data_t key, t_cube *game,
+						float degree);
 bool				is_move_possible(t_cube *game, float degree);
 
 // movements.c

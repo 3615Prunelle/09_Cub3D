@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:52:15 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/12 14:40:30 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/12 15:22:14 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	turn_right(t_cube *game)
 	i = game->player->direction;
 	game->player->direction = add_degree(i, 1);
 //	if (i == 0 || i == 45 || i == 90 || i == 135 || i == 180 || i == 225 || i == 270 || i == 315 || i == 360)
-//	printf("dir=%.1f, ", game->player->direction); just a little test
+	//	printf("dir=%.1f, ", game->player->direction); just a little test
 }
 
 void	turn_left(t_cube *game)
@@ -29,7 +29,6 @@ void	turn_left(t_cube *game)
 	i = game->player->direction;
 	game->player->direction = add_degree(i, -1);
 }
-
 
 // MOVING 1 STEP FORWARD
 // Adjust the degree (in calling function) depending on key pressed
@@ -56,7 +55,7 @@ void	move(t_cube *game, float degree)
 	{
 		diff_x *= -1;
 	}
-	else if(degree > 270 || degree == 0)
+	else if (degree > 270 || degree == 0)
 	{
 		diff_x *= -1;
 		diff_y *= -1;
@@ -74,7 +73,7 @@ float	adjust_degree(enum e_directions direction, float degree)
 		if (degree < 270)
 			degree += 90;
 		else
-			degree -= 270;		// If degree = 271, new is 1
+			degree -= 270;					// If degree = 271, new is 1
 	}
 	else if (direction == BACK)
 	{
