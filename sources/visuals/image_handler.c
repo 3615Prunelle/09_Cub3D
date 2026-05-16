@@ -20,16 +20,16 @@ mlx_texture_t **load_textures(t_input *input)
 	textures = malloc(4 * sizeof(mlx_texture_t *));
 	if (!textures)
 		return (NULL);
-	textures[0] = mlx_load_png(input->NO);
+	textures[0] = mlx_load_png(input->north);
 	if (!textures[0])
 		return (NULL);
-	textures[1] = mlx_load_png(input->SO);
+	textures[1] = mlx_load_png(input->south);
 	if (!textures[1])
 		return (NULL);
-	textures[2] = mlx_load_png(input->WE);
+	textures[2] = mlx_load_png(input->west);
 	if (!textures[2])
 		return (NULL);
-	textures[3] = mlx_load_png(input->EA);
+	textures[3] = mlx_load_png(input->east);
 	if (!textures[3])
 		return (NULL);
 	return (textures);

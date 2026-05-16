@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:54 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/12 14:07:15 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:54:26 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ int	check_and_add_texture_path(char **split_line, t_input *input_info)
 		return (FAIL);
 	if (ft_strncmp(split_line[0], "NO", 3) == 0)
 	{
-		input_info->NO = ft_strdup(split_line[1]);
+		input_info->north = ft_strdup(split_line[1]);
 	}
 	else if (ft_strncmp(split_line[0], "SO", 3) == 0)
 	{
-		input_info->SO = ft_strdup(split_line[1]);
+		input_info->south = ft_strdup(split_line[1]);
 	}
 	else if (ft_strncmp(split_line[0], "WE", 3) == 0)
 	{
-		input_info->WE = ft_strdup(split_line[1]);
+		input_info->west = ft_strdup(split_line[1]);
 	}
 	else if (ft_strncmp(split_line[0], "EA", 3) == 0)
 	{
-		input_info->EA = ft_strdup(split_line[1]);
+		input_info->east = ft_strdup(split_line[1]);
 	}
 	return (SUCCESS);
 }

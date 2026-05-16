@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 16:06:52 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/04/01 14:42:08 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:55:40 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,27 @@ uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders, int j)
 
 	if (borders[0] > borders[1])
 		return (0x000000FF);
-	if (ray->wall[0] == 'N' && game->input->NO)
+	if (ray->wall[0] == 'N' && game->input->north)
 	{
 		color = get_south_north_color(game, ray, borders, j);
 		return (color);
 	}
-	if (ray->wall[0] == 'S' && game->input->SO)
+	if (ray->wall[0] == 'S' && game->input->south)
 	{
 		color = get_south_north_color(game, ray, borders, j);
 		return (color);
 	}
-	if (ray->wall[0] == 'W' && game->input->WE)
+	if (ray->wall[0] == 'W' && game->input->west)
 	{
 		color = get_west_east_color(game, ray, borders, j);
 		return (color);
 	}
-	if (ray->wall[0] == 'E' && game->input->EA)
+	if (ray->wall[0] == 'E' && game->input->east)
 	{
 		color = get_west_east_color(game, ray, borders, j);
 		return (color);
 	}
-	if (ray->wall[0] == 'K' && game->input->SO)
+	if (ray->wall[0] == 'K' && game->input->south)
 		return (0x00FF00FF);
 	return (0x000000FF);
 }

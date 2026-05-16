@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:59 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/11 12:47:21 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:55:40 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ void	free_strings_array(char **array)
 
 void	free_input_info_struct(t_input *input_info)
 {
-	if (input_info->NO)
-		free(input_info->NO);
-	if (input_info->SO)
-		free(input_info->SO);
-	if (input_info->WE)
-		free(input_info->WE);
-	if (input_info->EA)
-		free(input_info->EA);
+	if (input_info->north)
+		free(input_info->north);
+	if (input_info->south)
+		free(input_info->south);
+	if (input_info->west)
+		free(input_info->west);
+	if (input_info->east)
+		free(input_info->east);
 	if (input_info->map_info->map)
 		free_strings_array(input_info->map_info->map);
 	if (input_info->map_info)

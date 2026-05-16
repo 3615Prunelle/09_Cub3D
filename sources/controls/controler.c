@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/12 15:26:20 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:50:24 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	actions(mlx_key_data_t key, void *params)
 		printf(ERR_MSG_09);
 		exit(1); // clean and exit properly instead - See w/ Maxi for the clean MLX (disappear function ? TBC)
 	}
-	// implement red cross mouse hook - Nope ? Already dealt with through mlx_close_hook function (in main) TBC ? Check mem leaks
+	// red cross mouse hook already dealt with through mlx_close_hook function (in main) - Check mem leaks
 	cast_rays(game, game->input->map_info->map);
 	fill_view(game);
 	draw_rays(game);
@@ -70,7 +70,7 @@ void	move_and_turn(mlx_key_data_t key, t_cube *game, float degree)
 // Check which element is in the direction we're going
 // If wall, return false
 // Find the target position depending on the degree - Caution : The changes are in pixels, they'll be converted to int a few lines below
-// Convert the float position[2] array into ints[2] to find what is the element that matches the target, in the logical map
+// Converts the float position[2] array into ints[2] to find what is the element that matches the target, in the logical map
 bool	is_move_possible(t_cube *game, float degree)
 {
 	char	**map;
@@ -91,8 +91,8 @@ bool	is_move_possible(t_cube *game, float degree)
 		target_position[1] += 3;		// Down one line, column unchanged
 	if (degree > 225 && degree <= 315)	// Looking West
 		target_position[0] -= 3;		// One column left, line unchanged
-	conv_position[0] = (target_position[1]/*  - 16 */) / MAP_SCALE;
-	conv_position[1] = (target_position[0]/*  - 16 */) / MAP_SCALE;
+	conv_position[0] = (target_position[1]) / MAP_SCALE;
+	conv_position[1] = (target_position[0]) / MAP_SCALE;
 	target_element = map[conv_position[0]][conv_position[1]];
 	if (target_element == '1')
 		return (false);

@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:52:15 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/12 15:22:14 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:46:31 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	turn_left(t_cube *game)
 // Could this be useful at some point ? : (sin(degree)²) + (cos(degree)²) = 1
 // Keep in mind that [0][0] is up left
 // fabsf avoids negative values
+// else if(degree > 90 && degree <= 180)			// No need because both diffs are positive
 void	move(t_cube *game, float degree)
 {
 	float	diff_x;
@@ -43,15 +44,14 @@ void	move(t_cube *game, float degree)
 	float	cosinus;
 
 	sinus = fabsf(sinf(degree * DEG_TO_RAD));
-	diff_x = sinus * STEP_LENGTH;					// Same as sinus (because x1) - (Opposé = sin(α) × H)
+	diff_x = sinus * STEP_LENGTH;
 	cosinus = fabsf(cosf(degree * DEG_TO_RAD));
-	diff_y = cosinus * STEP_LENGTH;					// Same as cosinus (because x1) - (Adjacent = cos(α) × H)
-	if(degree > 0 && degree <= 90)
+	diff_y = cosinus * STEP_LENGTH;
+	if (degree > 0 && degree <= 90)
 	{
 		diff_y *= -1;
 	}
-	// else if(degree > 90 && degree <= 180)			// No need because both diffs are positive
-	else if(degree > 180 && degree <= 270)
+	else if (degree > 180 && degree <= 270)
 	{
 		diff_x *= -1;
 	}
@@ -69,27 +69,24 @@ float	adjust_degree(enum e_directions direction, float degree)
 {
 	if (direction == RIGHT)
 	{
-		// Add 90 degrees, making sure I stay within the limits
 		if (degree < 270)
 			degree += 90;
 		else
-			degree -= 270;					// If degree = 271, new is 1
+			degree -= 270;
 	}
 	else if (direction == BACK)
 	{
-		// Remove 180 degrees, making sure I stay within the limits
 		if (degree >= 180)
 			degree -= 180;
 		else
-			degree = (180 + degree);		// If degree = 1, new is 181
+			degree = (180 + degree);
 	}
 	else if (direction == LEFT)
 	{
-		// Remove 90 degrees, making sure I stay within the limits
 		if (degree >= 90)
 			degree -= 90;
 		else
-			degree = (270 + degree);		// If degree = 10, new is 280
+			degree = (270 + degree);
 	}
 	return (degree);
 }

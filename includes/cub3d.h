@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/12 15:15:59 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:57:45 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 # define CUB3D_H
 
 # include <libft.h>
-# include <fcntl.h>			// open
-# include <limits.h>		// INT_MAX
+# include <fcntl.h>		// open
+# include <limits.h>	// INT_MAX
 # include <stdbool.h>
-# include <stdlib.h>		// EXIT_FAILURE, EXIT_SUCCESS
+# include <stdlib.h>	// EXIT_FAILURE, EXIT_SUCCESS
 # include <string.h>
 # include <errno.h>
-# include <sys/stat.h>		// open
-# include <sys/time.h>		// time
-# include <sys/types.h>		// opendir
-# include <unistd.h>		// close, pipe, fork, read, write, getcwd, chdir
-# include <math.h>			//the scary stuff (tan, cos, sin, atan) but also yummy pie
-# include <stdio.h>			//mal lock mal nicht lock
+# include <sys/stat.h>	// open
+# include <sys/time.h>	// time
+# include <sys/types.h>	// opendir
+# include <unistd.h>	// close, pipe, fork, read, write, getcwd, chdir
+# include <math.h>		// the scary stuff (tan, cos, sin, atan) but also yummy pie
+# include <stdio.h>		// mal lock mal nicht lock
 # include <MLX42.h>
 
 # define FAIL 0
@@ -81,10 +81,10 @@ typedef struct s_input
 {
 	char			*path_to_map;
 	char			**scene;
-	char			*NO;
-	char			*SO;
-	char			*WE;
-	char			*EA;
+	char			*north;
+	char			*south;
+	char			*west;
+	char			*east;
 	int				floor[3];
 	int				ceiling[3];
 	t_map_info		*map_info;
