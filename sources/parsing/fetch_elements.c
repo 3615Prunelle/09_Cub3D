@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:54 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/16 13:54:26 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:23:52 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	is_image_reachable(char *path)
 	tmp = ft_strrchr(path, '.');
 	if (!tmp)
 		return (false);
-	if (ft_strcmp(tmp, ".xpm") && ft_strcmp(tmp, ".png"))
+	if (ft_strcmp(tmp, ".png"))
 		return (false);
 	file_fd = open(path, O_RDONLY);
 	if (file_fd == -1)

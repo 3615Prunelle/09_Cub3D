@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:42 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/12 14:00:05 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:40:53 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	parsing(char *path, t_input *input_info)
 	input_info->path_to_map = path;
 	if (!is_filename_correct(path))
 	{
-		printf("%s", ERR_MSG_02);
+		printf("%s", ERR_MSG_2);
 		free(input_info);
 		exit(1);
 	}
@@ -26,9 +26,9 @@ void	parsing(char *path, t_input *input_info)
 	read_scene(input_info, input_info->scene);
 	spaces_fill_up(input_info->map_info);
 	if (check_player(input_info, input_info->map_info->map) == FAIL)
-		print_error_free_exit(input_info, ERR_MSG_08, false, NULL);
+		print_error_free_exit(input_info, ERR_MSG_5, false, NULL);
 	if (!is_map_valid(input_info->map_info))
-		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);
+		print_error_free_exit(input_info, ERR_MSG_6, false, NULL);
 }
 
 void	read_scene(t_input *input_info, char **scene)
@@ -47,12 +47,12 @@ void	read_scene(t_input *input_info, char **scene)
 			remove_char_from_line(&scene[i], '\n');
 		split_line = ft_split(scene[i], ' ');
 		if (!split_line)
-			print_error_free_exit(input_info, ERR_MSG_03, true, scene);
+			print_error_free_exit(input_info, ERR_MSG_4, true, scene);
 		line_management_return = line_management(input_info, split_line, i,
 				&elements_counter);
 		free_strings_array(split_line);
 		if (line_management_return == FAIL)
-			print_error_free_exit(input_info, ERR_MSG_03, true, scene);
+			print_error_free_exit(input_info, ERR_MSG_4, true, scene);
 		else if (line_management_return == MAP_BEGINS)
 			break ;
 		i++;
@@ -102,7 +102,7 @@ char	**export_map(t_input *input_info, char **scene, int i)
 		add_line_in_map_struct(scene[i], input_info);
 		i++;
 		if (scene[i] && !(is_line_from_map(scene[i])))
-			print_error_free_exit(input_info, ERR_MSG_03, true,
+			print_error_free_exit(input_info, ERR_MSG_4, true,
 				scene);
 	}
 	free_strings_array(scene);

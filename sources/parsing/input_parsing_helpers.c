@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:47 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/12 13:57:26 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:38:11 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	count_lines_from_scene(t_input *input_info)
 	line_counter = 0;
 	gnl_return = get_next_line(fd);
 	if (!gnl_return)
-		print_error_free_exit(input_info, ERR_MSG_05, false, NULL);
+		print_error_free_exit(input_info, ERR_MSG_3, false, NULL);
 	while (gnl_return)
 	{
 		line_counter++;

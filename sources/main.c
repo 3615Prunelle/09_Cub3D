@@ -5,7 +5,7 @@ int	main(int ac, char **av)
 	t_cube			game;
 	t_input	*input_info;
 	if (ac != 2)
-		print_error_free_exit(NULL, ERR_MSG_01, false, NULL);
+		print_error_free_exit(NULL, ERR_MSG_1, false, NULL);
 	input_info = ft_calloc(sizeof(t_input), 1);				// Ⓜ️
 	if(!input_info)
 		print_error_free_exit(NULL, strerror(errno), false, NULL);

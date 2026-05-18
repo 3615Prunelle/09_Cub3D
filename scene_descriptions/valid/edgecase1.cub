@@ -1,0 +1,15 @@
+NO            ./textures/tree1.png
+SO ./textures/tree2.png
+WE ./textures/tree3.png
+
+EA ./textures/tree4.png
+
+F    20,     200 ,0
+C 225,30,0
+
+1111
+   11111
+   11N11
+  111111
+  111111
+       1111

@@ -27,7 +27,7 @@ _Required official description, just in case :_
 
 # Instructions
 If you're here, you already know the drill : git clone, make, enjoy ! And ... That's pretty much it !  
-When executing the game (called cub3d), you have to fetch the scene description (in .cub format) of your choice in the scene_descriptions folder. If you feel creative, you can edit these files, or even create your own, as long as it respects the same synthax, and that all required elements are provided (you'll figure it out, it's pretty straightforward).  
+When executing the game (called cub3d), you have to fetch the scene description (in .cub format) of your choice in the ./scene_descriptions/valid folder. If you feel creative, you can edit these files, or even create your own, as long as it respects the same synthax, and that all required elements are provided (you'll figure it out, it's pretty straightforward).  
 Then you give that scene description as an argument, for the desired maze to be set up and launched.  
 
 _Required official intructions, just in case :_
@@ -69,6 +69,6 @@ Just in case you need a bit of help to build a scene description, here's what yo
 >        * 1 for a wall.
 >        * N,S,E or W for the player’s start position and spawning orientation.
 >    * The map must be closed/surrounded by walls.
-> * If any misconfiguration of any kind is encountered in the file, the program will exit and return an explicit error message.
+> * If any misconfiguration of any kind is encountered in the file, the program will exit and return a somewhat explicit error message. If that error message is too vague, feel free to have a look at the ./scene_descriptions/invalid files - their names could give you a hint of what you've done wrong. Otherwise you can also decide to have fun and find out with a debugger, YOU SEXY NERD ^^'
 
 Voilà, we wish you a safe journey aboard, au revoir ! Bon voyage !

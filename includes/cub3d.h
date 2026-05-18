@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/16 13:57:45 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:41:19 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,14 @@
 # define VIEW_DISTANCE 3
 # define DEG_TO_RAD 0.017453293
 
-# define ERR_MSG_01 "Invalid amount of args\
+# define ERR_MSG_1 "Invalid amount of args\
 	- Just provide a map in .cub format\n"
-# define ERR_MSG_02 "No jeans, no sneakers, no .cub - Can't get in, sorry.\n"
-# define ERR_MSG_03 "Missing element(s) or invalid line\n"
-
-# define ERR_MSG_05 "Empty .cub file\n"
-
-# define ERR_MSG_07 "Invalid map\n"
-# define ERR_MSG_08 "Something wrong with the player\n"
-# define ERR_MSG_09 "Thanks for shopping at Cub, tschüssi !\n"
+# define ERR_MSG_2 "No jeans, no sneakers, only .cub - Can't get in, sorry.\n"
+# define ERR_MSG_3 "Empty .cub file\n"
+# define ERR_MSG_4 "Missing element(s) or invalid line / png file\n"
+# define ERR_MSG_5 "Something wrong with the player\n"
+# define ERR_MSG_6 "Invalid map\n"
+# define MSG_1 "Thanks for shopping at Cub, tschüssi !\n"
 
 // Structs
 typedef enum e_directions

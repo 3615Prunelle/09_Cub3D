@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/16 13:50:24 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:41:19 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	actions(mlx_key_data_t key, void *params)
 	if (key.key == MLX_KEY_ESCAPE && (key.action == MLX_PRESS
 			|| key.action == MLX_REPEAT))
 	{
-		printf(ERR_MSG_09);
+		printf(MSG_1);
 		exit(1); // clean and exit properly instead - See w/ Maxi for the clean MLX (disappear function ? TBC)
 	}
 	// red cross mouse hook already dealt with through mlx_close_hook function (in main) - Check mem leaks
