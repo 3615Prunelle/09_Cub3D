@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:42 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/18 14:40:53 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:11:04 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	**export_map(t_input *input_info, char **scene, int i)
 		add_line_in_map_struct(scene[i], input_info);
 		i++;
 		if (scene[i] && !(is_line_from_map(scene[i])))
-			print_error_free_exit(input_info, ERR_MSG_4, true,
+			print_error_free_exit(input_info, ERR_MSG_6, true,
 				scene);
 	}
 	free_strings_array(scene);
