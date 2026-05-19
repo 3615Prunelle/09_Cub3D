@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_parsing.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/08 16:29:29 by schappuy          #+#    #+#             */
+/*   Updated: 2026/05/12 13:54:44 by schappuy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 bool	is_map_valid(t_map_info *map_info)
@@ -9,111 +21,69 @@ bool	is_map_valid(t_map_info *map_info)
 	line = 0;
 	column = 0;
 	map = map_info->map;
-
-	while (line < map_info->max_lines)
+	while (line < map_info->total_lines)
 	{
 		column = 0;
-		if (((line == 0) || (line == map_info->max_lines)) && (!is_wall_only(map[line])))
+		if (((line == 0) || (line == map_info->total_lines))
+			&& (!is_wall_only(map[line])))
 			return (false);
-		while (((line != 0) && (line != map_info->max_lines)) && (column < map_info->max_columns))
+		while (((line != 0) && (line != map_info->total_lines))
+			&& (column < map_info->total_columns))
 		{
-			if ((map[line][column] == '0') && (!are_surroundings_valid(map, line, column)))
+			if ((map[line][column] == '0') && (!are_surroundings_valid(map,
+						line, column)))
 				return (false);
 			column++;
 		}
 		line++;
-	}
-	return (true);
-}
-
-// Ignore spaces, then must be consecutive '1' or spaces
-bool	is_wall_only(char *line)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	while (line[i] == ' ')
-	{
-		i++;
-	}
-	while (line[i] == '1' || line[i] == ' ')
-	{
-		i++;
-	}
-	if ((i == 0) || (line[i] != '\n'))			// other characters than spaces/walls have been found
-		return (false);
-	return (true);
-}
-
-bool	are_surroundings_valid(char **map, int element_line, int element_column)
-{
-	int		i;
-	int		j;
-
-	if ((element_line != 0) && (element_column != 0))
-	{
-		i = element_line - 1;
-		j = element_column - 1;
-	}
-	else
-		return (false);
-
-	while (i <= element_line + 1)
-	{
-		j = element_column - 1;
-		while (j <= element_column + 1)
-		{
-			if ((i == element_line) && (j == element_column))
-				j++;
-			else if ((map[i][j] == '0') || (map[i][j] == '1')
-				|| (map[i][j] == 'N') || (map[i][j] == 'S') || (map[i][j] == 'E') || (map[i][j] == 'W'))
-				j++;
-			else
-				return (false);
-		}
-		i++;
 	}
 	return (true);
 }
 
 /*
-return -1 if error(no player or multiple or position outside game)
-check if inside game : char before + after + above + below + 4 diagonals must be either 0 or 1
+Checks if inside game : char before + after + above + below
+	+ 4 diagonals must be either 0 or 1
+Returns 0 if error(no player or multiple or position outside game)
+Pass in function is_line_from_map already done earlier,
+	so no need to check for every single char - Focus on player only
 */
-int		update_player_info(t_input *input_info)
+int	check_player(t_input *input_info, char **map)
 {
-	char	**map;
-	bool	player_found;
-	int		line;
-	int		column;
+	int	player_found;
+	int	line;
+	int	column;
 
-	map = input_info->map_info->map;
-	player_found = false;
+	player_found = 0;
 	line = 0;
-	column = 0;
-
 	while (map[line])
 	{
 		column = 0;
 		while (map[line][column] != '\0')
 		{
-			// Pass in function is_line_from_map already done earlier, so no need to check for every single char - Focus on player only
-			if ((map[line][column] == 'N') || (map[line][column] == 'S') || (map[line][column] == 'E') || (map[line][column] == 'W'))
+			if (ft_strchr("NSEW", map[line][column]))
 			{
-				if (player_found)
-					return (-1);
-				input_info->player.initial_direction = map[line][column];
-				input_info->player.int_cords[0] = column;			// Switched line & column for Maxi to handle
-				input_info->player.int_cords[1] = line;
-				player_found = true;
+				add_player_info_in_struct(input_info, line, column);
+				player_found++;
 				if (!are_surroundings_valid(map, line, column))
-					return (-1);
+					return (FAIL);
 			}
 			column++;
 		}
 		line++;
 	}
-	return (1);
+	if (player_found != 1)
+		return (FAIL);
+	return (SUCCESS);
+}
+
+// Switched line & column for Maxi to handle
+void	add_player_info_in_struct(t_input *input_info, int line, int column)
+{
+	char	**map;
+
+	map = input_info->map_info->map;
+	input_info->player.initial_direction = map[line][column];
+	input_info->player.int_cords[0] = column;
+	input_info->player.int_cords[1] = line;
+	map[line][column] = '0';
 }

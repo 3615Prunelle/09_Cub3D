@@ -20,16 +20,16 @@ mlx_texture_t **load_textures(t_cube *game, t_input *input)
 	textures = malloc(4 * sizeof(mlx_texture_t *));
 	if (!textures)
 		return (NULL);
-	textures[0] = mlx_load_png(input->NO);
+	textures[0] = mlx_load_png(input->north);
 	if (!textures[0])
 		return (NULL);
-	textures[1] = mlx_load_png(input->SO);
+	textures[1] = mlx_load_png(input->south);
 	if (!textures[1])
 		return (NULL);
-	textures[2] = mlx_load_png(input->WE);
+	textures[2] = mlx_load_png(input->west);
 	if (!textures[2])
 		return (NULL);
-	textures[3] = mlx_load_png(input->EA);
+	textures[3] = mlx_load_png(input->east);
 	if (!textures[3])
 		return (NULL);
 	return (textures);
@@ -63,19 +63,6 @@ void	disappear(void *param)
 	exit(0);
 }
 
-void	ray_number(t_ray *ray)
-{
-	ray->step_x[0] = 0;
-	ray->step_y[0] = 0;
-	ray->step_x[1] = 0;
-	ray->step_y[1] = 0;
-	ray->step_x[2] = 0;
-	ray->step_y[2] = 0;
-	ray->step_x[3] = 0;
-	ray->step_y[3] = 0;
-	ray->length = 0.0;
-}
-
 bool	ray_allocation(t_ray **rays)
 {
 	t_ray	*ray;
@@ -91,7 +78,9 @@ bool	ray_allocation(t_ray **rays)
 		c = malloc(2 * sizeof(char));
 		if (!c)
 			return (false);
-		ray_number(ray);
+		ray->length = 0.0;
+		ray->step_x = 0;
+		ray->step_y = 0;
 		c[0] = '0';
 		c[1] = '\0';
 		ray->wall = c;

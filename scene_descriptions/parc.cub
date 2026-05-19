@@ -1,0 +1,16 @@
+EA textures/parc.png
+WE textures/parc.png
+SO textures/parc.png
+NO textures/parc.png
+
+C 0,200,255
+F 160,225,0
+
+    11111
+   100S001
+    10001
+     100011111111111
+    100001010101011
+     100000000000001
+    100010101010101
+    111111111111111

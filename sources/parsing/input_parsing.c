@@ -1,187 +1,133 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/08 16:29:42 by schappuy          #+#    #+#             */
+/*   Updated: 2026/05/12 14:00:05 by schappuy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-void		parsing(char *path, t_input *input_info)
+void	parsing(char *path, t_input *input_info)
 {
 	input_info->path_to_map = path;
 	if (!is_filename_correct(path))
 	{
 		printf("%s", ERR_MSG_02);
 		free(input_info);
-		exit (1);
+		exit(1);
 	}
 	input_info->map_info = ft_calloc(sizeof(t_map_info), 1);
-	read_scene_description(input_info);
-	// map is saved, but needs to be adjusted (spaces to fill blanks)
+	input_info->scene = open_fd_export_content(input_info);
+	read_scene(input_info, input_info->scene);
 	spaces_fill_up(input_info->map_info);
-	if (update_player_info(input_info) == -1)			// Checks if only one player + surroundings ok + update struct
+	if (check_player(input_info, input_info->map_info->map) == FAIL)
 		print_error_free_exit(input_info, ERR_MSG_08, false, NULL);
-
-	if(!is_map_valid(input_info->map_info))
-		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);	// array has been freed in read_scene_description function
+	if (!is_map_valid(input_info->map_info))
+		print_error_free_exit(input_info, ERR_MSG_07, false, NULL);
 }
 
-bool	is_filename_correct(char *path_to_map)
+void	read_scene(t_input *input_info, char **scene)
 {
-	size_t	file_length;
-	char	*tmp;
-
-	file_length = ft_strlen(path_to_map);
-	if (!(tmp = ft_strrchr(path_to_map, '.')))
-	{
-		return(false);
-	}
-	if ((ft_strcmp(tmp, ".cub")))
-	{
-		return(false);
-	}
-	return(true);
-}
-
-// check 1st 2 letters of each line
-// Except for the map content, each type of element can be separated by one or more empty lines.
-// Except for the map content which always has to be the last, each type of element can be set in any order in the file.
-// Except for the map, each type of information from an element can be separated by one or more spaces.
-// Except for the map, each element must begin with its type identifier (composed by one or two characters), followed by its specific information in a strict order:
-
-void	read_scene_description(t_input *input_info)
-{
-	int		fd;
-	char	**file_content;
-	int		line_counter;
-	int		i = 0;
+	char	**split_line;
+	int		i;
 	int		elements_counter;
-
-	line_counter = count_lines_from_scene_description(input_info);
-	elements_counter = 0;
-
-	fd = open(input_info->path_to_map, O_RDONLY);
-	file_content = ft_calloc(sizeof(char *), line_counter + 1);
-	if (!file_content)
-		print_error_free_exit(input_info, strerror(errno), false, NULL);
-	file_content[i] = get_next_line(fd);				// Ⓜ️ (for each line)
-	// No need to check for error because count_lines_from_scene_description function already made sure there's something to read
-	while (file_content[i])
-	{
-		if (file_content[i][0] == 'N' || file_content[i][0] == 'S' || file_content[i][0] == 'W' || file_content[i][0] == 'E')
-		{
-			if (!check_and_add_texture_path(file_content[i], input_info))
-				print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
-			elements_counter++;
-		}
-		else if (file_content[i][0] == 'F' || file_content[i][0] == 'C')
-		{
-			if (!check_and_add_colors(file_content[i], input_info))
-				print_error_free_exit(input_info, ERR_MSG_06, true, file_content);
-			elements_counter++;
-		}
-		else if ((file_content[i][0] == ' ') || (file_content[i][0] == '1'))
-		{
-			if((is_line_from_map(file_content[i])) && (elements_counter == 6))
-				break;
-			else
-				print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
-		}
-		else if (file_content[i][0] != '\n')
-		{
-			print_error_free_exit(input_info, ERR_MSG_03, true, file_content);
-		}
-		i++;
-		file_content[i] = get_next_line(fd);
-	}
-	// when out of this loop, we're reaching the map part
-	input_info->map_info->map = ft_calloc(sizeof(char *), line_counter);
-	while (file_content[i])
-	{
-		add_line_in_map_struct(file_content[i], input_info);				// Ⓜ️
-		i++;
-		file_content[i] = get_next_line(fd);
-		if(file_content[i] && !(is_line_from_map(file_content[i])))
-			print_error_free_exit(input_info, ERR_MSG_04, true, file_content);
-	}
-	free_strings_array(file_content);
-}
-
-int		count_lines_from_scene_description(t_input *input_info)
-{
-	int		fd;
-	char	*gnl_return;
-	int		line_counter;
-
-	fd = open(input_info->path_to_map, O_RDONLY);
-	line_counter = 0;
-	gnl_return = get_next_line(fd);
-	if(!gnl_return)
-		print_error_free_exit(input_info, ERR_MSG_05, false, NULL);
-	while (gnl_return)
-	{
-		line_counter++;
-		free(gnl_return);
-		gnl_return = get_next_line(fd);
-	}
-	close(fd);
-	return (line_counter);
-}
-
-/* The map must be composed of only 6 possible characters:
-0 for an empty space, 1 for a wall,
-and N,S,E or W for the player’s start position and spawning orientation
-+ spaces
-*/
-bool	is_line_from_map(char *line)
-{
-	int	i;
+	int		line_management_return ;
 
 	i = 0;
-
-	while (line[i] == ' ')
-		i++;
-	if (line[i] == '\n')
-		return (false);			// Avoids empty new lines in the middle of the map
-	while (line[i] != '\0')
+	elements_counter = 0;
+	while (scene[i])
 	{
-		if ((line[i] == ' ') || (line[i] == '0') || (line[i] == '1') || (line[i] == '\n')
-			|| (line[i] == 'N') || (line[i] == 'S') || (line[i] == 'E') || (line[i] == 'W'))
-		{
-			i++;
-		}
-		else
-			return (false);
+		if (scene[i][0] != '\n' &&
+			(strchr(scene[i], '\n')) && (elements_counter != 6))
+			remove_char_from_line(&scene[i], '\n');
+		split_line = ft_split(scene[i], ' ');
+		if (!split_line)
+			print_error_free_exit(input_info, ERR_MSG_03, true, scene);
+		line_management_return = line_management(input_info, split_line, i,
+				&elements_counter);
+		free_strings_array(split_line);
+		if (line_management_return == FAIL)
+			print_error_free_exit(input_info, ERR_MSG_03, true, scene);
+		else if (line_management_return == MAP_BEGINS)
+			break ;
+		i++;
 	}
-	return (true);
+	input_info->map_info->map = export_map(input_info, scene, i);
 }
 
-// Fill empty spaces (at the end each line) with spaces to avoid segfault during parsing
-void	spaces_fill_up(t_map_info *map_info)
+int	line_management(t_input *input_info, char **split_line, int i,
+		int *elements_counter)
+{
+	char	**scene;
+
+	scene = input_info->scene;
+	if (ft_strchr("NSWE", split_line[0][0]))
+	{
+		if (!check_and_add_texture_path(split_line, input_info))
+			return (FAIL);
+		(*elements_counter)++;
+	}
+	else if (!ft_strcmp(split_line[0], "F") || !ft_strcmp(split_line[0], "C"))
+	{
+		if (!check_and_add_colors(scene[i], input_info))
+			return (FAIL);
+		(*elements_counter)++;
+	}
+	else if (split_line[0][0] == '1')
+	{
+		if ((is_line_from_map(scene[i])) && (*elements_counter == 6))
+			return (MAP_BEGINS);
+		return (FAIL);
+	}
+	else if (split_line[0][0] != '\n')
+		return (FAIL);
+	return (SUCCESS);
+}
+
+char	**export_map(t_input *input_info, char **scene, int i)
+{
+	int	line_counter;
+	int	lines_in_map;
+
+	line_counter = count_lines_from_scene(input_info);
+	lines_in_map = line_counter - i;
+	input_info->map_info->map = ft_calloc(sizeof(char *), lines_in_map + 1);
+	while (scene[i])
+	{
+		add_line_in_map_struct(scene[i], input_info);
+		i++;
+		if (scene[i] && !(is_line_from_map(scene[i])))
+			print_error_free_exit(input_info, ERR_MSG_03, true,
+				scene);
+	}
+	free_strings_array(scene);
+	return (input_info->map_info->map);
+}
+
+// Malloc for scene description char*array + every line (through GNL)
+char	**open_fd_export_content(t_input *input_info)
 {
 	int		i;
-	int		j;
-	char	**map;
-	char	*tmp;
+	int		fd;
+	int		line_counter;
+	char	**scene;
 
 	i = 0;
-	j = 0;
-	map = map_info->map;
-
-	while (i <= map_info->max_lines)
+	fd = open(input_info->path_to_map, O_RDONLY);
+	line_counter = count_lines_from_scene(input_info);
+	scene = ft_calloc(sizeof(char *), line_counter + 1);
+	if (!scene)
+		print_error_free_exit(input_info, strerror(errno), false, NULL);
+	while (i < line_counter)
 	{
-		j = map_info->max_columns - 1;									// To jump over the last '\0'
-		if (ft_strlen(map[i]) < map_info->max_columns)
-		{
-			tmp = ft_calloc(sizeof(char), map_info->max_columns + 1);	// +1 for last '\0'
-			ft_memcpy(tmp, map[i], ft_strlen(map[i]));
-			tmp[j] = '\n';
-			j--;
-			while (tmp[j] != '\n')							// start by the end, put spaces till reaching the \n
-			{
-				tmp[j] = ' ';
-				j--;
-			}
-			tmp[j] = ' ';
-			free(map[i]);
-			map[i] = tmp;
-		}
+		scene[i] = get_next_line(fd);
 		i++;
 	}
-	map_info->max_columns--;		// To exclude the \n at the end once we're done checking
-	map_info->max_lines++;			// From index to regular digit
+	close(fd);
+	return (scene);
 }

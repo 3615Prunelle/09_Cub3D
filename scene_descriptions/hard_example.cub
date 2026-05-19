@@ -1,7 +1,7 @@
-NO   textures/north.xpm
-WE             textures/west.xpm
-SO    textures/south.xpm
-EA       textures/east.xpm
+NO   textures/Trees_9.png
+WE             textures/Trees_9.png
+SO    textures/Trees_9.png
+EA       textures/Trees_9.png
 
 F       0    ,  32,0
 C           120,0    ,  16

@@ -1,0 +1,15 @@
+  F 141,   52 ,142
+EA textures/car.png
+C 218,   166, 249
+WE textures/city.png
+SO         textures/diplo.png
+        NO textures/trex.png
+
+    11111
+   1000001
+    10001
+     100011111111111
+    100001010101011
+     1E0000000000001
+    100010101010101
+    111111111111111

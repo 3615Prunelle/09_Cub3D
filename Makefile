@@ -10,16 +10,22 @@ LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft 
 
 SRCS =	./sources/main.c \
 		./sources/parsing/input_parsing.c \
+		./sources/parsing/input_parsing_helpers.c \
 		./sources/parsing/fetch_elements.c \
 		./sources/parsing/free_functions.c \
 		./sources/parsing/map_parsing.c \
+		./sources/parsing/map_parsing_helpers.c \
 		./sources/visuals/minimap/minimapper.c \
 		./sources/visuals/image_handler.c \
 		./sources/visuals/visualizer.c \
+		./sources/visuals/ray_basing.c \
 		./sources/visuals/ray_casting.c \
+		./sources/visuals/corner_cases.c \
+		./sources/visuals/small_corner_cases.c \
+		./sources/visuals/coordinate_reasignment.c \
 		./sources/visuals/ft_math.c \
 		./sources/visuals/textures.c\
-		./sources/visuals/debug.c \
+		./sources/visuals/wall_assignment_and_color.c\
 		./sources/controls/movements.c \
 		./sources/controls/controler.c
 

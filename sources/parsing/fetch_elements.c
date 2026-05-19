@@ -1,126 +1,116 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fetch_elements.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/08 16:29:54 by schappuy          #+#    #+#             */
+/*   Updated: 2026/05/16 13:54:26 by schappuy         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-int		check_and_add_texture_path(char *line, t_input *input_info)
+// Check direction
+// Ignore spaces
+// Fetch clean path and fill struct
+// Malloc for each strdup
+int	check_and_add_texture_path(char **split_line, t_input *input_info)
 {
-	if (ft_strncmp(line, "NO ", 3) == 0)
+	if (!split_line[1] || !is_image_reachable(split_line[1]))
+		return (FAIL);
+	if (ft_strncmp(split_line[0], "NO", 3) == 0)
 	{
-		input_info->NO = clean_path(line);		// Malloc done for every line
-		if (!input_info->NO)
-			return (0);
+		input_info->north = ft_strdup(split_line[1]);
 	}
-	else if (ft_strncmp(line, "SO ", 3) == 0)
+	else if (ft_strncmp(split_line[0], "SO", 3) == 0)
 	{
-		input_info->SO = clean_path(line);
-		if (!input_info->SO)
-		{
-			free(input_info->SO);
-			return (0);
-		}
+		input_info->south = ft_strdup(split_line[1]);
 	}
-	else if (ft_strncmp(line, "WE ", 3) == 0)
+	else if (ft_strncmp(split_line[0], "WE", 3) == 0)
 	{
-		input_info->WE = clean_path(line);
-		if (!input_info->WE)
-		{
-			free(input_info->NO);
-			free(input_info->SO);
-			return (0);
-		}
+		input_info->west = ft_strdup(split_line[1]);
 	}
-	else if (ft_strncmp(line, "EA ", 3) == 0)
+	else if (ft_strncmp(split_line[0], "EA", 3) == 0)
 	{
-		input_info->EA = clean_path(line);
-		if (!input_info->EA)
-		{
-			free(input_info->NO);
-			free(input_info->SO);
-			free(input_info->WE);
-			return (0);
-		}
+		input_info->east = ft_strdup(split_line[1]);
 	}
-	else
-		return (0);
-	return (1);
+	return (SUCCESS);
 }
 
-char	*clean_path(char *full_line)
+bool	is_image_reachable(char *path)
 {
-	char	*path;	// removes unnecessary chars/spaces before & after path
 	char	*tmp;
-	size_t	path_length;
+	int		file_fd;
 
-	tmp = ft_strchr(full_line, '.');				// Removes the first chars/spaces
+	tmp = ft_strrchr(path, '.');
 	if (!tmp)
-		return (NULL);
-	path_length = ft_strlen(tmp);
-	path = ft_calloc(sizeof(char), path_length);
-	if (!path)
-		return (NULL);
-	ft_strlcpy(path, tmp, path_length);				// Removes the \n
-	return (path);
+		return (false);
+	if (ft_strcmp(tmp, ".xpm") && ft_strcmp(tmp, ".png"))
+		return (false);
+	file_fd = open(path, O_RDONLY);
+	if (file_fd == -1)
+		return (false);
+	close(file_fd);
+	return (true);
 }
 
-// return 0 if error
-int		check_and_add_colors(char *line, t_input *input_info)
+int	check_and_add_colors(char *line, t_input *input_info)
 {
-	int		i = 0;
-	char	**rgb_array;
+	int		i;
 	int		number_to_check;
+	char	**rgb_split;
 
-	if ((ft_strncmp(line, "F ", 2) == 0) || (ft_strncmp(line, "C ", 2) == 0))
+	i = 0;
+	if (!coma_check(line))
+		return (FAIL);
+	remove_char_from_line(&line, ',');
+	rgb_split = ft_split(line, ' ');
+	while (rgb_split[i + 1])
 	{
-		rgb_array = get_rgb_array(line);								// Ⓜ️
-		if (!rgb_array)
-			return (0);
-		while (i < 3)
+		number_to_check = ft_atoi(rgb_split[i + 1]);
+		if (!add_rgb_in_struct(input_info, rgb_split[0], number_to_check, i))
 		{
-			number_to_check = atoi(rgb_array[i]);
-			if (number_to_check >= 0 && number_to_check <= 255)
-			{
-				if (line[0] == 'F')
-					input_info->floor[i] = number_to_check;
-				if (line[0] == 'C')
-					input_info->ceiling[i] = number_to_check;
-			}
-			else
-			{
-				free_strings_array(rgb_array);
-				return (0);
-			}
-			i++;
+			free_strings_array(rgb_split);
+			return (FAIL);
 		}
-		free_strings_array(rgb_array);
+		i++;
+	}
+	free_strings_array(rgb_split);
+	if (i != 3)
+		return (FAIL);
+	return (SUCCESS);
+}
+
+int	add_rgb_in_struct(t_input *input_info, char *identifier, int color, int i)
+{
+	if (color >= 0 && color <= 255)
+	{
+		if (identifier[0] == 'F')
+			input_info->floor[i] = color;
+		if (identifier[0] == 'C')
+			input_info->ceiling[i] = color;
+		return (SUCCESS);
 	}
 	else
-			return (0);
-	return (1);
+		return (FAIL);
 }
 
-char	**get_rgb_array(char *full_line)
-{
-	char	*tmp;
-	char	**RGB_split;
-	tmp = ft_strrchr(full_line, ' ');			// Jumps to the last space
-	if (!tmp)
-		return (NULL);
-	RGB_split = ft_split(tmp, ',');				// Ⓜ️
-	if (!RGB_split)
-		return (NULL);
-	return (RGB_split);
-}
-
+// total_columns is the length of the longuest line including \n
+// Corrected in spaces_fill_up function
+// malloc in strdup
 void	add_line_in_map_struct(char *line, t_input *input_info)
 {
-	static int	i;
-	static int	j;
+	static int		i;
+	static size_t	j;
 
 	if (ft_strlen(line) > j)
 	{
-		j = ft_strlen(line);		// To get the length of the longuest line - Will include \n - Corrected in spaces_fill_up function
-		input_info->map_info->max_columns = j;
+		j = ft_strlen(line);
+		input_info->map_info->total_columns = j;
 	}
-
-	input_info->map_info->map[i] = ft_strdup(line);					// Ⓜ️
-	input_info->map_info->max_lines = i;
+	input_info->map_info->map[i] = ft_strdup(line);
+	input_info->map_info->total_lines = i;
 	i++;
 }

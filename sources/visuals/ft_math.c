@@ -6,36 +6,33 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/13 09:28:39 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/03/16 15:55:48 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/18 11:23:20 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-void	coordinates_float_to_int(int *ints, float *floats)
+void	set_borders(int *borders, t_ray *ray, float *posi)
 {
-	ints[0] = (int)floats[0];
-	ints[1] = (int)floats[1];
+	if (ray->step_x > 0)
+		borders[0] = ((((int)posi[0] / MAP_SCALE) + 1) * MAP_SCALE) + 1;
+	else
+		borders[0] = (((int)posi[0] / MAP_SCALE) * MAP_SCALE) - 1;
+	if (ray->step_y > 0)
+		borders[1] = ((((int)posi[1] / MAP_SCALE) + 1) * MAP_SCALE) + 1;
+	else
+		borders[1] = (((int)posi[1] / MAP_SCALE) * MAP_SCALE) - 1;
 }
 
 void	unify_step(t_ray *ray)
 {
-	float	max_step_x;
-	float	max_step_y;
 	float	max_step;
 
-	max_step_x = fmaxf(fabsf(ray->step_x[0]), fabsf(ray->step_x[1]));
-	if (max_step_x > 1)
+	max_step = fmaxf(fabsf(ray->step_x), fabsf(ray->step_y));
+	if (max_step > 1)
 	{
-		ray->step_x[0] /= max_step_x;
-		ray->step_x[1] /= max_step_x;
-	}
-	max_step_y = fmaxf(fabsf(ray->step_y[0]), fabsf(ray->step_y[1]));
-	if (max_step_y > 1)
-	{
-		ray->step_y[0] /= max_step_y;
-		ray->step_y[1] /= max_step_y;
+		ray->step_x /= max_step;
+		ray->step_y /= max_step;
 	}
 }
 
