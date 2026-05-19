@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 15:33:13 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:45:25 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ void	move_and_turn(mlx_key_data_t key, t_cube *game, float degree)
 {
 	if (key.key == MLX_KEY_RIGHT && (key.action == MLX_PRESS
 			|| key.action == MLX_REPEAT))
-		turn_right(game);
+		rotate_right(game);
 	if (key.key == MLX_KEY_LEFT && (key.action == MLX_PRESS
 			|| key.action == MLX_REPEAT))
-		turn_left(game);
+		rotate_left(game);
 	if ((key.key == MLX_KEY_W && (key.action == MLX_PRESS
 				|| key.action == MLX_REPEAT)) || (key.key == MLX_KEY_D
 			&& (key.action == MLX_PRESS || key.action == MLX_REPEAT))
@@ -55,11 +55,11 @@ void	move_and_turn(mlx_key_data_t key, t_cube *game, float degree)
 				|| key.action == MLX_REPEAT)) || (key.key == MLX_KEY_A
 			&& (key.action == MLX_PRESS || key.action == MLX_REPEAT)))
 	{
-		if (key.key == MLX_KEY_D) // Right
+		if (key.key == MLX_KEY_D)					// Right
 			degree = adjust_degree(RIGHT, degree);
-		else if (key.key == MLX_KEY_S) // Backwards
+		else if (key.key == MLX_KEY_S)				// Backwards
 			degree = adjust_degree(BACK, degree);
-		else if (key.key == MLX_KEY_A) // Left
+		else if (key.key == MLX_KEY_A)				// Left
 			degree = adjust_degree(LEFT, degree);
 		if (!is_move_possible(game, degree))
 			return ;
@@ -95,6 +95,9 @@ bool	is_move_possible(t_cube *game, float degree)
 	conv_position[1] = (target_position[0]) / MAP_SCALE;
 	target_element = map[conv_position[0]][conv_position[1]];
 	if (target_element == '1')
+	{
+		printf("Boom - Oops, looks like there's a wall at [%d][%d]\t[%f][%f]\n", conv_position[0], conv_position[1], (target_position[1]) / MAP_SCALE, (target_position[0]) / MAP_SCALE);		// Debug
 		return (false);
+	}
 	return (true);
 }

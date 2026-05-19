@@ -6,13 +6,13 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:52:15 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/16 13:46:31 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 18:38:12 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	turn_right(t_cube *game)
+void	rotate_right(t_cube *game)
 {
 	float	i;
 
@@ -22,7 +22,7 @@ void	turn_right(t_cube *game)
 	//	printf("dir=%.1f, ", game->player->direction); just a little test
 }
 
-void	turn_left(t_cube *game)
+void	rotate_left(t_cube *game)
 {
 	float	i;
 

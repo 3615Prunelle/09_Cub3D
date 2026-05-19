@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/19 15:32:06 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:30:54 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,8 @@ void				move_and_turn(mlx_key_data_t key, t_cube *game,
 bool				is_move_possible(t_cube *game, float degree);
 
 // movements.c
-void				turn_right(t_cube *game);
-void				turn_left(t_cube *game);
+void				rotate_right(t_cube *game);
+void				rotate_left(t_cube *game);
 void				move(t_cube *game, float degree);
 float				adjust_degree(enum e_directions direction, float degree);
 
