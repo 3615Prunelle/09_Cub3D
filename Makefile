@@ -1,12 +1,12 @@
 NAME = cub3d
 
-CC = cc
+CC = clang
 
 # Add -Wall -Wextra -Werror when we have something functional
-CFLAGS = -g -Wall -Wextra -Werror -I ./includes -I ./MLX42/include/MLX42 -I ./libft #-fsanitize=address
+CFLAGS = -g -I ./includes -I ./MLX42/include/MLX42 -I ./libft #-fsanitize=address
 
 # Linking flags
-LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft #-lglfw goes with mlx42 and -lm is needed for math
+LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft #-fsanitize=address #-lglfw goes with mlx42 and -lm is needed for math
 
 SRCS =	./sources/main.c \
 		./sources/parsing/input_parsing.c \

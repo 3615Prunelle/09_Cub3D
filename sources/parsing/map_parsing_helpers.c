@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 16:29:37 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/19 17:27:49 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 21:01:28 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	spaces_fill_up(t_map_info *map_info)
 	while (i < map_info->total_lines)
 	{
 		j = ft_strchr(map[i], '\n') - map[i];
-		tmp = calloc(sizeof(char), map_info->total_columns + 1);
+		tmp = calloc(sizeof(char), map_info->total_columns);
 		ft_memcpy(tmp, map[i], j);
-		while (j < map_info->total_columns)
+		while (j < map_info->total_columns - 1)
 		{
 			tmp[j] = ' ';
 			j++;

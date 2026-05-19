@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:07:54 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 15:31:42 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 22:08:55 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,11 @@ void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float *position
 	wall_posi[1] = position[1];
 	coordinates_float_to_int(int_wall_p, wall_posi);
 	coordinates_float_to_int(int_pos, position);
-	while (game->input->map_info->map[int_wall_p[1] / MAP_SCALE][int_wall_p[0]
-		/ MAP_SCALE] != '0')
+	while ((int_wall_p[1] / MAP_SCALE) >= 0
+			&& (int_wall_p[1] / MAP_SCALE) < game->input->map_info->total_lines
+			&& (int_wall_p[0] / MAP_SCALE) >= 0
+			&& (int_wall_p[0] / MAP_SCALE) < game->input->map_info->total_columns
+			&& game->input->map_info->map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] != '0')
 	{
 		wall_posi[0] -= ray->step_x /400;
 		wall_posi[1] -= ray->step_y /400;
