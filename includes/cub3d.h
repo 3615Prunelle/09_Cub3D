@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/19 15:19:39 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:32:06 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,13 +164,18 @@ bool				is_wall_only(char *line);
 bool				are_surroundings_valid(char **map, int element_line,
 						int element_column);
 
+// minimapper.c
+void				draw_minimap(t_cube *game, char **minimap);
+void				draw_line(t_cube *game, char *line, int position);
+void				draw_cone(t_cube *game, float *position);
+
 //ray_basing.c
 void	base_position(char **map,t_ray *ray, float deg, float *position);
 
 //ray_casting.c
 void	set_corners(t_cube *game, t_ray *ray, int *position);
 void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map);
-void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, float *position);
+void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float *position);
 void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map);
 void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map);
 void	cast_rays(t_cube *game, char **map);
@@ -178,7 +183,7 @@ void	cast_rays(t_cube *game, char **map);
 //corner_cases.c
 int is_corner(char **map, t_ray *ray, int *int_pos, float *posi);
 int	corner(char **map, t_ray *ray, float *posi, int *int_pos);
-int borders_crossed(char **map, t_ray *ray, int *borders, int *int_pos);
+int borders_crossed(char **map, t_ray *ray, int *int_pos);
 
 //small_corner_cases.c
 int	small_corner(char **map, t_ray *ray, float *posi);

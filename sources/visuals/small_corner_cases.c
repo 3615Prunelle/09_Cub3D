@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   small_corner_cases.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 10:30:07 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 10:36:30 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:32:23 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	small_corner(char **map, t_ray *ray, float *posi)
 		{
 			fadd_coordinate_x_y(posi, tiny_step[0], tiny_step[1]);
 			coordinates_float_to_int(int_pos, posi);
-			if (borders_crossed(map, ray, borders, int_pos) == 1)
+			if (borders_crossed(map, ray, int_pos) == 1)
 		//	if (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0' || (map[int_pos[1] / MAP_SCALE][(int_pos[0] - (int)tiny_step[0] * 50) / MAP_SCALE] != '0' && map[(int_pos[1] - (int)tiny_step[1] * 50) / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0'))
 			{
 				flag = 1;

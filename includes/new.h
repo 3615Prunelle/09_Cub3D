@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   new.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/16 13:57:45 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:31:09 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void				set_corners(t_cube *game, t_ray *ray, int *position);
 void				set_wallside(t_ray *ray, int *position, int *wall_position,
 						char **map);
 void				calculate_ray_length_and_wallside(t_cube *game, t_ray *ray,
-						float deg, float *position);
+						float *position);
 void				cast_verticaly(t_cube *game, t_ray *ray, float deg,
 						char **map);
 void				cast_horizontaly(t_cube *game, t_ray *ray, float deg,

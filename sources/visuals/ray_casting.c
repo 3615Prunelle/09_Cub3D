@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:07:54 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 15:21:32 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:31:42 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map)
 		ray->wall[0] = 'K';
 }
 
-void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, float *position)
+void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float *position)
 {
 	float	wall_posi[2];
 	int		int_pos[2];
@@ -112,7 +112,7 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 	coordinates_float_to_int(int_pos, position);
 	if (corner(map, ray, position, int_pos) == 1)
 	{
-		calculate_ray_length_and_wallside(game, ray, deg, position);
+		calculate_ray_length_and_wallside(game, ray, position);
 		return ;
 	}
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] == '0')
@@ -124,7 +124,7 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 		coordinates_float_to_int(int_pos, position);
 
 	}
-	calculate_ray_length_and_wallside(game, ray, deg, position);
+	calculate_ray_length_and_wallside(game, ray, position);
 	if (pre_length != 1.0 && ray->length > pre_length)
 	{
 		ray->length = pre_length;
@@ -149,7 +149,7 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 	coordinates_float_to_int(int_pos, position);
 	if (corner(map, ray, position, int_pos) == 1)
 	{
-		calculate_ray_length_and_wallside(game, ray, deg, position);
+		calculate_ray_length_and_wallside(game, ray, position);
 		return ;
 	}
 	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] == '0')
@@ -161,7 +161,7 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 		coordinates_float_to_int(int_pos, position);
 
 	}
-	calculate_ray_length_and_wallside(game, ray, deg, position);
+	calculate_ray_length_and_wallside(game, ray, position);
 
 }
 /*void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
@@ -185,7 +185,7 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 		int_pos[0] = (int)position[0];
 		int_pos[1] = (int)position[1];
 	}
-	calculate_ray_length_and_wallside_v(game, ray, deg, position);
+	calculate_ray_length_and_wallside_v(game, ray, position);
 }
 
 void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
@@ -209,7 +209,7 @@ void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)
 		int_pos[0] = (int)position[0];
 		int_pos[1] = (int)position[1];
 	}
-	calculate_ray_length_and_wallside_h(game, ray, deg, position);
+	calculate_ray_length_and_wallside_h(game, ray, position);
 }*/
 
 void	cast_rays(t_cube *game, char **map)

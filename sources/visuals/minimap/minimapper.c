@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 15:21:37 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:24:05 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,5 @@ void	draw_minimap(t_cube *game, char **minimap)
 		i++;
 	}
 	draw_cone(game, game->player->position);
-	draw_player(game, game->player->int_cords[0], game->player->int_cords[1]);
+	draw_player(game);
 }

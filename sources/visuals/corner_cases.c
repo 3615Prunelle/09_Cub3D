@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   corner_cases.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 14:09:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 12:15:50 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:32:18 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int borders_crossed(char **map, t_ray *ray, int *borders, int *int_pos)
+int borders_crossed(char **map, t_ray *ray, int *int_pos)
 {
 	int	cords[2];
 
@@ -81,7 +81,7 @@ int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 		{
 			fadd_coordinate_x_y(posi, tiny_step[0], tiny_step[1]);
 			coordinates_float_to_int(int_pos, posi);
-			if (borders_crossed(map, ray, borders, int_pos) == 1)
+			if (borders_crossed(map, ray, int_pos) == 1)
 		//	if (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0' || (map[int_pos[1] / MAP_SCALE][(int_pos[0] - (int)tiny_step[0] * 50) / MAP_SCALE] != '0' && map[(int_pos[1] - (int)tiny_step[1] * 50) / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0'))
 			{
 				flag = 1;
