@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/19 15:19:39 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/16 13:57:45 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,25 @@
 # define MAP_BEGINS 2
 # define STEP_LENGTH 1
 
-# define VIEW_WIDTH 700
-# define VIEW_HEIGHT 700
-# define MINI_WIDTH 90
-# define MINI_HEIGHT 90
+# define VIEW_WIDTH 1000
+# define VIEW_HEIGHT 1000
+# define MINI_WIDTH 350
+# define MINI_HEIGHT 350
 # define MAP_SCALE 32
-# define FOV 150.0
-# define VIEW_DISTANCE 4
+# define FOV 100.0
+# define VIEW_DISTANCE 3
 # define DEG_TO_RAD 0.017453293
 
-# define ERR_MSG_1 "Invalid amount of args\
+# define ERR_MSG_01 "Invalid amount of args\
 	- Just provide a map in .cub format\n"
-# define ERR_MSG_2 "No jeans, no sneakers, only .cub - Can't get in, sorry.\n"
-# define ERR_MSG_3 "Empty .cub file\n"
-# define ERR_MSG_4 "Missing element(s) or invalid line / png file\n"
-# define ERR_MSG_5 "Something wrong with the player\n"
-# define ERR_MSG_6 "Invalid map\n"
-# define MSG_1 "Thanks for shopping at Cub, tschüssi !\n"
+# define ERR_MSG_02 "No jeans, no sneakers, no .cub - Can't get in, sorry.\n"
+# define ERR_MSG_03 "Missing element(s) or invalid line\n"
+
+# define ERR_MSG_05 "Empty .cub file\n"
+
+# define ERR_MSG_07 "Invalid map\n"
+# define ERR_MSG_08 "Something wrong with the player\n"
+# define ERR_MSG_09 "Thanks for shopping at Cub, tschüssi !\n"
 
 // Structs
 typedef enum e_directions
@@ -92,18 +94,15 @@ typedef struct s_input
 
 typedef struct s_ray
 {
-	int		id; //for debug
-	float	start_x;
-	float	start_y;
-	float	degree;
-	float	contact_x;
-	float	contact_y;
-	float	length;
-	float	step_x;
-	float	step_y;
-	char	*wall;
-	char	direction;
-} t_ray;
+	float			degree;
+	float			contact_x;
+	float			contact_y;
+	float			length;
+	float			step_x;
+	float			step_y;
+	char			*wall;
+	char			direction;
+}					t_ray;
 
 typedef struct s_cube
 {
@@ -164,25 +163,22 @@ bool				is_wall_only(char *line);
 bool				are_surroundings_valid(char **map, int element_line,
 						int element_column);
 
-//ray_basing.c
-void	base_position(char **map,t_ray *ray, float deg, float *position);
+// minimapper.c
+void				draw_minimap(t_cube *game, char **minimap);
+void				draw_line(t_cube *game, char *line, int position);
+void				draw_cone(t_cube *game, float *position);
 
-//ray_casting.c
-void	set_corners(t_cube *game, t_ray *ray, int *position);
-void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map);
-void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, float *position);
-void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map);
-void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map);
-void	cast_rays(t_cube *game, char **map);
-
-//corner_cases.c
-int is_corner(char **map, t_ray *ray, int *int_pos, float *posi);
-int	corner(char **map, t_ray *ray, float *posi, int *int_pos);
-int borders_crossed(char **map, t_ray *ray, int *borders, int *int_pos);
-
-//small_corner_cases.c
-int	small_corner(char **map, t_ray *ray, float *posi);
-int is_small_corner(char **map, t_ray *ray, int *int_pos, float *posi);
+// ray_casting.c
+void				set_corners(t_cube *game, t_ray *ray, int *position);
+void				set_wallside(t_ray *ray, int *position, int *wall_position,
+						char **map);
+void				calculate_ray_length_and_wallside(t_cube *game, t_ray *ray,
+						float deg, float *position);
+void				cast_verticaly(t_cube *game, t_ray *ray, float deg,
+						char **map);
+void				cast_horizontaly(t_cube *game, t_ray *ray, float deg,
+						char **map);
+void				cast_rays(t_cube *game, char **map);
 
 // visualiser.c
 uint32_t			paint_wall(t_cube *game, t_ray *ray, int *borders, int j);
@@ -203,17 +199,11 @@ void				turn_left(t_cube *game);
 void				move(t_cube *game, float degree);
 float				adjust_degree(enum e_directions direction, float degree);
 
-//coordinate_reasignment.c
-void	coordinates_float_to_int(int *ints, float *floats);
-void	fadd_coordinate_x_y(float *coordinate, float x, float y);
-void	fassign_coordinates(float *new, float *old);
-void	floats_to_mapadress(int *adress, float *floats);
-
-//ft_math.c
-void	set_borders(int *borders, t_ray *ray, float *posi);
-void	unify_step(t_ray *ray);
-void	set_x_y_int_steps(int *steps, float deg);
-float	add_degree(float a, float b);
+// ft_math.c
+void				unify_step(t_ray *ray);
+void				coordinates_float_to_int(int *ints, float *floats);
+void				set_x_y_int_steps(int *steps, float deg);
+float				add_degree(float a, float b);
 
 // image_handler.c
 void				breakdown(char **map);
