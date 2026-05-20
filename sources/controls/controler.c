@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 18:45:25 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/20 12:50:49 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,20 +83,20 @@ bool	is_move_possible(t_cube *game, float degree)
 	current_position = game->player->position;
 	target_position[0] = current_position[0];	// Line
 	target_position[1] = current_position[1];	// Column
-	if (degree > 315 || degree <= 45)	// Looking North
+	if (degree > 270 || degree <= 90)	// Looking North
 		target_position[1] -= 3;		// Up one line, column unchanged
-	if (degree > 45 && degree <= 135)	// Looking East
+	if (degree > 0 && degree <= 180)	// Looking East
 		target_position[0] += 3;		// One column right, line unchanged
-	if (degree > 135 && degree <= 225)	// Looking South
+	if (degree > 90 && degree <= 270)	// Looking South
 		target_position[1] += 3;		// Down one line, column unchanged
-	if (degree > 225 && degree <= 315)	// Looking West
+	if (degree > 180 && degree <= 360)	// Looking West
 		target_position[0] -= 3;		// One column left, line unchanged
 	conv_position[0] = (target_position[1]) / MAP_SCALE;
 	conv_position[1] = (target_position[0]) / MAP_SCALE;
 	target_element = map[conv_position[0]][conv_position[1]];
 	if (target_element == '1')
 	{
-		printf("Boom - Oops, looks like there's a wall at [%d][%d]\t[%f][%f]\n", conv_position[0], conv_position[1], (target_position[1]) / MAP_SCALE, (target_position[0]) / MAP_SCALE);		// Debug
+		//printf("Boom - Oops, looks like there's a wall at [%d][%d]\t[%f][%f]\n", conv_position[0], conv_position[1], (target_position[1]) / MAP_SCALE, (target_position[0]) / MAP_SCALE);		// Debug
 		return (false);
 	}
 	return (true);

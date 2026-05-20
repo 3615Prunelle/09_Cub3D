@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/20 12:23:18 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/20 13:01:11 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 
 # define VIEW_WIDTH 700
 # define VIEW_HEIGHT 700
-# define MINI_WIDTH 90
-# define MINI_HEIGHT 90
+# define MINI_WIDTH 350
+# define MINI_HEIGHT 350
 # define MAP_SCALE 32
 # define FOV 150.0
 # define VIEW_DISTANCE 4

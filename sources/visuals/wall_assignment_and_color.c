@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wall_assignment_and_color.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 14:47:27 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/20 11:56:15 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/20 13:03:37 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,11 @@ void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float *position
 	fassign_coordinates(wall_posi, position);
 	coordinates_float_to_int(int_wall_p, wall_posi);
 	coordinates_float_to_int(int_pos, position);
-	while (game->input->map_info->map[int_wall_p[1] / MAP_SCALE][int_wall_p[0]
-		/ MAP_SCALE] != '0')
+	while (/*(int_wall_p[1] / MAP_SCALE) > 0
+			&& (int_wall_p[1] / MAP_SCALE) < game->input->map_info->total_lines - 1
+			&& (int_wall_p[0] / MAP_SCALE) > 0
+			&& (int_wall_p[0] / MAP_SCALE) < game->input->map_info->total_columns - 1
+			&&*/ game->input->map_info->map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] != '0')
 	{
 		wall_posi[0] -= ray->step_x /400;
 		wall_posi[1] -= ray->step_y /400;
