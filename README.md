@@ -30,6 +30,15 @@ If you're here, you already know the drill : git clone, make, enjoy ! And ... Th
 When executing the game (called cub3d), you have to fetch the scene description (in .cub format) of your choice in the ./scene_descriptions/valid folder. If you feel creative, you can edit these files, or even create your own, as long as it respects the same synthax, and that all required elements are provided (you'll figure it out, it's pretty straightforward).  
 Then you give that scene description as an argument, for the desired maze to be set up and launched.  
 
+Here's what you need to know, to move in  the game (in case you haven't figured that out already):
+> * The W, A, S, and D keys allow you to move through the maze.
+>    * W goes straight
+>    * A goes left
+>    * S goes backwards
+>    * D goes right
+> * The left and right arrow keys allow you to look left and right in the maze.
+> * ESC closes the window and quits the program.
+
 _Required official intructions, just in case :_
 ### Compilation
 `git clone path_to_project_repo`  

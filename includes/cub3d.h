@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/20 13:01:11 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/20 17:16:04 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,13 @@
 	- Just provide a map in .cub format\n"
 # define ERR_MSG_2 "No jeans, no sneakers, only .cub - Can't get in, sorry.\n"
 # define ERR_MSG_3 "Empty .cub file\n"
-# define ERR_MSG_4 "Missing element(s) or invalid line / png file\n"
+# define ERR_MSG_4 "Can be either : \n\
+		 -------------------- -----------------------\n\
+		|  Invalid png file  |     Invalid line      |\n\
+		 -------------------- -----------------------\n\
+		| Missing element(s) | Duplicated element(s) |\n\
+		 -------------------- -----------------------\n\
+		==> RTFM (Aka. README.md) to find out\n\n"
 # define ERR_MSG_5 "Something wrong with the player\n"
 # define ERR_MSG_6 "Invalid map\n"
 # define MSG_1 "Thanks for shopping at Cub, tschüssi !\n"
