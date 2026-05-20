@@ -63,7 +63,7 @@ int	small_corner(char **map, t_ray *ray, float *posi)
 		{
 			fadd_coordinate_x_y(posi, tiny_step[0], tiny_step[1]);
 			coordinates_float_to_int(int_pos, posi);
-			if (borders_crossed(map, ray, borders, int_pos) == 1)
+			if (borders_crossed(map, ray, int_pos) == 1)
 		//	if (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0' || (map[int_pos[1] / MAP_SCALE][(int_pos[0] - (int)tiny_step[0] * 50) / MAP_SCALE] != '0' && map[(int_pos[1] - (int)tiny_step[1] * 50) / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0'))
 			{
 				flag = 1;

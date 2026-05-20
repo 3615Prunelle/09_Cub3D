@@ -6,7 +6,7 @@
 /*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 12:10:03 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 14:04:27 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/20 11:31:35 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,9 @@
 
 void	set_raystart(char **map, t_ray *ray, float *position, int *pre_pos)
 {
-//	float	big_step;
 	int		borders[2];
-//	float	differences[2];
 
-//	big_step = fmaxf(fabsf(ray->step_x),fabsf(ray->step_y));
 	set_borders(borders, ray, position);
-/*	differences[0] = borders[0] - position[0];
-	differences[1] = borders[1] - position[1];
-	if (big_step == fabsf(ray->step_x))
-	{
-		position[1] += (differences[0] / ray->step_x) * ray->step_y;
-		position[0] = borders[0];
-	}
-	if (big_step == fabsf(ray->step_y))
-	{
-		position[0] += (differences[1] / ray->step_y) * ray->step_x;
-		position[1] = borders[1];
-	}*/
 	if (ray->direction == 'h')
 	{
 		while ((int)position[0] / MAP_SCALE == pre_pos[0] / MAP_SCALE && map[(int)position[1] / MAP_SCALE][(int)position[0] / MAP_SCALE] == '0')
