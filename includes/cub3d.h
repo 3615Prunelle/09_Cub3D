@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/19 14:15:09 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:30:54 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 # define CUB3D_H
 
 # include <libft.h>
-# include <fcntl.h>			// open
-# include <limits.h>		// INT_MAX
+# include <fcntl.h>		// open
+# include <limits.h>	// INT_MAX
 # include <stdbool.h>
-# include <stdlib.h>		// EXIT_FAILURE, EXIT_SUCCESS
+# include <stdlib.h>	// EXIT_FAILURE, EXIT_SUCCESS
 # include <string.h>
 # include <errno.h>
-# include <sys/stat.h>		// open
-# include <sys/time.h>		// time
-# include <sys/types.h>		// opendir
-# include <unistd.h>		// close, pipe, fork, read, write, getcwd, chdir
-# include <math.h>			//the scary stuff (tan, cos, sin, atan) but also yummy pie
-# include <stdio.h>			//mal lock mal nicht lock
+# include <sys/stat.h>	// open
+# include <sys/time.h>	// time
+# include <sys/types.h>	// opendir
+# include <unistd.h>	// close, pipe, fork, read, write, getcwd, chdir
+# include <math.h>		// the scary stuff (tan, cos, sin, atan) but also yummy pie
+# include <stdio.h>		// mal lock mal nicht lock
 # include <MLX42.h>
 
 # define FAIL 0
@@ -42,25 +42,23 @@
 # define VIEW_DISTANCE 4
 # define DEG_TO_RAD 0.017453293
 
-# define ERR_MSG_01	"Invalid amount of args - Just provide a map in .cub format\n"
-# define ERR_MSG_02	"No jeans, no sneakers, no .cub - Can't get in, sorry.\n"
-# define ERR_MSG_03	"Missing element(s) or invalid line, you could fix that!\n"
-
-# define ERR_MSG_05	"Empty .cub file\n"
-
-# define ERR_MSG_07	"Map is not mapping right\n"
-# define ERR_MSG_08	"Something wrong with the player\n"
-# define ERR_MSG_09	"Thanks for shopping at Cub, tschüssi !\n"
-# define ERR_MSG_10	"BOOM\n"
+# define ERR_MSG_1 "Invalid amount of args\
+	- Just provide a map in .cub format\n"
+# define ERR_MSG_2 "No jeans, no sneakers, only .cub - Can't get in, sorry.\n"
+# define ERR_MSG_3 "Empty .cub file\n"
+# define ERR_MSG_4 "Missing element(s) or invalid line / png file\n"
+# define ERR_MSG_5 "Something wrong with the player\n"
+# define ERR_MSG_6 "Invalid map\n"
+# define MSG_1 "Thanks for shopping at Cub, tschüssi !\n"
 
 // Structs
 typedef enum e_directions
 {
-	STRAIGHT,					// Not used (yet ?) - Remove if not necessary (keep the others though)
+	STRAIGHT, // Not used - To remove
 	RIGHT,
 	BACK,
 	LEFT,
-}	t_directions;
+}					t_directions;
 
 typedef struct s_player_data
 {
@@ -72,12 +70,12 @@ typedef struct s_player_data
 
 typedef struct s_map_info
 {
-	char	**map;
-	int		total_columns;
-	int		total_lines;
-}	t_map_info;
+	char			**map;
+	int				total_columns;
+	int				total_lines;
+}					t_map_info;
 
-typedef	struct	s_input
+typedef struct s_input
 {
 	char			*path_to_map;
 	char			**scene;
@@ -90,7 +88,7 @@ typedef	struct	s_input
 	t_map_info		*map_info;
 	t_player_data	player;
 
-}	t_input;
+}					t_input;
 
 typedef struct s_ray
 {
@@ -117,10 +115,10 @@ typedef struct s_cube
 	mlx_texture_t	**textures;
 	mlx_image_t		*view;
 	mlx_image_t		*minimap;
-} t_cube;
+}					t_cube;
 
 // main.c
-int		main(int ac, char **av);
+int					main(int ac, char **av);
 
 // input_parsing.c
 void				parsing(char *path_to_map, t_input *input_info);
@@ -166,10 +164,10 @@ bool				is_wall_only(char *line);
 bool				are_surroundings_valid(char **map, int element_line,
 						int element_column);
 
-//minimapper.c
-void	draw_minimap(t_cube *game, char **minimap);
-void	draw_line(t_cube *game, char *line, int position);
-void	draw_cone(t_cube * game, float *position);
+// minimapper.c
+void				draw_minimap(t_cube *game, char **minimap);
+void				draw_line(t_cube *game, char *line, int position);
+void				draw_cone(t_cube *game, float *position);
 
 //ray_basing.c
 void	base_position(char **map,t_ray *ray, float deg, float *position);
@@ -177,7 +175,7 @@ void	base_position(char **map,t_ray *ray, float deg, float *position);
 //ray_casting.c
 void	set_corners(t_cube *game, t_ray *ray, int *position);
 void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map);
-void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float deg, float *position);
+void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float *position);
 void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map);
 void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map);
 void	cast_rays(t_cube *game, char **map);
@@ -185,18 +183,18 @@ void	cast_rays(t_cube *game, char **map);
 //corner_cases.c
 int is_corner(char **map, t_ray *ray, int *int_pos, float *posi);
 int	corner(char **map, t_ray *ray, float *posi, int *int_pos);
-int borders_crossed(char **map, t_ray *ray, int *borders, int *int_pos);
+int borders_crossed(char **map, t_ray *ray, int *int_pos);
 
 //small_corner_cases.c
 int	small_corner(char **map, t_ray *ray, float *posi);
 int is_small_corner(char **map, t_ray *ray, int *int_pos, float *posi);
 
-//visualiser.c
-uint32_t	paint_wall(t_cube *game, t_ray *ray, int *borders, int j);
-void	draw_rays(t_cube *game);
-void	fill_view(t_cube *game);
-void	start_visuals(t_cube *game);
-void	pixel_to_image(uint8_t *pixel, uint32_t colour);
+// visualiser.c
+uint32_t			paint_wall(t_cube *game, t_ray *ray, int *borders, int j);
+void				draw_rays(t_cube *game);
+void				fill_view(t_cube *game);
+void				start_visuals(t_cube *game);
+void				pixel_to_image(uint8_t *pixel, uint32_t colour);
 
 // controler.c
 void				actions(mlx_key_data_t key, void *params);
@@ -205,8 +203,8 @@ void				move_and_turn(mlx_key_data_t key, t_cube *game,
 bool				is_move_possible(t_cube *game, float degree);
 
 // movements.c
-void				turn_right(t_cube *game);
-void				turn_left(t_cube *game);
+void				rotate_right(t_cube *game);
+void				rotate_left(t_cube *game);
 void				move(t_cube *game, float degree);
 float				adjust_degree(enum e_directions direction, float degree);
 
@@ -215,6 +213,7 @@ void	coordinates_float_to_int(int *ints, float *floats);
 void	fadd_coordinate_x_y(float *coordinate, float x, float y);
 void	fassign_coordinates(float *new, float *old);
 void	floats_to_mapadress(int *adress, float *floats);
+void	ints_to_mapadress(int *adress, int *ints);
 
 //ft_math.c
 void	set_borders(int *borders, t_ray *ray, float *posi);
@@ -222,17 +221,19 @@ void	unify_step(t_ray *ray);
 void	set_x_y_int_steps(int *steps, float deg);
 float	add_degree(float a, float b);
 
-//image_handler.c
-void	breakdown(char **map);
-void	disappear(void *param);
-void	set_game(t_cube	*game);
+// image_handler.c
+void				breakdown(char **map);
+void				disappear(void *param);
+void				set_game(t_cube *game);
 
-//textures.c
-uint32_t	get_south_north_color(t_cube *game, t_ray *ray, int *borders, int place);
-uint32_t	get_west_east_color(t_cube *game, t_ray *ray, int *borders, int place);
-uint32_t	load_color(int *colors);
+// textures.c
+uint32_t			get_south_north_color(t_cube *game, t_ray *ray,
+						int *borders, int place);
+uint32_t			get_west_east_color(t_cube *game, t_ray *ray, int *borders,
+						int place);
+uint32_t			load_color(int *colors);
 
-//debug.c
-void	ft_spike(t_cube *game, int i, int *borders);
+// debug.c
+void				ft_spike(t_cube *game, int i, int *borders);
 
 #endif
