@@ -3,10 +3,10 @@ NAME = cub3d
 CC = clang
 
 # Add -Wall -Wextra -Werror when we have something functional
-CFLAGS = -g -I ./includes -I ./MLX42/include/MLX42 -I ./libft -fsanitize=address
+CFLAGS = -g -I ./includes -I ./MLX42/include/MLX42 -I ./libft #-fsanitize=address
 
 # Linking flags
-LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft -fsanitize=address #-lglfw goes with mlx42 and -lm is needed for math
+LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft #-fsanitize=address #-lglfw goes with mlx42 and -lm is needed for math
 
 SRCS =	./sources/main.c \
 		./sources/parsing/input_parsing.c \
@@ -76,7 +76,7 @@ fclean: clean
 	rm -rf ./MLX42
 	rm -rf ./libft
 
-# Medclean to avoid erasing/building libft & gnl every time we do 'make re' (as they're not supposed to change)
+# Medclean to avoid erasing/building libft & MLX42 every time we do 'make re' (as they're not supposed to change)
 re: medclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean medclean fclean re
