@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/19 19:20:18 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/20 12:23:18 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ void	coordinates_float_to_int(int *ints, float *floats);
 void	fadd_coordinate_x_y(float *coordinate, float x, float y);
 void	fassign_coordinates(float *new, float *old);
 void	floats_to_mapadress(int *adress, float *floats);
+void	ints_to_mapadress(int *adress, int *ints);
 
 //ft_math.c
 void	set_borders(int *borders, t_ray *ray, float *posi);

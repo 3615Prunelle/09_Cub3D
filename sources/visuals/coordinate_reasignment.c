@@ -6,7 +6,7 @@
 /*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 11:07:53 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 11:51:17 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/20 11:57:25 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,10 @@ void	floats_to_mapadress(int *adress, float *floats)
 {
 	adress[0] = (int)floats[0] / MAP_SCALE;
 	adress[1] = (int)floats[1] / MAP_SCALE;
+}
+
+void	ints_to_mapadress(int *adress, int *ints)
+{
+	adress[0] = ints[0] / MAP_SCALE;
+	adress[1] = ints[1] / MAP_SCALE;
 }
