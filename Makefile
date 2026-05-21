@@ -1,6 +1,6 @@
 NAME = cub3d
 
-CC = clang
+CC = cc
 
 CFLAGS = -g -Wall -Wextra -Werror -I ./includes -I ./MLX42/include/MLX42 -I ./libft #-fsanitize=address
 
@@ -83,4 +83,4 @@ re: medclean all
 val: all
 	valgrind --leak-check=full --suppressions=./valgrind.supp ./$(NAME) ./scene_descriptions/valid/a_forest.cub
 
-.PHONY: all clean medclean fclean re
+.PHONY: all clean medclean fclean re val
