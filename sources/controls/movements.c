@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:52:15 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 18:38:12 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 13:31:39 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	rotate_right(t_cube *game)
 
 	i = game->player->direction;
 	game->player->direction = add_degree(i, 1);
-//	if (i == 0 || i == 45 || i == 90 || i == 135 || i == 180 || i == 225 || i == 270 || i == 315 || i == 360)
-	//	printf("dir=%.1f, ", game->player->direction); just a little test
 }
 
 void	rotate_left(t_cube *game)
@@ -30,12 +28,8 @@ void	rotate_left(t_cube *game)
 	game->player->direction = add_degree(i, -1);
 }
 
-// MOVING 1 STEP FORWARD
-// Adjust the degree (in calling function) depending on key pressed
-// Could this be useful at some point ? : (sin(degree)²) + (cos(degree)²) = 1
 // Keep in mind that [0][0] is up left
 // fabsf avoids negative values
-// else if(degree > 90 && degree <= 180)			// No need because both diffs are positive
 void	move(t_cube *game, float degree)
 {
 	float	diff_x;
