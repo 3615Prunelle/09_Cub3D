@@ -1,6 +1,5 @@
 EA textures/tree1.png
 WE textures/tree2.png
-WE textures/tree2.png
 SO textures/tree3.png
 NO textures/tree4.png
 
@@ -8,10 +7,10 @@ C 17    ,     143,255
 F 157,   160    ,12
 
     11111
-   100S001
+   1000001
     10001
      100011111111111
-    100001010101011
+    100001010101E11
      100000000000001
     100010101010101
     100000100010001

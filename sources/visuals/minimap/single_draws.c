@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_draws.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 10:31:05 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/21 10:34:34 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/21 14:13:03 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	draw_line(t_cube *game, char *line, int position)
 
 	i = 0;
 	j = position;
-	length = (ft_strlen(line) - 1) * MAP_SCALE;
+	length = (ft_strlen(line)) * MAP_SCALE;
 	while (j < position + 1 && j * i < MINI_WIDTH * MINI_HEIGHT)
 	{
 		while (i < MINI_WIDTH)

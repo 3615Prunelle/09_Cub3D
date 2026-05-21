@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_malloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 12:42:45 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/21 12:49:11 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/21 15:50:31 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	disappear(void *param)
 		mlx_delete_image(game->window, game->view);
 	if (game->window)
 		mlx_terminate(game->window);
-	if (game->input->map_info->map)
-		breakdown(game->input->map_info->map);
 	while (i < VIEW_WIDTH)
 	{
 		if (game->rays[i])
@@ -37,5 +35,6 @@ void	disappear(void *param)
 		game->rays[i] = NULL;
 		i++;
 	}
+	free_input_info_struct(game->input);
 	exit(0);
 }

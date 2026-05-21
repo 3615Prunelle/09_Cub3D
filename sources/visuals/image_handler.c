@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   image_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 12:40:06 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/21 13:05:28 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/21 15:50:23 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	breakdown(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i] != NULL)
-	{
-		if (map[i])
-			free(map[i]);
-		i++;
-	}
-	free(map);
-}
 
 mlx_texture_t	**load_textures(t_input *input)
 {
