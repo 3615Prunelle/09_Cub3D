@@ -6,11 +6,22 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:07:54 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/20 12:25:33 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 12:16:39 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	follow_ray(t_ray *ray, int *int_pos, float *position, char **map)
+{
+	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] == '0')
+	{
+		if (corner(map, ray, position, int_pos) == 1)
+			break ;
+		fadd_coordinate_x_y(position, ray->step_x, ray->step_y);
+		coordinates_float_to_int(int_pos, position);
+	}
+}
 
 void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 {
@@ -29,22 +40,13 @@ void	cast_verticaly(t_cube *game, t_ray *ray, float deg, char **map)
 		calculate_ray_length_and_wallside(game, ray, position);
 		return ;
 	}
-	while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] == '0')
-	{
-		if (corner(map, ray, position, int_pos) == 1)
-			break ;
-		position[0] += ray->step_x;
-		position[1] += ray->step_y;
-		coordinates_float_to_int(int_pos, position);
-	}
+	follow_ray(ray, int_pos, position, map);
 	calculate_ray_length_and_wallside(game, ray, position);
 	if (pre_length != 1.0 && ray->length > pre_length)
 	{
 		ray->length = pre_length;
 		ray->direction = 'h';
 	}
-	else if (ray->direction != 'h')
-		ray->direction = 'v';
 }
 
 void	cast_horizontaly(t_cube *game, t_ray *ray, float deg, char **map)

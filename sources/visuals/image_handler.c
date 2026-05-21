@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   image_handler.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/21 12:40:06 by mlehmann          #+#    #+#             */
+/*   Updated: 2026/05/21 13:05:28 by mlehmann         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	breakdown(char **map)
@@ -14,9 +26,10 @@ void	breakdown(char **map)
 	free(map);
 }
 
-mlx_texture_t **load_textures(t_input *input)
+mlx_texture_t	**load_textures(t_input *input)
 {
 	mlx_texture_t	**textures;
+
 	textures = malloc(4 * sizeof(mlx_texture_t *));
 	if (!textures)
 		return (NULL);
@@ -33,34 +46,6 @@ mlx_texture_t **load_textures(t_input *input)
 	if (!textures[3])
 		return (NULL);
 	return (textures);
-}
-
-void	disappear(void *param)
-{
-	t_cube	*game;
-	int		i;
-
-	i = 0;
-	game = param;
-	if (game->minimap)
-		mlx_delete_image(game->window, game->minimap);
-	if (game->view)
-		mlx_delete_image(game->window, game->view);
-	if (game->window)
-		mlx_terminate(game->window);
-	if (game->input->map_info->map)
-		breakdown(game->input->map_info->map);
-	while (i < VIEW_WIDTH)
-	{
-		if (game->rays[i])
-		{
-			free(game->rays[i]->wall);
-			free(game->rays[i]);
-		}
-		game->rays[i] = NULL;
-		i++;
-	}
-	exit(0);
 }
 
 bool	ray_allocation(t_ray **rays)
@@ -90,6 +75,22 @@ bool	ray_allocation(t_ray **rays)
 	return (true);
 }
 
+void	setup_player(t_cube *game)
+{
+	game->player->position[0] = game->player->int_cords[0] * MAP_SCALE
+		+ MAP_SCALE / 2;
+	game->player->position[1] = game->player->int_cords[1] * MAP_SCALE
+		+ MAP_SCALE / 2;
+	if (game->player->initial_direction == 'N')
+		game->player->direction = 0;
+	else if (game->player->initial_direction == 'S')
+		game->player->direction = 180;
+	else if (game->player->initial_direction == 'E')
+		game->player->direction = 90;
+	else if (game->player->initial_direction == 'W')
+		game->player->direction = 270;
+}
+
 void	set_game(t_cube	*game)
 {
 	mlx_t		*mlx;
@@ -103,16 +104,7 @@ void	set_game(t_cube	*game)
 	if (!game->textures)
 		disappear(game);
 	game->viewplane = VIEW_DISTANCE * (2 * tanf((FOV / 2) * DEG_TO_RAD));
-	game->player->position[0] = game->player->int_cords[0] * MAP_SCALE + MAP_SCALE / 2;
-	game->player->position[1] = game->player->int_cords[1] * MAP_SCALE + MAP_SCALE / 2;
-	if (game->player->initial_direction == 'N')
-		game->player->direction = 0;
-	else if (game->player->initial_direction == 'S')
-		game->player->direction = 180;
-	else if (game->player->initial_direction == 'E')
-		game->player->direction = 90;
-	else if (game->player->initial_direction == 'W')
-		game->player->direction = 270;
+	setup_player(game);
 	mlx = mlx_init(VIEW_WIDTH, VIEW_HEIGHT, "see_no_evil", false);
 	map = mlx_new_image(mlx, MINI_WIDTH, MINI_HEIGHT);
 	field_of_vision = mlx_new_image(mlx, VIEW_WIDTH, VIEW_HEIGHT);

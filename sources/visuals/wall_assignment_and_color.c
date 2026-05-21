@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/08 14:47:27 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/20 13:03:37 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 10:41:32 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	set_wallside(t_ray *ray, int *position, int *wall_position, char **map)
 		ray->wall[0] = 'K';
 }
 
-void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float *position)
+void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray,
+			float *position)
 {
 	float	wall_posi[2];
 	int		int_pos[2];
@@ -74,24 +75,17 @@ void	calculate_ray_length_and_wallside(t_cube *game, t_ray *ray, float *position
 	fassign_coordinates(wall_posi, position);
 	coordinates_float_to_int(int_wall_p, wall_posi);
 	coordinates_float_to_int(int_pos, position);
-	while (/*(int_wall_p[1] / MAP_SCALE) > 0
-			&& (int_wall_p[1] / MAP_SCALE) < game->input->map_info->total_lines - 1
-			&& (int_wall_p[0] / MAP_SCALE) > 0
-			&& (int_wall_p[0] / MAP_SCALE) < game->input->map_info->total_columns - 1
-			&&*/ game->input->map_info->map[int_wall_p[1] / MAP_SCALE][int_wall_p[0] / MAP_SCALE] != '0')
+	while (game->input->map_info->map[int_wall_p[1] / MAP_SCALE][int_wall_p[0]
+		/ MAP_SCALE] != '0')
 	{
-		wall_posi[0] -= ray->step_x /400;
-		wall_posi[1] -= ray->step_y /400;
+		wall_posi[0] -= ray->step_x / 400;
+		wall_posi[1] -= ray->step_y / 400;
 		coordinates_float_to_int(int_wall_p, wall_posi);
 	}
 	ints_to_mapadress(int_wall_p, int_wall_p);
-//	int_wall_p[0] /= MAP_SCALE;
-//	int_wall_p[1] /= MAP_SCALE;
 	ray->contact_x = wall_posi[0];
 	ray->contact_y = wall_posi[1];
 	ints_to_mapadress(int_pos, int_pos);
-//	int_pos[0] /= MAP_SCALE;
-//	int_pos[1] /= MAP_SCALE;
 	set_wallside(ray, int_pos, int_wall_p, game->input->map_info->map);
 	if (ray->wall[0] == 'K')
 		set_corners(game, ray, int_pos);

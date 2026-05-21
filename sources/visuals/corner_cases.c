@@ -6,13 +6,13 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/11 14:09:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 15:32:18 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 12:34:48 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int borders_crossed(char **map, t_ray *ray, int *int_pos)
+int	borders_crossed(char **map, t_ray *ray, int *int_pos)
 {
 	int	cords[2];
 
@@ -36,7 +36,7 @@ int borders_crossed(char **map, t_ray *ray, int *int_pos)
 		return (0);
 }
 
-int is_corner(char **map, t_ray *ray, int *int_pos, float *posi)
+int	is_corner(char **map, t_ray *ray, int *int_pos, float *posi)
 {
 	int	coords[2];
 	int	int_step[2];
@@ -66,31 +66,26 @@ int	corner(char **map, t_ray *ray, float *posi, int *int_pos)
 {
 	float	pre_posi[2];
 	float	tiny_step[2];
-	int		borders[2];
 	int		flag;
 
 	flag = 0;
 	fassign_coordinates(pre_posi, posi);
 	tiny_step[0] = ray->step_x / 200;
 	tiny_step[1] = ray->step_y / 200;
-	set_borders(borders, ray, posi);
 	coordinates_float_to_int(int_pos, posi);
 	if (is_corner(map, ray, int_pos, posi) == 1)
 	{
-		while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] == '0' && posi[0] != pre_posi[0] + ray->step_x)
+		while (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] == '0'
+			&& posi[0] != pre_posi[0] + ray->step_x)
 		{
 			fadd_coordinate_x_y(posi, tiny_step[0], tiny_step[1]);
 			coordinates_float_to_int(int_pos, posi);
-			if (borders_crossed(map, ray, int_pos) == 1)
-		//	if (map[int_pos[1] / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0' || (map[int_pos[1] / MAP_SCALE][(int_pos[0] - (int)tiny_step[0] * 50) / MAP_SCALE] != '0' && map[(int_pos[1] - (int)tiny_step[1] * 50) / MAP_SCALE][int_pos[0] / MAP_SCALE] != '0'))
-			{
-				flag = 1;
+			flag = borders_crossed(map, ray, int_pos);
+			if (flag == 1)
 				break ;
-			}
 		}
 	}
 	if (flag == 0)
 		fassign_coordinates(posi, pre_posi);
-	coordinates_float_to_int(int_pos, posi);
 	return (flag);
 }

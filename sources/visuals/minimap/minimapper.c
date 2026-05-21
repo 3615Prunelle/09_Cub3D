@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/19 15:24:05 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 10:35:01 by mlehmann         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	draw_cone(t_cube *game, float *position)
 			&& step[1] - position[1] > -index[2] + 1)
 		{
 			if (ray_contact(ray, position, step, index) == 1
-/*				|| game->input->map_info->map[(int)step[1] / MAP_SCALE]
-				[(int)step[0] / MAP_SCALE] != '0'*/)
+				|| game->input->map_info->map[(int)step[1] / MAP_SCALE]
+				[(int)step[0] / MAP_SCALE] != '0')
 				break ;
 			pixel_to_image(&game->minimap->pixels[index[0]], 0xFFFFFFFF);
 		}
@@ -71,33 +71,6 @@ void	fill_minimap(t_cube *game, char *line, int i, int index)
 	if (line[(i + game->player->int_cords[0] - MINI_WIDTH / 2) / MAP_SCALE]
 		== '1')
 		pixel_to_image(&game->minimap->pixels[index], 0x0000FFFF);
-}
-
-void	draw_line(t_cube *game, char *line, int position)
-{
-	int	i;
-	int	j;
-	int	length;
-	int	index;
-
-	i = 0;
-	j = position;
-	length = (ft_strlen(line) - 1) * MAP_SCALE;
-	while (j < position + 1 && j * i < MINI_WIDTH * MINI_HEIGHT)
-	{
-		while (i < MINI_WIDTH)
-		{
-			index = (j * MINI_WIDTH + i) * sizeof(int32_t);
-			if (i + game->player->int_cords[0] - MINI_WIDTH / 2 > length
-				|| i + game->player->int_cords[0] - MINI_WIDTH / 2 < 0)
-				pixel_to_image(&game->minimap->pixels[index], 0x000000FF);
-			else
-				fill_minimap(game, line, i, index);
-			i++;
-		}
-		i = 0;
-		j++;
-	}
 }
 
 void	draw_player(t_cube *game)
