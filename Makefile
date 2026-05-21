@@ -16,7 +16,9 @@ SRCS =	./sources/main.c \
 		./sources/parsing/map_parsing.c \
 		./sources/parsing/map_parsing_helpers.c \
 		./sources/visuals/minimap/minimapper.c \
+		./sources/visuals/minimap/single_draws.c \
 		./sources/visuals/image_handler.c \
+		./sources/visuals/free_malloc.c \
 		./sources/visuals/visualizer.c \
 		./sources/visuals/ray_basing.c \
 		./sources/visuals/ray_casting.c \
