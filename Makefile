@@ -2,10 +2,10 @@ NAME = cub3d
 
 CC = clang
 
-CFLAGS = -g -Wall -Wextra -Werror -I ./includes -I ./MLX42/include/MLX42 -I ./libft -fsanitize=address
+CFLAGS = -g -Wall -Wextra -Werror -I ./includes -I ./MLX42/include/MLX42 -I ./libft #-fsanitize=address
 
 # Linking flags
-LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft -fsanitize=address #-lglfw goes with mlx42 and -lm is needed for math
+LFLAGS = -L ./get_next_line -L ./MLX42/build -L ./libft -lmlx42 -lglfw -lm -lft #-fsanitize=address #-lglfw goes with mlx42 and -lm is needed for math
 
 SRCS =	./sources/main.c \
 		./sources/parsing/input_parsing.c \
@@ -79,5 +79,8 @@ fclean: clean
 
 # Medclean to avoid erasing/building libft & MLX42 every time we do 'make re' (as they're not supposed to change)
 re: medclean all
+
+val: all
+	valgrind --leak-check=full --suppressions=./valgrind.supp ./$(NAME) ./scene_descriptions/valid/a_forest.cub
 
 .PHONY: all clean medclean fclean re

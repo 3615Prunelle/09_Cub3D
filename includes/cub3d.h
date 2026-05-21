@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/21 15:50:38 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 16:23:53 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,8 @@ bool				are_surroundings_valid(char **map, int element_line,
 						int element_column);
 
 // minimapper.c
-int					ray_contact(t_ray *ray, float *position, float *step, int *index);
+int					ray_contact(t_ray *ray, float *position, float *step,
+						int *index);
 void				draw_cone(t_cube *game, float *position);
 void				fill_minimap(t_cube *game, char *line, int i, int index);
 void				draw_player(t_cube *game);

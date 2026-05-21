@@ -1,4 +1,28 @@
 {
+   ignore_libdbus
+   Memcheck:Leak
+   obj:*/libdbus*
+}
+
+{
+   ignore_libglfw
+   Memcheck:Leak
+   obj:*/libglfw*
+}
+
+{
+   ignore_libGL
+   Memcheck:Leak
+   obj:*/libGL*
+}
+
+{
+   ignore_dl
+   Memcheck:Leak
+   obj:*/ld-linux*
+}
+
+{
    nvidia_glcore_cond
    Memcheck:Cond
    obj:*/libnvidia-glcore.so*
