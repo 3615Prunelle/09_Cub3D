@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/21 16:23:53 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 16:40:01 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@
 # define ERR_MSG_2 "No jeans, no sneakers, only .cub - Can't get in, sorry.\n"
 # define ERR_MSG_3 "Empty .cub file\n"
 # define ERR_MSG_4 "Can be either : \n\
-			-------------------- -----------------------\n\
+		 -------------------- -----------------------\n\
 		|  Invalid png file  |     Invalid line      |\n\
-			-------------------- -----------------------\n\
+		 -------------------- -----------------------\n\
 		| Missing element(s) | Duplicated element(s) |\n\
-			-------------------- -----------------------\n\
+		 -------------------- -----------------------\n\
 		==> RTFM (Aka. README.md) to find out\n\n"
 # define ERR_MSG_5 "Something wrong with the player\n"
 # define ERR_MSG_6 "Invalid map\n"
