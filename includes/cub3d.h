@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/20 17:16:04 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/21 13:53:08 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 # define CUB3D_H
 
 # include <libft.h>
-# include <fcntl.h>		// open
-# include <limits.h>	// INT_MAX
+# include <fcntl.h>
+# include <limits.h>
 # include <stdbool.h>
-# include <stdlib.h>	// EXIT_FAILURE, EXIT_SUCCESS
+# include <stdlib.h>
 # include <string.h>
 # include <errno.h>
-# include <sys/stat.h>	// open
-# include <sys/time.h>	// time
-# include <sys/types.h>	// opendir
-# include <unistd.h>	// close, pipe, fork, read, write, getcwd, chdir
-# include <math.h>		// the scary stuff (tan, cos, sin, atan) but also yummy pie
-# include <stdio.h>		// mal lock mal nicht lock
+# include <sys/stat.h>
+# include <sys/time.h>
+# include <sys/types.h>
+# include <unistd.h>
+# include <math.h>
+# include <stdio.h>
 # include <MLX42.h>
 
 # define FAIL 0
@@ -60,18 +60,20 @@
 // Structs
 typedef enum e_directions
 {
-	STRAIGHT, // Not used - To remove
 	RIGHT,
 	BACK,
 	LEFT,
 }					t_directions;
 
+// int_cords[2]			[0] = X	[1] = Y
+// position[2]			Gets updated as soon as player starts to move
+// direction			South = 270 / North = 90 / East = 0 / West = 180
 typedef struct s_player_data
 {
-	int		int_cords[2];		// [0] = X	[1] = Y
-	float	position[2];		// This gets updated as soon as player starts to move
+	int		int_cords[2];
+	float	position[2];
 	char	initial_direction;
-	float	direction;			// Conversion from initial_direction variable : South = 270 / North = 90 / East = 0 / West = 180
+	float	direction;
 }	t_player_data;
 
 typedef struct s_map_info
@@ -98,7 +100,6 @@ typedef struct s_input
 
 typedef struct s_ray
 {
-	int		id; //for debug
 	float	start_x;
 	float	start_y;
 	float	degree;

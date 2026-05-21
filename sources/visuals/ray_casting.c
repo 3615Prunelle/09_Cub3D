@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 11:07:54 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/21 12:16:39 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/21 13:53:04 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	cast_rays(t_cube *game, char **map)
 	i = 0;
 	while (i < VIEW_WIDTH)
 	{
-		game->rays[i]->id = i;
 		view_pos = (((i * 2.0) - (VIEW_WIDTH - 1.0)) / (VIEW_WIDTH - 1.0))
 			* (game->viewplane / 2);
 		game->rays[i]->direction = '0';
