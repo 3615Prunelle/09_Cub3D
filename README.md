@@ -1,7 +1,7 @@
 _This project has been created as part of the 42 curriculum by [mlehmann](https://profile.intra.42.fr/users/mlehmann) and [schappuy](https://profile.intra.42.fr/users/schappuy)._
 
 # Description
-Have you ever dreamt of exploring, wandering and getting lost in the marvelous world of emojis ?   
+Have you ever dreamt of exploring, wandering and getting lost in the marvelous world of ... emojis ? 🐊 🫟 👾 🫧 💥 🌿   
 Wondering what life would be if they weren't just on your screen, but all around you, giant and immersive? 
 Well, looks like we made your dream come true, so ...  
 

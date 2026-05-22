@@ -1,16 +1,17 @@
-  F 147,   70 ,3
-EA textures/car.png
-C 0,   150, 255
-WE textures/city.png
-SO         textures/diplo.png
-        NO textures/t_rex.png
+EA textures/taco.png
+WE textures/fries.png
+SO textures/pizza.png
+NO textures/brezel.png
+
+C 201,144,0
+F 255,241,0
 
     11111
-   100S001
+   1000001
     10001
      100011111111111
     100001010101011
-     100000000000001
+     1000E0000000001
     100010101010101
     100000100010001
     111101111110111

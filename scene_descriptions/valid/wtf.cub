@@ -1,15 +1,16 @@
-  F 147,   70 ,3
-EA textures/car.png
-C 0,   150, 255
-WE textures/city.png
-SO         textures/diplo.png
-        NO textures/t_rex.png
+EA textures/bath.png
+WE textures/water_drops.png
+SO textures/sexy_mouth.png
+NO textures/fire.png
+
+C 000,000,000
+F 000,000,000
 
     11111
-   100S001
+   1000001
     10001
      100011111111111
-    100001010101011
+    1E0001010101011
      100000000000001
     100010101010101
     100000100010001

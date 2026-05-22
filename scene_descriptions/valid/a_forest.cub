@@ -1,19 +1,19 @@
-EA textures/tree1.png
-WE textures/tree2.png
-SO textures/tree3.png
-NO textures/tree4.png
+EA textures/.png
+WE textures/.png
+SO textures/.png
+NO textures/.png
 
-C 17    ,     143,255
-F 157,   160    ,12
+C 000,000,000
+F 000,000,000
 
     11111
    1000001
     10001
      100011111111111
-    100001010101E11
+    100001010101011
      100000000000001
     100010101010101
-    100000100010001
+    1000001000100N1
     111101111110111
        101  1110111
        101111110111

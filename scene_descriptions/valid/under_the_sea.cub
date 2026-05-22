@@ -1,13 +1,13 @@
-EA textures/parc.png
-WE textures/parc.png
-SO textures/parc.png
-NO textures/parc.png
+EA textures/coral.png
+WE textures/mermaid.png
+SO textures/jellyfish.png
+NO textures/shell.png
 
-C 0,200,255
-F 160,225,0
+C 0,171,255
+F 0,171,255
 
     11111
-   100S001
+   1000S01
     10001
      100011111111111
     100001010101011

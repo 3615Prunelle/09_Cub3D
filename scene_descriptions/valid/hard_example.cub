@@ -1,9 +1,9 @@
-NO   textures/Trees_9.png
-WE             textures/Trees_9.png
-SO    textures/Trees_9.png
-EA       textures/Trees_9.png
+NO   textures/wave.png
+WE             textures/wave.png
+SO    textures/wave.png
+EA       textures/wave.png
 
-F       0    ,  32,0
+F       0    ,  122,255
 C           120,0    ,  16
 
  1111111        111111111

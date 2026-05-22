@@ -1,9 +1,10 @@
-  F 147,   70 ,3
-EA textures/car.png
-C 0,   150, 255
-WE textures/city.png
-SO         textures/diplo.png
-        NO textures/t_rex.png
+EA textures/park.png
+WE textures/park.png
+SO textures/park.png
+NO textures/park.png
+
+C 0,200,255
+F 160,225,0
 
     11111
    100S001
