@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/26 16:04:59 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/22 11:39:28 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/22 11:49:44 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	ray_contact(t_ray *ray, float *position, float *step, int *index)
 	if (contact == 2)
 		return (1);
 	if ((index[2] + (int)step[1] - (int)position[1] >= MINI_HEIGHT)
-			|| (index[2] + (int)step[1] - (int)position[1] < 0)
-			|| (index[1] + (int)step[0] - (int)position[0] >= MINI_WIDTH)
-			|| (index[1] + (int)step[0] - (int)position[0] < 0))
+		|| (index[2] + (int)step[1] - (int)position[1] < 0)
+		|| (index[1] + (int)step[0] - (int)position[0] >= MINI_WIDTH)
+		|| (index[1] + (int)step[0] - (int)position[0] < 0))
 		return (1);
 	index[0] = ((index[2] + (int)step[1] - (int)position[1]) * MINI_WIDTH
 			+ index[1] + ((int)step[0] - (int)position[0])) * sizeof(int32_t);
