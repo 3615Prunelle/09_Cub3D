@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/12 14:40:12 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/21 15:40:52 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/05/22 11:09:42 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,13 @@ bool	is_move_possible(t_cube *game, float degree)
 	target[0] = current_position[0];
 	target[1] = current_position[1];
 	if (degree > 270 || degree <= 90)
-		target[1] -= 3;
+		target[1] -= 1;
 	if (degree > 0 && degree <= 180)
-		target[0] += 3;
+		target[0] += 1;
 	if (degree > 90 && degree <= 270)
-		target[1] += 3;
+		target[1] += 1;
 	if (degree > 180 && degree <= 360)
-		target[0] -= 3;
+		target[0] -= 1;
 	if (map[(int)(target[1]) / MAP_SCALE]
 			[(int)(target[0]) / MAP_SCALE] == '1')
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coordinate_reasignment.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlehmann <mlehmann@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/18 11:07:53 by mlehmann          #+#    #+#             */
-/*   Updated: 2026/05/20 11:57:25 by mlehmann         ###   ########.fr       */
+/*   Updated: 2026/05/22 11:08:12 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
