@@ -6,7 +6,7 @@
 /*   By: schappuy <schappuy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 20:17:58 by schappuy          #+#    #+#             */
-/*   Updated: 2026/05/26 14:52:51 by schappuy         ###   ########.fr       */
+/*   Updated: 2026/06/04 00:24:42 by schappuy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@
 # define MAP_BEGINS 2
 # define STEP_LENGTH 1
 
-# define VIEW_WIDTH 500
-# define VIEW_HEIGHT 500
-# define MINI_WIDTH 250
+# define VIEW_WIDTH 700
+# define VIEW_HEIGHT 700
+# define MINI_WIDTH 650
 # define MINI_HEIGHT 150
-# define MAP_SCALE 8
+# define MAP_SCALE 4
 # define FOV 150.0
 # define VIEW_DISTANCE 2
 # define DEG_TO_RAD 0.017453293
