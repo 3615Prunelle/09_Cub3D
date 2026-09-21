@@ -14,10 +14,8 @@
 
 bool	is_filename_correct(char *path_to_map)
 {
-	size_t	file_length;
 	char	*tmp;
 
-	file_length = ft_strlen(path_to_map);
 	tmp = ft_strrchr(path_to_map, '.');
 	if (!tmp)
 	{

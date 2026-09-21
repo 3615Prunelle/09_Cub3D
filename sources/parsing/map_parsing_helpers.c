@@ -66,10 +66,8 @@ void	spaces_fill_up(t_map_info *map_info)
 bool	is_wall_only(char *line)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	while (line[i] == ' ')
 		i++;
 	while (line[i] == '1' || line[i] == ' ')
